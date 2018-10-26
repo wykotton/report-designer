@@ -1,0 +1,30 @@
+<div class="dropdown{{if disabled}} notallowed{{/if}}" id="dd_{{=id}}">
+    <div
+        class="dropdown-toggle"
+        mx-click="@{toggle}()"
+        title="{{=selectedText}}">
+        <span class="dropdown-toggle-label{{if (selected===''||selected==emptyText)}}  dropdown-toggle-label-ph{{/if}}">{{=selectedText}}</span>
+        <span class="mc-iconfont arrow">&#xe692;</span>
+    </div>
+    {{if rList}}
+    <div class="dropdown-menu-wrapper">
+        <ul class="dropdown-menu" id="list_{{=id}}">
+            {{each list as item}}
+            {{set text=item,value=item}}
+            {{if textKey&&valueKey}}
+                {{text=item[textKey]}}
+                {{value=item[valueKey]}}
+            {{/if}}
+            {{set equal=(value+'')===(selected+'')}}
+            <li title="{{=text}}" @active="{{=equal}}" class="dropdown-item">
+                <span
+                    class="item-link ellipsis{{if equal}} active{{/if}}"
+                    mx-click="@{select}({item:'{{@item}}'})">
+                    {{=text}}
+                </span>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+</div>

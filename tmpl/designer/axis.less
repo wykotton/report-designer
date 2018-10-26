@@ -1,0 +1,144 @@
+@import "../gallery/mx-style/_vars.less";
+
+.axis-x{
+    height: 20px;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+    width: 100%;
+    background: #fff;
+    z-index: 200;
+    position: relative;
+}
+.axis-x-line{
+    position: absolute;
+    top:0;
+    background:@color-brand;
+    width: 1px;
+    z-index: 200;
+    display: none;
+}
+.axis-y-line{
+    position: absolute;
+    left:0;
+    background:@color-brand;
+    height: 1px;
+    z-index: 200;
+    display: none;
+}
+.axis-y{
+    float:left;
+    width:20px;
+    border-right: solid 1px #ccc;
+    overflow: hidden;
+    background: #fff;
+    z-index: 200;
+    position: relative;
+}
+.axis-corner{
+    position: absolute;
+    left:0;
+    top:0;
+    width:20px;
+    height: 20px;
+    background: #fff;
+    border-bottom: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    z-index: 201;
+}
+.axis-x-tip{
+    cursor: default;
+    position: absolute;
+    left:5px;
+    font-size: 10px;
+    top:22px;
+}
+.axis-y-tip{
+    cursor: default;
+    position: absolute;
+    top:-5px;
+    font-size: 10px;
+    left:21px;
+    transform: rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+.y-axis-help,
+.x-axis-help{
+    position: relative;
+    z-index: 100;
+}
+.x-axis-help{
+    top:20px;
+}
+.y-axis-help{
+    left:20px;
+}
+.x-axis-help-line{
+    width:4px;
+    border-left:solid 1px @color-brand;
+    position: absolute;
+    pointer-events:none;
+}
+.y-axis-help-line{
+    height:1px;
+    background: @color-brand;
+    position: absolute;
+    pointer-events: none;
+}
+.x-help-line-icon{
+    position: absolute;
+    left: -15px;
+    top: 4px;
+    font-size: 10px;
+    color: #666;
+    cursor: pointer;
+    pointer-events: all;
+}
+.x-help-line-text{
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    font-size: 10px;
+    color: #666;
+    cursor: default;
+}
+
+.y-help-line-icon{
+    position: absolute;
+    left: 4px;
+    top: -15px;
+    font-size: 10px;
+    color: #666;
+    cursor: pointer;
+    pointer-events: all;
+}
+.y-help-line-text{
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    font-size: 10px;
+    color: #666;
+    cursor: default;
+}
+.y-help-line-move{
+    position: absolute;
+    width: 25px;
+    top: -1px;
+    height: 3px;
+    left: 30px;
+    overflow: hidden;
+    background: @color-brand;
+    pointer-events: all;
+    cursor: ns-resize;
+}
+.x-help-line-move{
+    position: absolute;
+    width: 3px;
+    left: -2px;
+    height: 25px;
+    top: 20px;
+    overflow: hidden;
+    background: @color-brand;
+    pointer-events: all;
+    cursor: ew-resize;
+}

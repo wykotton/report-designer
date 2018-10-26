@@ -1,0 +1,3 @@
+<input class="ipt" id="ipt_{{=id}}" mx-focusin="@{active}()" mx-focusout="@{deactive}()" mx-change="@{num.check}()" mx-keydown="@{press.check}()" @disabled="{{@disabled}}" autocomplete="off" mx-input="@{input.check}()"/>
+<span class="up arrow unselectable{{if disabled}} notallowed{{/if}}" mx-click="@{num.change}({i:1})" mx-mousedown="@{fast.start}({i:1})" mx-contextmenu="@{prevent}()"></span>
+<span class="down arrow unselectable{{if disabled}} notallowed{{/if}}" mx-click="@{num.change}()" mx-mousedown="@{fast.start}()" mx-contextmenu="@{prevent}()"></span>
