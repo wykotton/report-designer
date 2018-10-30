@@ -2,11 +2,11 @@ import Magix, { node } from 'magix';
 let Panels = [{
     title: '@{lang#panel.elements}',
     icon: '&#xe629;',
-    width: 140,
+    width: 100,
     height() {
         return Math.max(window.innerHeight - 160, 100);
     },
-    left: 40,
+    left: 30,
     top: 100,
     show: true,
     id: 'elements',
@@ -14,14 +14,26 @@ let Panels = [{
 }, {
     title: '@{lang#panel.props}',
     icon: '&#xe7a1;',
-    width: 200,
+    width: 300,
     height() {
-        return 400;
+        return 200;
     },
-    right: 20,
+    right: 230,
     top: 100,
     show: false,
     id: 'props',
+    view: '@./props/index'
+}, {
+    title: '@{lang#panel.data}',
+    icon: '&#xe609;',
+    width: 200,
+    height() {
+        return Math.max(window.innerHeight - 160, 100);
+    },
+    show:true,
+    right: 20,
+    top: 100,
+    id: 'data',
     view: '@./props/index'
 }];
 let PanelsMap = Magix.toMap(Panels, 'id');

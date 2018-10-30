@@ -105,6 +105,7 @@ export default Magix.View.extend({
         let { w: resizeWidth } = e.params;
         let startWidth = this.get('width');
         let startHeight = this.get('height');
+        let startRight = this.get('right');
         let cNode = node('c_' + this.id);
         cNode.classList.add('@panel.less:content-outer-disable-anim');
         let cStyles = cNode.style;
@@ -112,9 +113,18 @@ export default Magix.View.extend({
         Cursor["@{show}"](e.eventTarget);
         this['@{drag.drop}'](e, ex => {
             if (resizeWidth) {
-                let offsetX = ex.pageX - e.pageX + startWidth;
-                if (offsetX < MinWidth) offsetX = MinWidth;
+                let offset = ex.pageX - e.pageX;
+                if (offset + startWidth < MinWidth) {
+                    offset = MinWidth - startWidth;
+                }
+                let offsetX = offset + startWidth;
                 pStyles.width = offsetX + 'px';
+                if (startRight || startHeight === 0) {
+                    pStyles.right = (startRight - offset) + 'px';
+                    this.set({
+                        right: startRight - offset
+                    });
+                }
                 this.set({
                     width: offsetX
                 });

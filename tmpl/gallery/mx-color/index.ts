@@ -146,8 +146,8 @@ export default Magix.View.extend({
             pickerZone = node('cz_' + me.id).clientWidth,
             pickerIndicator = node('ci_' + me.id).clientWidth / 2,
             offset = e.eventTarget.getBoundingClientRect(),
-            left = e.pageX - offset.left - window.scrollX,
-            top = e.pageY - offset.top - window.scrollY,
+            left = e.pageX - offset.left - window.pageXOffset,
+            top = e.pageY - offset.top - window.pageYOffset,
             s = left / pickerZone,
             v = (pickerZone - top) / pickerZone;
         me['@{set.hsv}']({

@@ -2866,8 +2866,9 @@ define('magix', function () {
                         });
                     }
                     view.fire('domready');
-                    if (resolve)
-                       G_ToTry( resolve);
+                    if (resolve) {
+                        G_ToTry(resolve);
+                    }
                 });
                 Async_AddTask(vf, function () {
                     for (var _i = 0, _a = ref.d; _i < _a.length; _i++) {
@@ -2887,9 +2888,6 @@ define('magix', function () {
                     else if (f == 2) {
                         newNodeOrOldVirtualNodes.pop();
                         containerNode.removeChild(oldOrNewNode);
-                        if (DEBUG) {
-                            CheckNodes(containerNode.childNodes, newNodeOrOldVirtualNodes);
-                        }
                     }
                     else if (f == 4) {
                         for (index in virtualNodes) {

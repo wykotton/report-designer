@@ -98,8 +98,8 @@ export default {
                 DragPrevent['@{dd&add.scroll}'] = document.elementFromPoint(-1, -1) !== null;
             }
             if (DragPrevent['@{dd&add.scroll}']) {
-                x += window.scrollX;
-                y += window.scrollY;
+                x += window.pageXOffset;
+                y += window.pageYOffset;
             }
             node = document.elementFromPoint(x, y);
             while (node && node.nodeType == 3) node = node.parentNode;
