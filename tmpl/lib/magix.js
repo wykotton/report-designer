@@ -5,9 +5,9 @@
 /*
 author:kooboy_li@163.com
 loader:cmd
-enables:style,viewInit,resource,viewMerge,autoEndUpdate,linkage,updaterQuick,updaterAsync,state,viewProtoMixins
+enables:style,viewInit,resource,viewMerge,autoEndUpdate,linkage,updaterQuick,state,viewProtoMixins,simpleState
 
-optionals:base,updaterDOM,service,serviceCombine,servicePush,router,tipRouter,tipLockUrlRouter,edgeRouter,forceEdgeRouter,urlRewriteRouter,updateTitleRouter,cnum,ceach,defaultView,viewInitAsync,configIni,viewChildren,dispatcherRecast
+optionals:base,updaterDOM,updaterAsync,service,serviceCombine,servicePush,router,tipRouter,tipLockUrlRouter,edgeRouter,forceEdgeRouter,urlRewriteRouter,updateTitleRouter,cnum,ceach,defaultView,viewInitAsync,configIni,viewChildren,dispatcherRecast
 */
 define('magix', function () {
     if (typeof DEBUG == 'undefined')
@@ -691,7 +691,6 @@ define('magix', function () {
             G_Assign(Magix_Cfg, cfg);
             G_Require(Magix_Cfg.exts, function () {
                 Vframe_Root().mountView(Magix_Cfg.defaultView);
-                State.on(G_CHANGED, Dispatcher_NotifyChange);
             });
         },
         /**
@@ -1032,84 +1031,6 @@ define('magix', function () {
     };
     Magix.Event = MEvent;
     var State_AppData = {};
-    var State_AppDataKeyRef = {};
-    var State_ChangedKeys = {};
-    var State_DataIsChanged = 0;
-    var State_IsObserveChanged = function (view, keys, r) {
-        var oKeys = view['$os'], ok;
-        if (oKeys) {
-            for (var _i = 0, oKeys_1 = oKeys; _i < oKeys_1.length; _i++) {
-                ok = oKeys_1[_i];
-                r = G_Has(keys, ok);
-                if (r)
-                    break;
-            }
-        }
-        return r;
-    };
-    var SetupKeysRef = function (keys) {
-        keys = (keys + G_EMPTY).split(',');
-        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-            var key = keys_1[_i];
-            if (G_Has(State_AppDataKeyRef, key)) {
-                State_AppDataKeyRef[key]++;
-            }
-            else {
-                State_AppDataKeyRef[key] = 1;
-            }
-        }
-        return keys;
-    };
-    var TeardownKeysRef = function (keys) {
-        var key, v;
-        for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
-            key = keys_2[_i];
-            if (G_Has(State_AppDataKeyRef, key)) {
-                v = --State_AppDataKeyRef[key];
-                if (!v) {
-                    delete State_AppDataKeyRef[key];
-                    delete State_AppData[key];
-                }
-            }
-        }
-    };
-    if (DEBUG) {
-        var Started_1 = 0;
-        var NotifyList_1 = [];
-        var NotifyTimer_1 = 0;
-        var Notify_1 = function () {
-            var locker = {};
-            for (var _i = 0, NotifyList_2 = NotifyList_1; _i < NotifyList_2.length; _i++) {
-                var n = NotifyList_2[_i];
-                if (!locker[n.msg]) {
-                    console.warn(n.msg);
-                    locker[n.msg] = 1;
-                }
-            }
-            NotifyList_1.length = 0;
-            Started_1 = 0;
-        };
-        var ClearNotify = function (key) {
-            for (var i = NotifyList_1.length; i--;) {
-                var n = NotifyList_1[i];
-                if (n.key == key) {
-                    NotifyList_1.splice(i, 1);
-                }
-            }
-        };
-        var DelayNotify = function (key, msg) {
-            clearTimeout(NotifyTimer_1);
-            Started_1 = 0;
-            NotifyList_1.push({
-                key: key,
-                msg: msg
-            });
-            if (!Started_1) {
-                Started_1 = 1;
-                NotifyTimer_1 = setTimeout(Notify_1, 500);
-            }
-        };
-    }
     /**
      * 可观察的内存数据对象
      * @name State
@@ -1134,8 +1055,6 @@ define('magix', function () {
             if (DEBUG) {
                 r = Safeguard(r, function (dataKey) {
                 }, function (path, value) {
-                    var sub = key ? key : path;
-                    DelayNotify(sub, 'beware! You direct modify "{Magix.State}.' + sub + '"  You should call Magix.State.set() and Magix.State.digest() to notify other views {Magix.State} changed');
                 });
             }
             return r;
@@ -1145,67 +1064,8 @@ define('magix', function () {
          * @param {Object} data 数据对象
          */
         set: function (data, unchanged) {
-            State_DataIsChanged = G_Set(data, State_AppData, State_ChangedKeys, unchanged) || State_DataIsChanged;
+            G_Assign(State_AppData, data);
             return this;
-        },
-        /**
-         * 检测数据变化，如果有变化则派发changed事件
-         * @param  {Object} data 数据对象
-         */
-        digest: function (data, unchanged) {
-            if (data) {
-                State.set(data, unchanged);
-            }
-            if (State_DataIsChanged) {
-                if (DEBUG) {
-                    for (var p in State_ChangedKeys) {
-                        ClearNotify(p);
-                    }
-                }
-                State_DataIsChanged = 0;
-                this.fire(G_CHANGED, {
-                    keys: State_ChangedKeys
-                });
-                State_ChangedKeys = {};
-            }
-        },
-        /**
-         * 获取当前数据与上一次数据有哪些变化
-         * @return {Object}
-         */
-        diff: function () {
-            return State_ChangedKeys;
-        },
-        /**
-         * 清除数据，该方法需要与view绑定，写在view的mixins中，如mixins:[Magix.Sate.clean('user,permission')]
-         * @param  {String} keys 数据key
-         */
-        clean: function (keys) {
-            if (DEBUG) {
-                var called_1 = false;
-                setTimeout(function () {
-                    if (!called_1) {
-                        throw new Error('Magix.State.clean only used in View.mixins like mixins:[Magix.State.clean("p1,p2,p3")]');
-                    }
-                }, 1000);
-                return {
-                    '\x1e': keys,
-                    ctor: function () {
-                        var me = this;
-                        called_1 = true;
-                        keys = SetupKeysRef(keys);
-                        me.on('destroy', function () {
-                            TeardownKeysRef(keys);
-                        });
-                    }
-                };
-            }
-            return {
-                ctor: function () {
-                    keys = SetupKeysRef(keys);
-                    this.on('destroy', function () { return TeardownKeysRef(keys); });
-                }
-            };
         } }, MEvent
     /**
      * 当State中的数据有改变化后触发
@@ -1216,76 +1076,19 @@ define('magix', function () {
      */
     );
     Magix.State = State;
-    var Dispatcher_UpdateTag = 0;
-    /**
-     * 通知当前vframe，地址栏发生变化
-     * @param {Vframe} vframe vframe对象
-     * @private
-     */
-    var Dispatcher_Update = function (vframe, stateKeys, view, isChanged, cs, c) {
-        if (vframe && vframe['$a'] != Dispatcher_UpdateTag &&
-            (view = vframe['$v']) &&
-            view['$a'] > 1) { //存在view时才进行广播，对于加载中的可在加载完成后通过调用view.location拿到对应的G_WINDOW.location.href对象，对于销毁的也不需要广播
-            isChanged = State_IsObserveChanged(view, stateKeys);
-            /**
-             * 事件对象
-             * @type {Object}
-             * @ignore
-             */
-            /*let args = {
-                    location: RefLoc,
-                    changed: RefG_LocationChanged,*/
-            /**
-             * 阻止向所有的子view传递
-             * @ignore
-             */
-            /* prevent: function() {
-                        args.cs = EmptyArr;
-                    },*/
-            /**
-             * 向特定的子view传递
-             * @param  {Array} c 子view数组
-             * @ignore
-             */
-            /*to: function(c) {
-                        c = (c + EMPTY).split(COMMA);
-                        args.cs = c;
-                    }
-                };*/
-            if (isChanged) { //检测view所关注的相应的参数是否发生了变化
-                view['$b']();
-            }
-            cs = vframe.children();
-            for (var _i = 0, cs_1 = cs; _i < cs_1.length; _i++) {
-                c = cs_1[_i];
-                Dispatcher_Update(Vframe_Vframes[c], stateKeys);
-            }
-        }
-    };
-    /**
-     * 向vframe通知地址栏发生变化
-     * @param {Object} e 事件对象
-     * @param {Object} e.location G_WINDOW.location.href解析出来的对象
-     * @private
-     */
-    var Dispatcher_NotifyChange = function (e, vf, view) {
-        vf = Vframe_Root();
-        Dispatcher_UpdateTag = G_COUNTER++;
-        Dispatcher_Update(vf, e.keys);
-    };
     var Vframe_RootVframe;
     var Vframe_GlobalAlter;
     var Vframe_Vframes = {};
     var Vframe_NotifyCreated = function (vframe) {
-        if (!vframe['$b'] && !vframe['$d'] && vframe['$cc'] == vframe['$rc']) { //childrenCount === readyCount
+        if (!vframe['$a'] && !vframe['$b'] && vframe['$cc'] == vframe['$rc']) { //childrenCount === readyCount
             if (!vframe['$cr']) { //childrenCreated
                 vframe['$cr'] = 1; //childrenCreated
                 vframe['$ca'] = 0; //childrenAlter
                 vframe.fire('created'); //不在view上派发事件，如果view需要绑定，则绑定到owner上，view一般不用该事件，如果需要这样处理：this.owner.oncreated=function(){};this.ondestroy=function(){this.owner.off('created')}
             }
             var id = vframe.id, pId = vframe.pId, p = Vframe_Vframes[pId];
-            if (p && !G_Has(p['$e'], id)) { //readyChildren
-                p['$e'][id] = 1; //readyChildren
+            if (p && !G_Has(p['$d'], id)) { //readyChildren
+                p['$d'][id] = 1; //readyChildren
                 p['$rc']++; //readyCount
                 Vframe_NotifyCreated(p);
             }
@@ -1298,9 +1101,9 @@ define('magix', function () {
             vframe.fire('alter', e);
             var id = vframe.id, pId = vframe.pId, p = Vframe_Vframes[pId];
             //let vom = vframe.owner;
-            if (p && G_Has(p['$e'], id)) { //readyMap
+            if (p && G_Has(p['$d'], id)) { //readyMap
                 p['$rc']--; //readyCount
-                delete p['$e'][id]; //readyMap
+                delete p['$d'][id]; //readyMap
                 Vframe_NotifyAlter(p, e);
             }
         }
@@ -1308,7 +1111,7 @@ define('magix', function () {
     var Vframe_TranslateQuery = function (pId, src, params, pVf) {
         pVf = Vframe_Vframes[pId];
         pVf = pVf && pVf['$v'];
-        pVf = pVf ? pVf['$d'] : {};
+        pVf = pVf ? pVf['$a'] : {};
         if (src.indexOf(G_SPLITER) > 0) {
             G_TranslateData(pVf, params);
         }
@@ -1342,7 +1145,7 @@ define('magix', function () {
         }
     };
     var Vframe_RunInvokes = function (vf, list, o) {
-        list = vf['$f']; //invokeList
+        list = vf['$e']; //invokeList
         while (list.length) {
             o = list.shift();
             if (!o.r) { //remove
@@ -1410,10 +1213,9 @@ define('magix', function () {
         me['$c'] = {}; //childrenMap
         me['$cc'] = 0; //childrenCount
         me['$rc'] = 0; //readyCount
-        me['$g'] = me['$g'] || 1; //signature
-        me['$e'] = {}; //readyMap
-        me['$f'] = []; //invokeList
-        me['$h'] = G_COUNTER++;
+        me['$f'] = me['$f'] || 1; //signature
+        me['$d'] = {}; //readyMap
+        me['$e'] = []; //invokeList
         me.pId = pId;
         Vframe_AddVframe(id, me);
     }
@@ -1465,23 +1267,23 @@ define('magix', function () {
             var me = this;
             var id = me.id;
             var node = G_GetById(id), pId = me.pId, po, sign, view, params, ctors;
-            if (!me['$i'] && node) { //alter
-                me['$i'] = 1;
-                me['$j'] = node.innerHTML; //.replace(ScriptsReg, ''); template
+            if (!me['$g'] && node) { //alter
+                me['$g'] = 1;
+                me['$h'] = node.innerHTML; //.replace(ScriptsReg, ''); template
             }
             me.unmountView( /*keepPreHTML*/);
-            me['$b'] = 0; //destroyed 详见unmountView
+            me['$a'] = 0; //destroyed 详见unmountView
             po = G_ParseUri(viewPath || G_EMPTY);
             view = po[G_PATH];
             if (node && view) {
                 me[G_PATH] = viewPath;
                 params = po[G_PARAMS];
                 Vframe_TranslateQuery(pId, viewPath, params);
-                me['$n'] = po[G_PATH];
+                me['$i'] = po[G_PATH];
                 G_Assign(params, viewInitParams);
-                sign = me['$g'];
+                sign = me['$f'];
                 G_Require(view, function (TView) {
-                    if (sign == me['$g']) { //有可能在view载入后，vframe已经卸载了
+                    if (sign == me['$f']) { //有可能在view载入后，vframe已经卸载了
                         if (!TView) {
                             return Magix_Cfg.error(Error("id:" + id + " cannot load:" + view));
                         }
@@ -1495,10 +1297,10 @@ define('magix', function () {
                                 owner: 1,
                                 '$l': 1,
                                 '$r': 1,
-                                '$a': 1,
-                                '$e': 1,
+                                '$b': 1,
                                 '$d': 1,
-                                '$f': 1
+                                '$a': 1,
+                                '$e': 1
                             };
                             for (var p in view) {
                                 if (G_Has(view, p) && viewProto_1[p]) {
@@ -1508,19 +1310,18 @@ define('magix', function () {
                             view = Safeguard(view, null, function (key, value) {
                                 if (G_Has(viewProto_1, key) ||
                                     (G_Has(importantProps_1, key) &&
-                                        (key != '$a' || !isFinite(value)) &&
+                                        (key != '$b' || !isFinite(value)) &&
                                         (key != 'owner' || value !== 0))) {
                                     throw new Error("avoid write " + key + " at file " + viewPath + "!");
                                 }
                             }, true);
                         }
                         me['$v'] = view;
-                        me['$a'] = Dispatcher_UpdateTag;
                         View_DelegateEvents(view);
                         G_ToTry(view.init, params, view);
-                        view['$b']();
+                        view['$f']();
                         if (!view.tmpl) { //无模板
-                            me['$i'] = 0; //不会修改节点，因此销毁时不还原
+                            me['$g'] = 0; //不会修改节点，因此销毁时不还原
                             if (!view['$g']) {
                                 view.endUpdate();
                             }
@@ -1535,7 +1336,7 @@ define('magix', function () {
         unmountView: function ( /*keepPreHTML*/) {
             var me = this;
             var v = me["$v"], id = me.id, node, reset;
-            me['$f'] = []; //invokeList 销毁当前view时，连同调用列表一起销毁
+            me['$e'] = []; //invokeList 销毁当前view时，连同调用列表一起销毁
             if (v) {
                 if (!Vframe_GlobalAlter) {
                     reset = 1;
@@ -1543,29 +1344,28 @@ define('magix', function () {
                         id: id
                     };
                 }
-                me['$b'] = 1; //用于标记当前vframe处于$v销毁状态，在当前vframe上再调用unmountZone时不派发created事件
+                me['$a'] = 1; //用于标记当前vframe处于$v销毁状态，在当前vframe上再调用unmountZone时不派发created事件
                 me.unmountZone(0, 1);
                 Vframe_NotifyAlter(me, Vframe_GlobalAlter);
                 me['$v'] = 0; //unmountView时，尽可能早的删除vframe上的$v对象，防止$v销毁时，再调用该 vfrmae的类似unmountZone方法引起的多次created
-                if (v['$a'] > 0) {
-                    v['$a'] = 0;
+                if (v['$b'] > 0) {
+                    v['$b'] = 0;
                     delete Body_RangeEvents[id];
                     delete Body_RangeVframes[id];
-                    Async_DeleteTask(id);
                     v.fire('destroy', 0, 1, 1);
                     View_DestroyAllResources(v, 1);
                     View_DelegateEvents(v, 1);
                     v.owner = 0;
                 }
-                v['$a']--;
+                v['$b']--;
                 node = G_GetById(id);
-                if (node && me['$i'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
-                    node.innerHTML = me['$j'];
+                if (node && me['$g'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
+                    node.innerHTML = me['$h'];
                 }
                 if (reset)
                     Vframe_GlobalAlter = 0;
             }
-            me['$g']++; //增加signature，阻止相应的回调，见mountView
+            me['$f']++; //增加signature，阻止相应的回调，见mountView
         },
         /**
          * 加载vframe
@@ -1591,7 +1391,7 @@ define('magix', function () {
             vf = Vframe_Vframes[vfId];
             if (!vf) {
                 if (!G_Has(c, vfId)) { //childrenMap,当前子vframe不包含这个id
-                    me['$o'] = 0; //childrenList 清空缓存的子列表
+                    me['$j'] = 0; //childrenList 清空缓存的子列表
                     me['$cc']++; //childrenCount ，增加子节点
                 }
                 c[vfId] = vfId; //map
@@ -1638,7 +1438,7 @@ define('magix', function () {
                 上述情况一般出现在展现型页面，dom结构已经存在，只是附加上js行为
                 不过就展现来讲，一般是不会出现嵌套的情况，出现的话，把里面有层级的vframe都挂到body上也未尝不可，比如brix2.0
              */
-            me['$d'] = 1; //hold fire creted
+            me['$b'] = 1; //hold fire creted
             //me.unmountZone(zoneId, 1); 不去清理，详情见：https://github.com/thx/magix/issues/27
             for (var _i = 0, vframes_1 = vframes; _i < vframes_1.length; _i++) {
                 vf = vframes_1[_i];
@@ -1665,7 +1465,7 @@ define('magix', function () {
                     me.mountVframe(id, vf);
                 }
             }
-            me['$d'] = 0;
+            me['$b'] = 0;
             if (!inner) {
                 Vframe_NotifyCreated(me);
             }
@@ -1684,8 +1484,8 @@ define('magix', function () {
                 var cr = vf["$cr"], pId = vf.pId;
                 vf.unmountView( /*keepPreHTML*/);
                 Vframe_RemoveVframe(id, cr);
-                vf.id = vf.pId = vf['$c'] = vf['$e'] = 0; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
-                vf['$i'] = 0;
+                vf.id = vf.pId = vf['$c'] = vf['$d'] = 0; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
+                vf['$g'] = 0;
                 vf.off('alter');
                 vf.off('created');
                 //if (Vframe_Cache.length < 10) {
@@ -1694,7 +1494,7 @@ define('magix', function () {
                 vf = Vframe_Vframes[pId];
                 if (vf && G_Has(vf['$c'], id)) { //childrenMap
                     delete vf['$c'][id]; //childrenMap
-                    vf['$o'] = 0;
+                    vf['$j'] = 0;
                     vf['$cc']--; //cildrenCount
                     if (!inner)
                         Vframe_NotifyCreated(vf); //移除后通知完成事件
@@ -1742,7 +1542,7 @@ define('magix', function () {
          */
         children: function (me) {
             me = this;
-            return me['$o'] || (me['$o'] = G_Keys(me['$c']));
+            return me['$j'] || (me['$j'] = G_Keys(me['$c']));
         },
         /**
          * 调用view的方法
@@ -1759,7 +1559,7 @@ define('magix', function () {
          */
         invoke: function (name, args) {
             var result;
-            var vf = this, view, fn, o, list = vf['$f'], key;
+            var vf = this, view, fn, o, list = vf['$e'], key;
             if ((view = vf['$v']) && view['$g']) { //view rendered
                 result = (fn = view[name]) && G_ToTry(fn, args, view);
             }
@@ -1989,7 +1789,7 @@ define('magix', function () {
                             fn = view[eventName];
                             if (fn) {
                                 domEvent.eventTarget = target;
-                                params = i ? G_ParseExpr(i, view['$d']) : {};
+                                params = i ? G_ParseExpr(i, view['$a']) : {};
                                 domEvent[G_PARAMS] = params;
                                 G_ToTry(fn, domEvent, view);
                                 //没发现实际的用途
@@ -2073,99 +1873,6 @@ define('magix', function () {
         if (searchSelector) { //记录需要搜索选择器的事件
             Body_SearchSelectorEvents[type] = (Body_SearchSelectorEvents[type] | 0) + offset;
         }
-    };
-    //异步更新界面
-    var Async_Tasks = [];
-    var Async_TasksMap = {};
-    var Async_Working = 0;
-    var Async_Rest = 16;
-    /*
-        Tasks={
-            viewId1:{
-                a:fn,
-                b:[]
-            },
-            viewId2:{
-                a:fn,
-                b:[]
-            }
-        }
-    */
-    var Idle = G_WINDOW.requestAnimationFrame || Timeout;
-    var Async_CheckStatus = function (id) {
-        var task = Async_TasksMap[id];
-        if (task && task['a'] >= task.length) {
-            task.length = 0;
-            delete Async_TasksMap[id];
-            task['b']();
-        }
-    };
-    var Async_RunTask = function (last, one, task) {
-        last = G_Now();
-        while (1) {
-            task = Async_Tasks[0];
-            if (task) {
-                one = task[task['a']++];
-                if (one) {
-                    one.f.apply(one, one.a);
-                }
-                else {
-                    Async_Tasks.shift();
-                    Async_CheckStatus(task['c']);
-                }
-                if (G_Now() - last > Async_Rest) {
-                    Idle(Async_RunTask);
-                    break;
-                }
-            }
-            else {
-                Async_Working = 0;
-                break;
-            }
-        }
-    };
-    var Async_AddTask = function (vf, fn) {
-        var args = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            args[_i - 2] = arguments[_i];
-        }
-        var tasks = Async_TasksMap[vf.id];
-        tasks.push({
-            f: fn,
-            a: args
-        });
-        if (!Async_Working) {
-            Async_Working = 1;
-            Idle(Async_RunTask);
-        }
-    };
-    var Async_DeleteTask = function (id) {
-        var tasks = Async_TasksMap[id];
-        if (tasks) {
-            tasks.length = 0;
-            delete Async_TasksMap[id];
-        }
-    };
-    var Async_SetNewTask = function (vf, cb) {
-        var task, i = 0, tasks = Async_TasksMap[vf.id];
-        if (tasks) {
-            //console.log('clear tasks', vf.id, tasks.length);
-            tasks.length = 0;
-        }
-        else {
-            tasks = [];
-            tasks['d'] = vf['$h'];
-            tasks['c'] = vf.id;
-            for (; i < Async_Tasks.length; i++) {
-                task = Async_Tasks[i];
-                if (vf['$h'] < task['d']) {
-                    break;
-                }
-            }
-            Async_Tasks.splice(i, 0, Async_TasksMap[vf.id] = tasks);
-        }
-        tasks['b'] = cb;
-        tasks['a'] = 0;
     };
     //let Q_VfToVNodes={};
     var Q_Create = function (tag /*, views*/, children, props, unary) {
@@ -2374,12 +2081,11 @@ define('magix', function () {
         }
         return c;
     };
-    var V_SetChildNodes = function (realNode, lastVDOM, newVDOM, ref, vframe, keys, ignoreHTML) {
+    var V_SetChildNodes = function (realNode, lastVDOM, newVDOM, ref, vframe, keys) {
         if (lastVDOM) { //view首次初始化，通过innerHTML快速更新
-            if (ignoreHTML ||
-                lastVDOM['e'] ||
+            if (lastVDOM['e'] ||
                 lastVDOM['c'] != newVDOM['c']) {
-                var i = void 0, oi = 0, oldChildren = lastVDOM['h'], newChildren = newVDOM['h'], oc = void 0, nc = void 0, oldCount = oldChildren.length, newCount = newChildren.length, reused = newVDOM['i'], nodes = realNode.childNodes, compareKey = void 0, keyedNodes = {}, realIndex = 0;
+                var i = void 0, oi = 0, oldChildren = lastVDOM['h'], newChildren = newVDOM['h'], oc = void 0, nc = void 0, oldCount = oldChildren.length, newCount = newChildren.length, reused = newVDOM['i'], nodes = realNode.childNodes, compareKey = void 0, keyedNodes = {}, realIndex = 0, oldVIndex = 0;
                 for (i = oldCount; i--;) {
                     oc = oldChildren[i];
                     compareKey = oc['d'];
@@ -2388,27 +2094,21 @@ define('magix', function () {
                         compareKey.push(nodes[i]);
                     }
                 }
-                if (DEBUG) {
-                    CheckNodes(nodes, oldChildren);
-                }
                 for (i = 0; i < newCount; i++) {
                     nc = newChildren[i];
-                    oc = oldChildren[realIndex];
+                    oc = oldChildren[oldVIndex];
                     compareKey = keyedNodes[nc['d']];
                     if (compareKey && (compareKey = compareKey.pop())) {
                         while (compareKey != nodes[realIndex]) { //如果找到的节点和当前不同，则移动
                             realNode.appendChild(nodes[realIndex]);
-                            oldChildren.push(oldChildren[realIndex]);
-                            oldChildren.splice(realIndex, 1);
-                            oc = oldChildren[realIndex];
-                            if (DEBUG) {
-                                CheckNodes(nodes, oldChildren);
-                            }
+                            oldChildren.push(oldChildren[oldVIndex]);
+                            oldChildren.splice(oldVIndex, 1);
+                            oc = oldChildren[oldVIndex];
                         }
                         if (reused[oc['d']]) {
                             reused[oc['d']]--;
                         }
-                        Async_AddTask(vframe, V_SetNode, compareKey, realNode, oc, nc, ref, vframe, keys, ignoreHTML);
+                        V_SetNode(compareKey, realNode, oc, nc, ref, vframe, keys);
                     }
                     else if (oc) { //有旧节点，则更新
                         if (keyedNodes[oc['d']] &&
@@ -2416,29 +2116,30 @@ define('magix', function () {
                             //oldChildren.splice(i, 0, nc);//插入一个占位符，在接下来的比较中才能一一对应
                             oldCount++;
                             ref.c = 1;
-                            ref.n.push([8, realNode, V_CreateNode(nc, realNode, ref), nodes[realIndex], oldChildren, oc, nc]);
-                            realIndex--;
+                            realNode.insertBefore(V_CreateNode(nc, realNode, ref), nodes[realIndex]);
+                            oldVIndex--;
                         }
                         else {
-                            Async_AddTask(vframe, V_SetNode, nodes[realIndex], realNode, oc, nc, ref, vframe, keys, ignoreHTML);
+                            V_SetNode(nodes[realIndex], realNode, oc, nc, ref, vframe, keys);
                             //ref.c = 1;
                         }
                     }
                     else { //添加新的节点
-                        ref.n.push([1, realNode, V_CreateNode(nc, realNode, ref), oldChildren, nc]);
+                        realNode.appendChild(V_CreateNode(nc, realNode, ref));
                         ref.c = 1;
                     }
+                    oldVIndex++;
                     realIndex++;
                 }
                 for (i = newCount; i < oldCount; i++) {
-                    oi = nodes[realIndex++];
+                    oi = nodes[newCount]; //删除多余的旧节点
                     V_UnmountVframs(vframe, oi);
                     if (DEBUG) {
                         if (!oi.parentNode) {
                             console.error('Avoid remove node on view.destroy in digesting');
                         }
                     }
-                    ref.n.push([2, realNode, oi, oldChildren]);
+                    realNode.removeChild(oi);
                 }
             }
         }
@@ -2447,7 +2148,7 @@ define('magix', function () {
             realNode.innerHTML = newVDOM['c'];
         }
     };
-    var V_SetNode = function (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys, ignoreHTML) {
+    var V_SetNode = function (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) {
         if (DEBUG) {
             if (lastVDOM['b'] != G_SPLITER &&
                 newVDOM['b'] != G_SPLITER) {
@@ -2460,20 +2161,17 @@ define('magix', function () {
             }
         }
         var lastAMap = lastVDOM['g'], newAMap = newVDOM['g'];
-        if (ignoreHTML ||
-            V_SpecialDiff(realNode, lastVDOM, newVDOM) ||
+        if (V_SpecialDiff(realNode, lastVDOM, newVDOM) ||
             lastVDOM['e'] ||
             lastVDOM['a'] != newVDOM['a']) {
             if (lastVDOM['b'] == newVDOM['b']) {
                 if (lastVDOM['b'] == V_TEXT_NODE) {
                     ref.c = 1;
                     realNode.nodeValue = newVDOM['a'];
-                    lastVDOM['a'] = newVDOM['a'];
                 }
                 else if (lastVDOM['b'] == G_SPLITER) {
                     ref.c = 1;
                     oldParent.innerHTML = newVDOM['a'];
-                    lastVDOM['a'] = newVDOM['a'];
                 }
                 else if (!lastAMap[G_Tag_Key] ||
                     lastAMap[G_Tag_Key] != newAMap[G_Tag_Key]) {
@@ -2491,7 +2189,7 @@ define('magix', function () {
                     */
                     //旧节点有view,新节点有view,且是同类型的view
                     if (newMxView && oldVf &&
-                        oldVf['$n'] == uri[G_PATH] &&
+                        oldVf['$i'] == uri[G_PATH] &&
                         lastAMap.id == newAMap.id && //id如果不一样也要销毁，只有id同时存在且相同或同时不存在id才可以
                         (view = oldVf['$v'])) {
                         htmlChanged = newHTML != lastVDOM['c'];
@@ -2558,11 +2256,8 @@ define('magix', function () {
                     if (updateChildren &&
                         !newVDOM['j']) {
                         //ref.c = 1;
-                        V_SetChildNodes(realNode, lastVDOM, newVDOM, ref, vframe, keys, ignoreHTML);
+                        V_SetChildNodes(realNode, lastVDOM, newVDOM, ref, vframe, keys);
                     }
-                    lastVDOM['e'] = newVDOM['e'];
-                    lastVDOM['f'] = newVDOM['f'];
-                    lastVDOM['g'] = newVDOM['g'];
                 }
             }
             else {
@@ -2571,11 +2266,12 @@ define('magix', function () {
                     realNode = oldParent.firstChild;
                 }
                 V_UnmountVframs(vframe, realNode);
-                lastAMap = G_EMPTY;
-                if (newVDOM['b'] != G_SPLITER) {
-                    lastAMap = V_CreateNode(newVDOM, oldParent, ref);
+                if (newVDOM['b'] == G_SPLITER) {
+                    oldParent.innerHTML = newVDOM['a'];
                 }
-                ref.n.push([4, oldParent, lastAMap, realNode, lastVDOM, newVDOM]);
+                else {
+                    oldParent.replaceChild(V_CreateNode(newVDOM, oldParent, ref), realNode);
+                }
                 ref.c = 1;
             }
         }
@@ -2627,8 +2323,8 @@ define('magix', function () {
                 args[_i] = arguments[_i];
             }
             me = this;
-            if (me['$a'] > 0) { //signature
-                me['$a']++;
+            if (me['$b'] > 0) { //signature
+                me['$b']++;
                 me.fire('rendercall');
                 View_DestroyAllResources(me);
                 G_ToTry(fn, args, me);
@@ -2786,7 +2482,7 @@ define('magix', function () {
                 }
             }
             //console.log(prop);
-            View_WrapMethod(prop, 'render', '$b');
+            View_WrapMethod(prop, 'render', '$f');
             prop['$eo'] = eventsObject;
             prop['$el'] = eventsList;
             prop['$so'] = selectorObject;
@@ -2842,104 +2538,61 @@ define('magix', function () {
     var Updater_EncodeURI = function (v) { return encodeURIComponent(Updater_Safeguard(v)).replace(Updater_URIReg, Updater_URIReplacer); };
     var Updater_QR = /[\\'"]/g;
     var Updater_EncodeQ = function (v) { return Updater_Safeguard(v).replace(Updater_QR, '\\$&'); };
-    var Updater_Digest_Async = function (view, resolve) {
-        var keys = view['$i'], changed = view['$j'], selfId = view.id, vf = Vframe_Vframes[selfId], ref = { d: [], v: [], n: [] }, node = G_GetById(selfId), tmpl, vdom, data = view['$e'], refData = view['$d'];
+    var Updater_Digest = function (view, digesting) {
+        var keys = view['$i'], changed = view['$j'], selfId = view.id, vf = Vframe_Vframes[selfId], ref = { d: [], v: [], n: [] }, node = G_GetById(selfId), tmpl, vdom, data = view['$d'], refData = view['$a'], redigest = function (trigger) {
+            if (digesting.i < digesting.length) {
+                Updater_Digest(updater, digesting);
+            }
+            else {
+                ref = digesting.slice();
+                digesting.i = digesting.length = 0;
+                if (trigger) {
+                    view.fire('domready');
+                }
+                G_ToTry(ref);
+            }
+        };
+        digesting.i = digesting.length;
         view['$j'] = 0;
         view['$i'] = {};
-        if (changed && view['$a'] > 0 && (tmpl = view.tmpl)) {
+        if (changed && view['$b'] > 0 && (tmpl = view.tmpl)) {
+            view.fire('dompatch');
             delete Body_RangeEvents[selfId];
             delete Body_RangeVframes[selfId];
-            Async_SetNewTask(vf, function () {
-                Async_SetNewTask(vf, function () {
-                    view['$n'] = vdom;
-                    view['$o'] = 0;
-                    if (DEBUG) {
-                        CheckNodes(node.childNodes, vdom['h']);
-                    }
-                    vf['$d'] = tmpl = ref.c || !view['$g'];
-                    if (tmpl) {
-                        view.endUpdate(selfId);
-                    }
-                    if (ref.c) {
-                        G_Trigger(G_DOCUMENT, 'htmlchanged', {
-                            vId: selfId
-                        });
-                    }
-                    view.fire('domready');
-                    if (resolve) {
-                        G_ToTry(resolve);
-                    }
+            vdom = tmpl(data, Q_Create, selfId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, G_IsArray, G_Assign);
+            if (DEBUG) {
+                Updater_CheckInput(view, vdom['a']);
+            }
+            V_SetChildNodes(node, view['$n'], vdom, ref, vf, keys);
+            view['$n'] = vdom;
+            for (var _i = 0, _a = ref.d; _i < _a.length; _i++) {
+                vdom = _a[_i];
+                vdom[0].id = vdom[1];
+            }
+            /*
+                在dom diff patch时，如果已渲染的vframe有变化，则会在vom tree上先派发created事件，同时传递inner标志，vom tree处理alter事件派发状态，未进入created事件派发状态
+    
+                patch完成后，需要设置vframe hold fire created事件，因为带有assign方法的view在调用render后，vom tree处于就绪状态，此时会导致提前派发created事件，应该hold，统一在endUpdate中派发
+    
+                有可能不需要endUpdate，所以hold fire要视情况而定
+            */
+            vf['$b'] = tmpl = ref.c || !view['$g'];
+            for (var _b = 0, _c = ref.v; _b < _c.length; _b++) {
+                vdom = _c[_b];
+                vdom['$f']();
+            }
+            if (tmpl) {
+                view.endUpdate(selfId);
+            }
+            if (ref.c) {
+                G_Trigger(G_DOCUMENT, 'htmlchanged', {
+                    vId: selfId
                 });
-                Async_AddTask(vf, function () {
-                    for (var _i = 0, _a = ref.d; _i < _a.length; _i++) {
-                        data = _a[_i];
-                        data[0].id = data[1];
-                    }
-                });
-                refData = function (_a, index) {
-                    var f = _a[0], containerNode = _a[1], oldOrNewNode = _a[2], newNodeOrOldVirtualNodes = _a[3], virtualNodes = _a[4], oldVNode = _a[5], newVNode = _a[6];
-                    if (f == 1) {
-                        newNodeOrOldVirtualNodes.push(virtualNodes);
-                        containerNode.appendChild(oldOrNewNode);
-                        if (DEBUG) {
-                            CheckNodes(containerNode.childNodes, newNodeOrOldVirtualNodes);
-                        }
-                    }
-                    else if (f == 2) {
-                        newNodeOrOldVirtualNodes.pop();
-                        containerNode.removeChild(oldOrNewNode);
-                    }
-                    else if (f == 4) {
-                        for (index in virtualNodes) {
-                            delete virtualNodes[index];
-                        }
-                        G_Assign(virtualNodes, oldVNode);
-                        if (oldOrNewNode) {
-                            containerNode.replaceChild(oldOrNewNode, newNodeOrOldVirtualNodes);
-                        }
-                        else {
-                            containerNode.innerHTML = oldVNode['a'];
-                        }
-                    }
-                    else {
-                        for (index = virtualNodes.length; index--;) {
-                            if (virtualNodes[index] == oldVNode) {
-                                virtualNodes.splice(index, 0, newVNode);
-                                break;
-                            }
-                        }
-                        containerNode.insertBefore(oldOrNewNode, newNodeOrOldVirtualNodes);
-                        if (DEBUG) {
-                            CheckNodes(containerNode.childNodes, virtualNodes);
-                        }
-                    }
-                };
-                for (var _i = 0, _a = ref.n; _i < _a.length; _i++) {
-                    data = _a[_i];
-                    Async_AddTask(vf, refData, data);
-                }
-                refData = function (data) {
-                    data['$b']();
-                };
-                for (var _b = 0, _c = ref.v; _b < _c.length; _b++) {
-                    data = _c[_b];
-                    Async_AddTask(vf, refData, data);
-                }
-                Async_CheckStatus(selfId);
-            });
-            Async_AddTask(vf, function () {
-                vdom = tmpl(data, Q_Create, selfId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, G_IsArray, G_Assign);
-                if (DEBUG) {
-                    Updater_CheckInput(view, vdom['a']);
-                }
-                V_SetChildNodes(node, view['$n'], vdom, ref, vf, keys, view['$o']);
-                view['$o'] = 1;
-                Async_CheckStatus(selfId);
-            });
+            }
+            redigest(1);
         }
         else {
-            if (resolve)
-                resolve();
+            redigest();
         }
     };
     /**
@@ -2983,15 +2636,15 @@ define('magix', function () {
         me.owner = owner;
         me.id = id;
         me['$r'] = {};
-        me['$a'] = 1; //标识view是否刷新过，对于托管的函数资源，在回调这个函数时，不但要确保view没有销毁，而且要确保view没有刷新过，如果刷新过则不回调
+        me['$b'] = 1; //标识view是否刷新过，对于托管的函数资源，在回调这个函数时，不但要确保view没有销毁，而且要确保view没有刷新过，如果刷新过则不回调
         me['$j'] = 1;
-        me['$e'] = {
+        me['$d'] = {
             id: id
         };
-        me['$d'] = (_a = {},
+        me['$a'] = (_a = {},
             _a[G_SPLITER] = 1,
             _a);
-        me['$f'] = [];
+        me['$e'] = [];
         me['$i'] = {};
         id = View._;
         if (id)
@@ -3100,7 +2753,7 @@ define('magix', function () {
          */
         beginUpdate: function (id, me) {
             me = this;
-            if (me['$a'] > 0 && me['$g']) {
+            if (me['$b'] > 0 && me['$g']) {
                 me.owner.unmountZone(id, 1);
                 /*me.fire('prerender', {
                     id: id
@@ -3113,7 +2766,7 @@ define('magix', function () {
          */
         endUpdate: function (id, inner, me, o, f) {
             me = this;
-            if (me['$a'] > 0) {
+            if (me['$b'] > 0) {
                 id = id || me.id;
                 /*me.fire('rendered', {
                     id
@@ -3153,13 +2806,13 @@ define('magix', function () {
          */
         wrapAsync: function (fn, context) {
             var me = this;
-            var sign = me['$a'];
+            var sign = me['$b'];
             return function () {
                 var a = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     a[_i] = arguments[_i];
                 }
-                if (sign > 0 && sign == me['$a']) {
+                if (sign > 0 && sign == me['$b']) {
                     return fn.apply(context || me, a);
                 }
             };
@@ -3246,7 +2899,7 @@ define('magix', function () {
             let me = this,
                 n, i = me.id;
             me.beginUpdate(id);
-            if (me['$a'] > 0) {
+            if (me['$b'] > 0) {
                 n = G_GetById(id);
                 if (n) G_HTML(n, View_SetEventOwner(html, i), i);
             }
@@ -3274,7 +2927,7 @@ define('magix', function () {
          * }
          */
         get: function (key, result) {
-            result = this['$e'];
+            result = this['$d'];
             if (key) {
                 result = result[key];
             }
@@ -3312,7 +2965,7 @@ define('magix', function () {
          */
         set: function (obj, unchanged) {
             var me = this;
-            me['$j'] = G_Set(obj, me['$e'], me['$i'], unchanged) || me['$j'];
+            me['$j'] = G_Set(obj, me['$d'], me['$i'], unchanged) || me['$j'];
             return me;
         },
         /**
@@ -3326,7 +2979,7 @@ define('magix', function () {
          * }
          */
         digest: function (data, unchanged, resolve) {
-            var me = this.set(data, unchanged);
+            var me = this.set(data, unchanged), digesting = me['$e'];
             /*
                 view:
                 <div>
@@ -3342,7 +2995,15 @@ define('magix', function () {
     
                 如果在digest的过程中，多次调用自身的digest，则后续的进行排队。前面的执行完成后，排队中的一次执行完毕
             */
-            Updater_Digest_Async(me, resolve);
+            if (resolve) {
+                digesting.push(resolve);
+            }
+            if (!digesting.i) {
+                Updater_Digest(me, digesting);
+            }
+            else if (DEBUG) {
+                console.warn('Avoid redigest while updater is digesting');
+            }
         },
         /**
          * 获取当前数据状态的快照，配合altered方法可获得数据是否有变化
@@ -3368,7 +3029,7 @@ define('magix', function () {
          */
         snapshot: function () {
             var me = this;
-            me['$p'] = JSONStringify(me['$e']);
+            me['$o'] = JSONStringify(me['$d']);
             return me;
         },
         /**
@@ -3395,8 +3056,8 @@ define('magix', function () {
          */
         altered: function () {
             var me = this;
-            if (me['$p']) {
-                return me['$p'] != JSONStringify(me['$e']);
+            if (me['$o']) {
+                return me['$o'] != JSONStringify(me['$d']);
             }
         },
         /**
@@ -3404,14 +3065,14 @@ define('magix', function () {
          * @param {string} origin 源字符串
          */
         translate: function (data) {
-            return G_TranslateData(this['$e'], data);
+            return G_TranslateData(this['$d'], data);
         },
         /**
          * 翻译带@占位符的数据
          * @param {string} origin 源字符串
          */
         parse: function (origin) {
-            return G_ParseExpr(origin, this['$d']);
+            return G_ParseExpr(origin, this['$a']);
         },
         changed: function () {
             return this['$j'];
@@ -3436,7 +3097,6 @@ define('magix', function () {
          */
     });
     Magix.View = View;
-    var G_Now = Date.now;
     Magix["default"] = Magix;
     return Magix;
 });

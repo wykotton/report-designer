@@ -1,1 +1,11 @@
-abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />abc<br />
+<div class="items">
+    {{for(let i=elements.length;i--;)}}
+    {{set e=elements[i]}}
+    <div class="item" mx-mouseover="@{show.rect}({element:{{@e}}})" mx-mouseout="@{hide.rect}()">
+        <i class="iconfont move" x-html="{{=e.ctor.icon}}"></i>
+        <div class="ellipsis">
+            {{=e.ctor.title}}
+        </div>
+    </div>
+    {{/for}}
+</div>

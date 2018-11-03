@@ -1,10 +1,53 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { node } from 'magix';
+import Magix, { node, State } from 'magix';
 import DragDrop from '../gallery/mx-dragdrop/index';
-import Cursor from './cursor';
+import Cursor from '../gallery/mx-pointer/cursor';
+import DHistory from './history';
 Magix.applyStyle('@axis.less');
+let ScalesMap = {
+    '0.5': {
+        space: 200,
+        step: 10
+    },
+    '1': {
+        space: 100,
+        step: 10
+    },
+    '1.5': {
+        space: 80,
+        step: 10
+    },
+    '2': {
+        space: 60,
+        step: 10
+    },
+    '2.5': {
+        space: 48,
+        step: 8
+    },
+    '3': {
+        space: 40,
+        step: 8
+    },
+    '3.5': {
+        space: 32,
+        step: 8
+    },
+    '4': {
+        space: 24,
+        step: 8
+    },
+    '4.5': {
+        space: 16,
+        step: 8
+    },
+    '5': {
+        space: 16,
+        step: 8
+    }
+};
 export default Magix.View.extend({
     tmpl: '@axis.html',
     mixins: [DragDrop],
@@ -17,15 +60,26 @@ export default Magix.View.extend({
             });
         this['@{scroll.node}'] = n;
         this.set({
-            xHelpers: [],
-            yHelpers: []
+            bar: 4,//普通条
+            hbar: 12,//关键指示条,
+            barColor: '#aaa'//颜色
         });
+        let update = e => {
+            if (e.scale || e.step) {
+                this.render();
+            }
+        };
+        State.on('@{event#history.shift}', update);
+        State.on('@{event#stage.scale.change}', update);
     },
     '@{rerender}'() {
         if (this['@{can.render}']) {
             let n = this['@{scroll.node}'];
-            let width = n.scrollWidth + 50;
-            let height = n.scrollHeight + 50;
+            let sa = State.get('@{stage.scale}');
+            let page = State.get('@{stage.page}');
+            let { width: sWidth, height: sHeight } = page;
+            let width = Math.max(sWidth * sa, window.innerWidth) + 500;
+            let height = Math.max(sHeight * sa, window.innerHeight) + 300;
             let xStart = 0;
             let xEnd = 0;
             let axisWidth = 20;
@@ -44,10 +98,14 @@ export default Magix.View.extend({
             yEnd = height - yStart;
             vHeight = n.offsetHeight;
             vWidth = n.offsetWidth;
+            let si = ScalesMap[sa];
             this.digest({
                 sTop: n.scrollTop,
                 sLeft: n.scrollLeft,
                 width,
+                scale: sa,
+                space: si.space,
+                step: si.step,
                 height,
                 xStart,
                 xEnd,
@@ -93,6 +151,10 @@ export default Magix.View.extend({
         });
     },
     render() {
+        this.set({
+            xHelpers: State.get('@{stage.x.help.lines}'),
+            yHelpers: State.get('@{stage.y.help.lines}')
+        });
         let test = () => {
             let n = node('stage_canvas');
             if (n) {
@@ -112,7 +174,8 @@ export default Magix.View.extend({
         styles.display = 'block';
         styles.left = v + 'px';
         let mm = v - start + xNode.scrollLeft;
-        this['@{x.line.tip}'].innerHTML = mm;
+        let scale = this.get('scale');
+        this['@{x.line.tip}'].innerHTML = (mm / scale).toFixed(0);
     },
     '@{hide.x.line}<mouseout>'(e) {
         if (!Magix.inside(e.relatedTarget, e.eventTarget)) {
@@ -128,7 +191,8 @@ export default Magix.View.extend({
         styles.display = 'block';
         styles.top = v + 'px';
         let mm = v - start - 20 + yNode.scrollTop;
-        this['@{y.line.tip}'].innerHTML = mm;
+        let scale = this.get('scale');
+        this['@{y.line.tip}'].innerHTML = (mm / scale).toFixed(0);
     },
     '@{hide.y.line}<mouseout>'(e) {
         if (!Magix.inside(e.relatedTarget, e.eventTarget)) {
@@ -139,7 +203,7 @@ export default Magix.View.extend({
         let v = e.pageX;
         let start = this.get('xStart');
         let xNode = this['@{x.axis}'];
-        let mm = v - start + xNode.scrollLeft;
+        let mm = ((v - start + xNode.scrollLeft) / this.get('scale')) | 0;
         let xHelpers = this.get('xHelpers');
         xHelpers.push({
             mm,
@@ -148,13 +212,14 @@ export default Magix.View.extend({
         this.digest({
             xHelpers
         });
+        DHistory["@{save}"]();
     },
     '@{add.y.help.line}<click>'(e) {
         let offset = node(this.id).getBoundingClientRect();
         let v = e.pageY - offset.top;
         let start = this.get('yStart');
         let yNode = this['@{y.axis}'];
-        let mm = v - start - 20 + yNode.scrollTop;
+        let mm = ((v - start - 20 + yNode.scrollTop) / this.get('scale')) | 0;
         let yHelpers = this.get('yHelpers');
         yHelpers.push({
             mm,
@@ -163,6 +228,7 @@ export default Magix.View.extend({
         this.digest({
             yHelpers
         });
+        DHistory["@{save}"]();
     },
     '@{delete.help.line}<click>'(e) {
         let { type, id } = e.params;
@@ -178,6 +244,7 @@ export default Magix.View.extend({
         this.digest({
             [key]: list
         });
+        DHistory["@{save}"]();
     },
     '@{drag.help.line}<mousedown>'(e) {
         if (e.target != e.eventTarget) {
@@ -195,22 +262,32 @@ export default Magix.View.extend({
         }
         if (item) {
             let start = this.get(type + 'Start');
-            Cursor["@{show}"](e.eventTarget);
+            let showedCursor = 0;
             this['@{drag.drop}'](e, (evt) => {
+                if (!showedCursor) {
+                    showedCursor = 1;
+                    Cursor["@{show}"](e.eventTarget);
+                }
                 let oft;
                 if (type == 'x') {
                     oft = evt.pageX - e.pageX + current;
                 } else {
                     oft = evt.pageY - e.pageY + current - 20;
                 }
-                item.mm = oft - start;
+                item.mm = ((oft - start) / this.get('scale')) | 0;
                 this.digest({
                     [key]: list
                 });
             }, () => {
-                Cursor["@{hide}"]();
+                if (showedCursor) {
+                    Cursor["@{hide}"]();
+                    DHistory["@{save}"]();
+                }
             });
         }
+    },
+    '@{prevent}<contextmenu>'(e) {
+        e.preventDefault();
     },
     '$win<resize>'() {
         this['@{rerender}']();

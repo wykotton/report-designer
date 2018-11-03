@@ -3,27 +3,31 @@
     {{=i18n('@{lang#site.name}')}}&trade;
 </div>
 <div class="m-center fl ml100 unselectable">
-    <!-- <div class="header-item">
-        <i class="iconfont">&#xe682;</i>
-        <b class="header-item-text">撤销</b>
+    {{each elements as e}}
+    {{if e.subs}}
+    <div class="header-item pr">
+        <i class="iconfont" x-html="{{=e.icon}}"></i>
+        <b class="header-item-text">{{=e.title}}</b>
+        <div class="header-item-more">
+            {{each e.subs as es}}
+            <div class="sub-item" mx-mousedown="@{add.element}({ctor:{{@es}}})">
+                <i class="iconfont" x-html="{{=es.icon}}"></i>
+                <b class="header-item-text">{{=es.title}}</b>
+            </div>
+            {{/each}}
+        </div>
     </div>
-    <div class="header-item">
-        <i class="iconfont">&#xe682;</i>
-        <b class="header-item-text">撤销</b>
+    {{else}}
+    <div class="header-item pr" mx-mousedown="@{add.element}({ctor:{{@e}}})">
+        <i class="iconfont" x-html="{{=e.icon}}"></i>
+        <b class="header-item-text">{{=e.title}}</b>
     </div>
-    <div class="header-item-spliter"></div>
-    <div class="header-item">
-        <i class="iconfont">&#xe682;</i>
-        <b class="header-item-text">撤销</b>
-    </div>
-    <div class="header-item">
-        <i class="iconfont">&#xe682;</i>
-        <b class="header-item-text">撤销</b>
-    </div> -->
+    {{/if}}
+    {{/each}}
 </div>
 <div class="m-center fr mr50 unselectable">
     <div class="header-item">
-        <i class="iconfont">&#xe64b;</i>
+        <i class="iconfont">&#xe64a;</i>
         <b class="header-item-text">预览</b>
     </div>
     <div class="header-item">

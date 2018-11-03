@@ -1,6 +1,7 @@
 @import "../gallery/mx-style/_vars.less";
 
-.header-item{
+.header-item,
+.sub-item{
     width:60px;
     height:40px;
     display: grid;
@@ -10,12 +11,33 @@
     cursor: pointer;
     margin:0 2px;
 }
+.sub-item{
+    float: left;
+    border-radius: @border-radius;
+}
+.sub-item:hover{
+    background: @color-brand-hover;
+}
+.header-item-more{
+    display: none;
+    position: absolute;
+    cursor: default;
+    top:100%;
+    left:0;
+    background: @color-brand-darken;
+    width:264px;
+    padding: 4px;
+}
 .header-item:hover{
     background: @color-brand-darken;
+}
+.header-item:hover .header-item-more{
+    display: block;
 }
 .header-item-text{
     font-size: 12px;
     font-weight: normal;
+    line-height: 12px;
 }
 .header-item-spliter{
     height:30px;

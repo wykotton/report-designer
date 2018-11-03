@@ -1,13 +1,7 @@
-{{let bar=4;}}
-{{let hbar=12}}
-{{let space=50}}
-{{let r=space/5}}
-{{let step=r}}
-{{let barColor='#aaa;'}}
-
-<div class="y-axis-help" style="top:-{{=sTop}}px" id="{{=id}}_y_help">
+{{let temp}}
+<div class="y-axis-help" style="top:-{{=sTop}}px" id="{{=id}}_y_help" mx-contextmenu="@{prevent}()">
     {{each yHelpers as help}}
-        {{set current=Math.abs(yStart)+help.mm+20}}
+        {{set current=Math.abs(yStart)+help.mm*scale+20}}
         <div class="y-axis-help-line" style="width:{{=vWidth}}px;top:{{=current}}px;">
             <i class="iconfont y-help-line-icon" title="{{=i18n('@{lang#axis.delete.line}')}}" mx-click="@{delete.help.line}({type:'y',id:'{{=help.id}}'})">&#xe600;</i>
             <span class="y-help-line-text">{{=help.mm}}</span>
@@ -15,9 +9,9 @@
         </div>
     {{/each}}
 </div>
-<div class="x-axis-help" style="left:-{{=sLeft}}px" id="{{=id}}_x_help">
+<div class="x-axis-help" style="left:-{{=sLeft}}px" id="{{=id}}_x_help" mx-contextmenu="@{prevent}()">
     {{each xHelpers as help}}
-        {{set current=Math.abs(xStart)+help.mm}}
+        {{set current=Math.abs(xStart)+help.mm*scale}}
         <div class="x-axis-help-line" style="height:{{=vHeight}}px;left:{{=current}}px;">
             <i class="iconfont x-help-line-icon" title="{{=i18n('@{lang#axis.delete.line}')}}" mx-click="@{delete.help.line}({type:'x',id:'{{=help.id}}'})">&#xe600;</i>
             <span class="x-help-line-text">{{=help.mm}}</span>
@@ -31,18 +25,20 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {{=width}} 19" style="cursor:default;">
                 {{for(let i=0;i<xStart;i+=step)}}
                 {{if i}}
-                    {{if i%space===0}}
+                    {{temp=i/scale}}
+                    {{if temp%space===0}}
                     <rect width="1" height="{{=hbar}}" x="{{=xStart-i)}}" y="{{=20-hbar-1}}" style="fill:{{=barColor}};"/>
-                    <text x="{{=xStart-i+2}}" y="14" style="font-size:10px;fill:#999;">{{=-i}}</text>
+                    <text x="{{=xStart-i+2}}" y="14" style="font-size:10px;fill:#999;">{{=-temp}}</text>
                     {{else}}
                     <rect width="1" height="{{=bar}}" x="{{=xStart-i}}" y="{{=20-bar-1}}" style="fill:{{=barColor}};"/>
                     {{/if}}
                 {{/if}}
                 {{/for}}
                 {{for(let i=0;i<xEnd;i+=step)}}
-                {{if i%space===0}}
+                {{let temp=i/scale}}
+                {{if temp%space===0}}
                 <rect width="1" height="{{=hbar}}" x="{{=xStart+i)}}" y="{{=20-hbar-1}}" style="fill:{{=barColor}};"/>
-                <text x="{{=xStart+i+2}}" y="14" style="font-size:10px;fill:#999;">{{=i}}</text>
+                <text x="{{=xStart+i+2}}" y="14" style="font-size:10px;fill:#999;">{{=temp}}</text>
                 {{else}}
                 <rect width="1" height="{{=bar}}" x="{{=xStart+i}}" y="{{=20-bar-1}}" style="fill:{{=barColor}};"/>
                 {{/if}}
@@ -60,18 +56,20 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 {{=height}}" style="cursor:default">
                 {{for(let i=0;i<yStart;i+=step)}}
                 {{if i}}
-                {{if i%space===0}}
+                {{temp=i/scale}}
+                {{if temp%space===0}}
                 <rect width="{{=hbar}}" height="1" x="{{=20-hbar}}" y="{{=yStart-i)}}" style="fill:{{=barColor}};"/>
-                <text x="14" y="{{=yStart-i+2}}" style="font-size:10px;fill:#999;" transform="rotate(-90,13,{{=yStart-i}})">{{=-i}}</text>
+                <text x="14" y="{{=yStart-i+2}}" style="font-size:10px;fill:#999;" transform="rotate(-90,13,{{=yStart-i}})">{{=-temp}}</text>
                 {{else}}
                 <rect width="{{=bar}}" height="1" x="{{=20-bar}}" y="{{=yStart-i}}" style="fill:{{=barColor}};"/>
                 {{/if}}
                 {{/if}}
                 {{/for}}
                 {{for(let i=0;i<yEnd;i+=step)}}
-                {{if i%space===0}}
+                {{temp=i/scale}}
+                {{if temp%space===0}}
                 <rect width="{{=hbar}}" height="1" x="{{=20-hbar}}" y="{{=yStart+i)}}" style="fill:{{=barColor}};"/>
-                <text x="14" y="{{=yStart+i}}" style="font-size:10px;fill:#999;;" transform="rotate(-90,13,{{=yStart+i-2}})">{{=i}}</text>
+                <text x="14" y="{{=yStart+i}}" style="font-size:10px;fill:#999;;" transform="rotate(-90,13,{{=yStart+i-2}})">{{=temp}}</text>
                 {{else}}
                 <rect width="{{=bar}}" height="1" x="{{=20-bar}}" y="{{=yStart+i}}" style="fill:{{=barColor}};"/>
                 {{/if}}

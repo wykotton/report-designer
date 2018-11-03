@@ -1,58 +1,55 @@
-import Magix, { node } from 'magix';
+import Magix, { node, State, Vframe } from 'magix';
 let Panels = [{
     title: '@{lang#panel.elements}',
     icon: '&#xe629;',
     width: 100,
-    height() {
-        return Math.max(window.innerHeight - 160, 100);
-    },
-    left: 30,
-    top: 100,
-    show: true,
-    id: 'elements',
+    height: 120,
+    left: 25,
+    top: 90,
+    show: false,
+    resizeY: true,
+    id: 'p-elements',
     view: '@./elements/index'
 }, {
     title: '@{lang#panel.props}',
     icon: '&#xe7a1;',
-    width: 300,
-    height() {
-        return 200;
-    },
-    right: 230,
-    top: 100,
-    show: false,
-    id: 'props',
+    width: 210,
+    height: 220,
+    right: 10,
+    top: 90,
+    show: true,
+    resizeY: true,
+    id: 'p-props',
     view: '@./props/index'
 }, {
     title: '@{lang#panel.data}',
     icon: '&#xe609;',
     width: 200,
-    height() {
-        return Math.max(window.innerHeight - 160, 100);
-    },
-    show:true,
-    right: 20,
-    top: 100,
-    id: 'data',
-    view: '@./props/index'
+    height: 120,
+    show: false,
+    right: 230,
+    top: 90,
+    id: 'p-data',
+    view: '@./data/index'
 }];
 let PanelsMap = Magix.toMap(Panels, 'id');
-export default Magix.mix({
+export default {
     '@{open.panels}'() {
         for (let p of Panels) {
             if (p.show) {
-                this['@{open.panel}'](p.id);
+                this['@{open.panel}'](p.id, true);
             }
         }
+        State.fire('@{event#panel.change}');
     },
-    '@{open.panel}'(id) {
+    '@{open.panel}'(id, prevent) {
         let info = PanelsMap[id];
         if (!info.opened) {
             info.opened = 1;
             if (!info.eId) {
                 info.eId = Magix.guid('panel_');
                 node('app').insertAdjacentHTML('beforeend', `<div id="${info.eId}"></div>`);
-                let root = Magix.Vframe.get(Magix.config('rootId'));
+                let root = Vframe.get(Magix.config('rootId'));
                 info.close = () => {
                     this['@{close.panel}'](info.id);
                 };
@@ -60,7 +57,11 @@ export default Magix.mix({
             } else {
                 node(info.eId).style.display = 'block';
             }
-            this.fire('change');
+            if (!prevent) {
+                State.fire('@{event#panel.change}');
+                let vf = Vframe.get(info.eId);
+                vf.invoke('@{show}');
+            }
         }
     },
     '@{close.panel}'(id) {
@@ -68,7 +69,9 @@ export default Magix.mix({
         if (info.opened) {
             info.opened = 0;
             node(info.eId).style.display = 'none';
-            this.fire('change');
+            State.fire('@{event#panel.change}');
+            let vf = Vframe.get(info.eId);
+            vf.invoke('@{hide}');
         }
     },
     '@{toggle.panel}'(id) {
@@ -82,4 +85,4 @@ export default Magix.mix({
     '@{support.panels}'() {
         return Panels;
     }
-}, Magix.Event);
+};

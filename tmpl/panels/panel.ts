@@ -1,12 +1,11 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { node } from 'magix';
-import Cursor from '../designer/cursor';
+import Magix, { node, State } from 'magix';
+import Cursor from '../gallery/mx-pointer/cursor';
 import DragDrop from '../gallery/mx-dragdrop/index';
 Magix.applyStyle('@panel.less');
 let MinWidth = 100;
-let MinHeight = 120;
 let ZIndex = 300;
 let Panels = [];
 let PanelsManager = {
@@ -53,11 +52,13 @@ export default Magix.View.extend({
             icon: data.icon,
             title: data.title,
             width: data.width,
-            height: data.height(),
+            height: data.height,
             left: data.left,
             top: data.top,
             right: data.right,
-            view: data.view
+            view: data.view,
+            resizeX: data.resizeX,
+            resizeY: data.resizeY
         });
     },
     render() {
@@ -77,8 +78,13 @@ export default Magix.View.extend({
         }
         let startY = this.get('top');
         let dockKey = dockRight ? 'right' : 'left';
-        Cursor["@{show}"](e.eventTarget);
+        let showedCursor = 0;
+        let target = e.eventTarget;
         this['@{drag.drop}'](e, ex => {
+            if (!showedCursor) {
+                showedCursor = 1;
+                Cursor["@{show}"](target);
+            }
             let offsetX = (dockRight ? e.pageX - ex.pageX : ex.pageX - e.pageX) + startX;
             if (offsetX < 0) {
                 offsetX = 0;
@@ -110,8 +116,13 @@ export default Magix.View.extend({
         cNode.classList.add('@panel.less:content-outer-disable-anim');
         let cStyles = cNode.style;
         let pStyles = node('p_' + this.id).style;
-        Cursor["@{show}"](e.eventTarget);
+        let showedCursor = 0;
+        let target = e.eventTarget;
         this['@{drag.drop}'](e, ex => {
+            if (!showedCursor) {
+                showedCursor = 1;
+                Cursor["@{show}"](target);
+            }
             if (resizeWidth) {
                 let offset = ex.pageX - e.pageX;
                 if (offset + startWidth < MinWidth) {
@@ -129,15 +140,15 @@ export default Magix.View.extend({
                     width: offsetX
                 });
             } else {
-                let offsetY = ex.pageY - e.pageY + startHeight;
-                if (offsetY < MinHeight) offsetY = MinHeight;
-                cStyles.height = offsetY + 'px';
-                this.set({
+                let offsetY = e.pageY - ex.pageY + startHeight;
+                cStyles.height = `calc(100vh - ${offsetY}px)`;
+                this.digest({
                     height: offsetY
                 });
             }
         }, () => {
             Cursor["@{hide}"]();
+            cNode.classList.remove('@panel.less:content-outer-disable-anim');
         });
     },
     '@{set.z-index}'(z) {
@@ -146,9 +157,13 @@ export default Magix.View.extend({
     '@{update.z-index}<mousedown>'() {
         PanelsManager["@{top}"](this);
     },
+    '@{show}'() {
+        PanelsManager["@{top}"](this);
+    },
+    '@{hide}'() {
+
+    },
     '@{toggle.height}<click>'() {
-        let cNode = node('c_' + this.id);
-        cNode.classList.remove('@panel.less:content-outer-disable-anim');
         this.digest({
             shrink: !this.get('shrink')
         });

@@ -10,7 +10,9 @@ setTimeout(() => {
             designer: src + '/designer',
             i18n: src + '/i18n',
             gallery: src + '/gallery',
-            panels: src + '/panels'
+            util: src + '/util',
+            panels: src + '/panels',
+            elements: src + '/elements'
         }
     });
     seajs.use([
@@ -36,6 +38,23 @@ setTimeout(() => {
                 this.set({
                     i18n
                 });
+            },
+            '@{throttle}'(fn, timespan) {
+                timespan = timespan || 150;
+                let last = Date.now();
+                let timer;
+                return (...args) => {
+                    let now = Date.now();
+                    clearTimeout(timer);
+                    if (now - last > timespan) {
+                        last = now;
+                        fn.apply(this, args);
+                    } else {
+                        timer = setTimeout(() => {
+                            fn.apply(this, args);
+                        }, timespan - (now - last));
+                    }
+                };
             }
         });
         document.title = i18n('@{lang#site.name}');

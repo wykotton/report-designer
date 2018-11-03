@@ -1,0 +1,2 @@
+<i class="iconfont toolbar-item{{if !status.canUndo}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#undo}')}}" mx-click="@{do.exec}({s:'-',b:{{=status.canUndo}}})">&#xe682;</i>
+<i class="iconfont toolbar-item flipx{{if !status.canRedo}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#redo}')}}" mx-click="@{do.exec}({s:'+',b:{{=status.canRedo}}})">&#xe682;</i>

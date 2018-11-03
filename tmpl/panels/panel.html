@@ -9,10 +9,12 @@
             <i class="iconfont title-icon" mx-click="@{close}()" title="{{=i18n('@{lang#panel.close.panel}',title)}}">&#xe635;</i>
         </div>
     </div>
-    <div class="content-outer" id="c_{{=id}}" style="height:{{=(shrink?0:height)}}px">
-        <div class="fl content scrollable p-scroll hp100" mx-view="{{=view}}">
+    <div class="content-outer" id="c_{{=id}}" style="height:{{=(shrink?0:`calc(100vh - ${height}px)`)}}">
+        <div style="width:{{=resizeX?'calc(100% - 2px)':'100%'}}" class="content scrollable p-scroll hp100" mx-view="{{=view}}">
         </div>
+        {{if !resizeX}}
         <div class="hbar unselectable hp100" title="{{=i18n('@{lang#panel.ew-resize}')}}" mx-mousedown="@{start.resize}({w:1})"></div>
+        {{/if}}
     </div>
-    <div class="foot unselectable{{if shrink}} none{{/if}}" title="{{=i18n('@{lang#panel.ns-resize}')}}" mx-mousedown="@{start.resize}({h:1})"></div>
+    <div class="foot unselectable{{if shrink||!resizeY}} none{{/if}}" title="{{=i18n('@{lang#panel.ns-resize}')}}" mx-mousedown="@{start.resize}({h:1})"></div>
 </div>

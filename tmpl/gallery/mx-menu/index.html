@@ -1,0 +1,20 @@
+<div style="width:{{=width}}px;position:absolute;left:-10000px;top:-10000px"
+    class="container"
+    id="cnt_{{=id}}"
+    mx-contextmenu="@{prevent}()">
+    <ul class="items unselectable">
+        {{each list as one}}
+        {{if one.spliter}}
+        <li class="spliter"></li>
+        {{else}}
+        <li class="ellipsis items-li {{if disabled[one.id]}} item-disabled{{/if}}"
+            mx-mouseover="@{hover}({d:{{=disabled[one.id]||0}}})"
+            mx-mouseout="@{hover}({d:{{=disabled[one.id]||0}}});"
+            mx-click="@{select}({item:{{@one}},d:{{=disabled[one.id]||0}}})"
+            title="{{=one[textKey]}}">
+            {{=one[textKey]}}
+        </li>
+        {{/if}}
+        {{/each}}
+    </ul>
+</div>

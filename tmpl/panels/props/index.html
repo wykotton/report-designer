@@ -1,0 +1,27 @@
+{{if elements.length==1}}
+{{set e=elements[0]}}
+<ul class="props">
+    <li class="props-item">
+        <span class="props-item-title">{{=i18n('@{lang#props.type}')}}</span>
+        <span>{{=e.ctor.title}}</span>
+    </li>
+    {{each e.ctor.props as p}}
+        <li class="props-item">
+            <span class="props-item-title">
+                {{=i18n(p.tip)}}
+            </span>
+            {{set data=e.props[p.key]}}
+            {{if p.scale}}
+                {{data/=scale}}
+            {{/if}}
+            {{if p.type==props['@{number}']}}
+            <mx-number class="ipt" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',scale:{{=p.scale||0}},use:'value',element:{{@e}}})"/>
+            {{else if p.type==props['@{color}']}}
+            <mx-color class="ipt" color="{{@data}}" *align="right" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>
+{{else}}
+<mx-vframe src="./page"/>
+{{/if}}

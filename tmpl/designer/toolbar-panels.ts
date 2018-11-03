@@ -2,12 +2,12 @@
     author:xinglie.lkf@alibaba-inc.com
 */
 'ref@./toolbar.less';
-import Magix from 'magix';
+import Magix, { State } from 'magix';
 import Panels from '../panels/index';
 export default Magix.View.extend({
     tmpl: '@toolbar-panels.html',
     init() {
-        Panels.on('change', () => {
+        State.on('@{event#panel.change}', () => {
             console.log('change');
             this.render();
         });

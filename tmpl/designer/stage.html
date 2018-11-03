@@ -1,6 +1,10 @@
-<div class="stage-outer" id="stage_outer">
+<div class="stage-outer" id="stage_outer" mx-contextmenu="@{prevent}()" mx-mousedown="@{stage.start.drag}()" tabindex="0" mx-focusin="@{stage.active}()" mx-focusout="@{stage.deactive}()" mx-keydown="@{stage.keydown}()">
     <div class="stage-workaround">
-        <div class="stage-canvas pr" style="width:900px;height:500px;" id="stage_canvas">
+        <div class="stage-canvas pr" style="width:{{=page.width*scale}}px;height:{{=page.height*scale}}px;background:{{=page.background}}" id="stage_canvas">
+            {{each elements as e}}
+                <mx-vframe id="{{=e.id}}" src="@../elements/{{=e.type}}/designer" *element="{{@e}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})"/>
+            {{/each}}
         </div>
     </div>
 </div>
+<div id="pole_{{=id}}" style="margin-top:-{{=page.height*scale+100}}px;display:none;"></div>

@@ -223,7 +223,7 @@ export default Magix.View.extend({
             me.digest({
                 color: c
             });
-            Magix.fire(node(me.id), 'change', {
+            Magix.fire(node(me.id), 'input', {
                 color: me['@{color}'] = c
             });
         }
