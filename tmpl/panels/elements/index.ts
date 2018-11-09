@@ -3,6 +3,7 @@
 */
 import Magix, { State, node } from 'magix';
 import Convert from '../../util/converter';
+import { StageElements } from '../../designer/workspace';
 Magix.applyStyle('@index.less');
 let RId = Magix.guid('rp_');
 let RectPole = {
@@ -35,10 +36,13 @@ export default Magix.View.extend({
         let update = this.render.bind(this);
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.elements.change}', update);
+        State.on('@{event#stage.select.elements.change}', update);
     },
     render() {
         let elements = State.get('@{stage.elements}');
+        let selectedMap = State.get('@{stage.select.elements.map}');
         this.digest({
+            selectedMap,
             elements
         });
     },
@@ -54,5 +58,9 @@ export default Magix.View.extend({
         if (!flag) {
             RectPole["@{hide}"]();
         }
+    },
+    '@{select.element}<click>'(e: Magix.DOMEvent) {
+        let { element } = e.params;
+        StageElements["@{multi.select}"](e, element);
     }
 });

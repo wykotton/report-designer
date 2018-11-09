@@ -130,22 +130,27 @@ export let StageElements = {
     },
     '@{multi.select}'(e, element) {
         if (e.shiftKey || e.ctrlKey || e.metaKey) {
-            let elements = State.get('@{stage.select.elements}');
-            let exists = false;
-            for (let i = elements.length; i--;) {
-                let m = elements[i];
-                if (m.id == element.id) {
-                    exists = true;
+            if (!element.props.locked) {
+                let elements = State.get('@{stage.select.elements}');
+                let exists = false;
+                for (let i = elements.length; i--;) {
+                    let m = elements[i];
+                    if (m.id == element.id) {
+                        exists = true;
+                    }
+                    if (m.props.locked) {
+                        elements.splice(i, 1);
+                    }
                 }
-            }
-            if (exists && elements.length > 1) {
-                if (StageSelectElements["@{remove}"](element)) {
+                if (exists && elements.length > 1) {
+                    if (StageSelectElements["@{remove}"](element)) {
+                        DHistory["@{save}"]();
+                    }
+                    return;
+                }
+                if (StageSelectElements['@{add}'](element)) {
                     DHistory["@{save}"]();
                 }
-                return;
-            }
-            if (StageSelectElements['@{add}'](element)) {
-                DHistory["@{save}"]();
             }
         } else {
             if (StageSelectElements['@{set}'](element)) {
@@ -207,14 +212,16 @@ export let StageElements = {
                 let offsetY = evt.pageY - event.pageY;
                 let index = 0;
                 for (let e of elements) {
-                    elementMoved = true;
                     let s = startInfos[index++];
-                    e.props.x = s.x + offsetX;
-                    e.props.y = s.y + offsetY;
-                    let vf = Vframe.get(e.id);
-                    if (vf) {
-                        if (vf.invoke('assign', [{ element: e }])) {
-                            vf.invoke('render');
+                    if (!e.props.locked) {
+                        elementMoved = true;
+                        e.props.x = s.x + offsetX;
+                        e.props.y = s.y + offsetY;
+                        let vf = Vframe.get(e.id);
+                        if (vf) {
+                            if (vf.invoke('assign', [{ element: e }])) {
+                                vf.invoke('render');
+                            }
                         }
                     }
                 }
@@ -252,6 +259,7 @@ export let StageElements = {
             props, rotate;
         for (let e of elements) {
             props = e.props;
+            if (props.locked) continue;
             rotate = props.rotate || 0;
             let rect = {
                 x: props.x,
@@ -392,7 +400,13 @@ export let StageElements = {
     '@{select.all}'() {
         let last = State.get('@{stage.select.elements.map}');
         let elements = State.get('@{stage.elements}');
-        StageSelectElements["@{set.all}"](elements);
+        let added = [];
+        for (let m of elements) {
+            if (!m.props.locked) {
+                added.push(m);
+            }
+        }
+        StageSelectElements["@{set.all}"](added);
         if (StageSelectElements["@{has.changed}"](last)) {
             DHistory["@{save}"]();
         }
@@ -428,6 +442,7 @@ export let StageElements = {
         let current = selectElements[0];
         if (c === 0 || c > 1) {
             current = stageElements[e.shiftKey ? 0 : stageElements.length - 1];
+            StageSelectElements["@{set}"](current);
         } else {
             let prev, next;
             for (let i = stageElements.length; i--;) {
@@ -492,6 +507,10 @@ export let Clipboard = {
     },
     '@{cut.elements}'() {
         //编辑锁定的不能剪切
+        let elements = State.get('@{stage.select.elements}');
+        if (elements.length == 1 && elements[0].props.locked) {
+            return;
+        }
         this['@{copy.elements}']();
         this['@{is.cut}'] = true;
     },
@@ -499,7 +518,9 @@ export let Clipboard = {
         let me = this;
         let list = me['@{copy.list}'];
         let elements = State.get('@{stage.elements}');
+        let update = false;
         if (list) {
+            update = true;
             let selected = [];
             let index = 0, diffX = 0, diffY = 0;
             let hasSameXY = props => {
@@ -546,6 +567,7 @@ export let Clipboard = {
                 let nm = Clone(m);
                 let props = nm.props;
                 setXY(props);
+                props.locked = false;
                 index++;
                 nm.id = Magix.guid('e_');
                 elements.push(nm);
@@ -562,5 +584,6 @@ export let Clipboard = {
             State.fire('@{event#stage.elements.change}');
             StageSelectElements['@{set.all}'](selected);
         }
+        return update;
     }
 }

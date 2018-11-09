@@ -1,7 +1,8 @@
 {{set props=element.props}}
 <mx-vframe src="{{=view}}" id="entity_{{=id}}" *props="{{@props}}" />
 {{set r=props.rotate%360}}
-<div id="mask_{{=id}}" style="left:{{=props.x}}px;top:{{=props.y}}px;width:{{=props.width}}px;height:{{=props.height}}px;{{if r}}transform:rotate({{=r}}deg);{{/if}}" class="pa unselectable{{if selected}} focus-line{{/if}}">
+<div id="mask_{{=id}}" style="left:{{=props.x}}px;top:{{=props.y}}px;width:{{=props.width}}px;height:{{=props.height}}px;{{if r}}transform:rotate({{=r}}deg);{{/if}}" class="pa unselectable{{if selected&&!fullscreen}} {{if props.locked}}locked-line{{else}}focus-line{{/if}}{{/if}}">
+    {{if !fullscreen&&!props.locked}}
     {{if selected}}
     <div class="cross"></div>
     {{if count==1}}
@@ -16,6 +17,7 @@
     {{set left=(props.width-width-size)/2}}
     <div class="pa bottom" style="width:{{=Math.max(width,0)}}px;left:{{=left}}px;cursor:{{if r<=22.5||r>337.5||(r>157.5&&r<=202.5)}}ns{{else if r<=67.5||(r>202.5&&r<=247.5)}}nesw{{else if r<=112.5||(r>247.5&&r<=292.5)}}ew{{else if r<=157.5||(r>292.5&&r<=337.5)}}nwse{{/if}}-resize" title="{{=i18n('@{lang#press.drag.height.element}')}}" mx-mousedown="@{start.resize}({key:'mb'})"></div>
     <div class="pa right-bottom" style="width:{{=size}}px;height:{{=size}}px;cursor:{{if r<=22.5||r>337.5||(r>157.5&&r<=202.5)}}nwse{{else if r<=67.5||(r>202.5&&r<=247.5)}}ns{{else if r<=112.5||(r>247.5&&r<=292.5)}}nesw{{else if r<=157.5||(r>292.5&&r<=337.5)}}ew{{/if}}-resize;" title="{{=i18n('@{lang#press.drag.width.height.element}')}}" mx-mousedown="@{start.resize}({key:'rb'})"></div>
+    {{/if}}
     {{/if}}
     {{/if}}
 </div>

@@ -71,7 +71,7 @@ export default Magix.View.extend({
     '@{set.value}'(v, ignoreFill) {
         let me = this;
         if (v === '' && me['@{support.empty}']) {
-            Magix.fire(me['@{owner.node}'], 'input', {
+            Magix.dispatch(me['@{owner.node}'], 'input', {
                 value: me['@{value}'] = v
             });
             return;
@@ -81,7 +81,7 @@ export default Magix.View.extend({
             if (!ignoreFill) {
                 me['@{ctrl.input}'].value = v;
             }
-            Magix.fire(me['@{owner.node}'], 'input', {
+            Magix.dispatch(me['@{owner.node}'], 'input', {
                 value: me['@{value}'] = v
             });
         }
@@ -89,6 +89,7 @@ export default Magix.View.extend({
     },
     '@{num.change}'(increase, enlarge) {
         let me = this;
+        console.log(increase);
         let value = me['@{value}'];
         if (value === '') value = 0; //for init
         let step = me['@{step}'];
@@ -128,7 +129,7 @@ export default Magix.View.extend({
             me['@{owner.node}'].classList.remove('@scoped.style:input-focus');
             me['@{fix.value}']();
             if (me['@{last.value}'] != me['@{value}']) {
-                Magix.fire(me['@{owner.node}'], 'change', {
+                Magix.dispatch(me['@{owner.node}'], 'change', {
                     value: me['@{value}']
                 });
             }
@@ -147,10 +148,11 @@ export default Magix.View.extend({
         if (!me['@{disabled}']) {
             me['@{ui.keep.active}'] = true;
             me['@{simulator.active}']();
+            let i = e.params.i;
             me['@{long.tap.timer}'] = setTimeout(me.wrapAsync(() => {
                 me['@{interval.timer}'] = setInterval(me.wrapAsync(() => {
                     me['@{fast.change.start}'] = true;
-                    me['@{num.change}'](e.params.i);
+                    me['@{num.change}'](i);
                     me['@{cursor.show}']();
                 }), 50);
             }), 300);

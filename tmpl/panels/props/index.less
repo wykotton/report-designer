@@ -1,9 +1,9 @@
+@import "../../gallery/mx-style/_vars.less";
 .props{
     padding: 4px;
     min-width: 200px;
 }
 .props-item{
-    height: 28px;
     line-height: 28px;
     display: flex;
     align-items: center;
@@ -12,6 +12,60 @@
     width:80px;
     text-align: right;
 }
+.props-item-spliter{
+    height: 1px;
+    line-height: 1px;
+    margin: 5px 0;
+    background: rgba(0,0,0,0.20);
+    background: -webkit-gradient(linear, left top, right top, from(rgba(165, 69, 243, 0.0)), color-stop(0.5, rgba(125, 118, 132, 0.33)), to(rgba(165, 69, 243, 0.0)));
+}
 .ipt{
     width:110px;
+}
+.dock-top{
+    align-items: flex-start;
+}
+.dock-top-content{
+    margin:4px 0;
+    background-repeat: r
+}
+.switch{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.switch-input{
+    visibility: hidden;
+    position: absolute;
+}
+.switch-button{
+    width:@input-height * 2 - 12;
+    height:@input-height - 6;
+    position: relative;
+    user-select: none;
+    display: inline-block;
+    border-radius: @input-height;
+    background: @color-bg;
+}
+.switch-button::before{
+    content: '';
+    width: @input-height - 4 - 6;
+    height: @input-height - 4 - 6;
+    position: absolute;
+    left: 0;
+    margin:2px;
+    border-radius: 50%;
+    background: #fff;
+    transition: all @duration;
+}
+.switch-input:checked+.switch-button{
+    background: @color-brand;
+}
+.switch-input:checked+.switch-button::before{
+    left:100%;
+    margin-left:-(@input-height - 4 - 4);
+}
+.switch-input:disabled+.switch-button{
+    background: @color-border;
+    cursor: not-allowed;
 }

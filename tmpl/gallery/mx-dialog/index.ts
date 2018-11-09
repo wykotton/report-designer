@@ -28,7 +28,7 @@ export default Magix.View.extend({
             if (DialogZIndex == 500) {
                 app.classList.remove('@index.less:blur');
             }
-            Magix.fire(root, 'close');
+            Magix.dispatch(root, 'close');
             root.parentNode.removeChild(root);
         });
         if (!Magix.has(extra, 'closable')) {
@@ -64,13 +64,13 @@ export default Magix.View.extend({
         vf.invoke('fire', ['unload', e]);
     },
     '@{close}<click>'() {
-        Magix.fire(Magix.node(this.id), 'dlg_close');
+        Magix.dispatch(this.id, 'dlg_close');
     },
     '$doc<keyup>'(e) {
         if (e.keyCode == 27) { //esc
             let dlg = CacheList[CacheList.length - 1];
-            if (dlg == this && dlg.updater.get('closable')) {
-                Magix.fire(Magix.node(this.id), 'dlg_close');
+            if (dlg == this && dlg.get('closable')) {
+                Magix.dispatch(this.id, 'dlg_close');
             }
         }
     }
@@ -162,7 +162,7 @@ export default Magix.View.extend({
                 dOptions.dialog = {
                     close() {
                         if (dlg) {
-                            Magix.fire(dlg, 'dlg_close');
+                            Magix.dispatch(dlg, 'dlg_close');
                         }
                     }
                 };
@@ -177,7 +177,7 @@ export default Magix.View.extend({
             return {
                 close() {
                     if (dlg) {
-                        Magix.fire(dlg, 'dlg_close');
+                        Magix.dispatch(dlg, 'dlg_close');
                     }
                 },
                 whenClose(fn) {

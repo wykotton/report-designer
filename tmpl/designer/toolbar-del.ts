@@ -17,7 +17,10 @@ export default Magix.View.extend({
             elements: State.get('@{stage.select.elements}')
         });
     },
-    '@{remove.elements}<click>'() {
+    '@{remove.elements}<click>'(e) {
+        if (e.eventTarget.classList.contains('@toolbar.less:toolbar-item-disabled')) {
+            return;
+        }
         if (StageElements["@{delete.select.elements}"]()) {
             State.fire('@{event#stage.elements.change}');
             DHistory["@{save}"]();

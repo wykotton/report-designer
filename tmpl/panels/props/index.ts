@@ -21,8 +21,8 @@ export default Magix.View.extend({
             elements: State.get('@{stage.select.elements}')
         });
     },
-    '@{update.prop}<input>'(e) {
-        let { scale, key, use, element, refresh } = e.params;
+    '@{update.prop}<input,change>'(e) {
+        let { scale, key, use, element, refresh, bool } = e.params;
         let props = element.props;
         let resetXY = key == 'width' || key == 'height',
             old;
@@ -30,7 +30,8 @@ export default Magix.View.extend({
             old = Transform["@{get.rect.xy}"](props, props.rotate);
         }
         let s = State.get('@{stage.scale}');
-        let v = e[use];
+        let target = e.eventTarget;
+        let v = bool ? target.checked : e[use];
         if (scale) {
             v *= s;
         }
@@ -43,6 +44,7 @@ export default Magix.View.extend({
         }
         if (refresh) {
             this.render();
+            State.fire('@{event#stage.select.element.props.update}');
         }
         let vf = Vframe.get(element.id);
         if (vf) {

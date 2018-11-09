@@ -12,7 +12,7 @@ let DragPrevent = (e) => {
 };
 let DragMoveEvent = ['mousemove', 'touchmove', 'pointermove'];
 let DragEndEvent = ['mouseup', 'touchend', 'pointercancel', 'touchcancel'];
-let DragPreventEvent = ['keydown', 'mousewheel', 'DOMMouseScroll'];
+let DragPreventEvent = ['keydown', 'mousewheel', 'DOMMouseScroll', 'fullscreenchange'];
 
 export default {
     ctor() {
@@ -37,14 +37,14 @@ export default {
                 document.removeEventListener(fn, DragPrevent);
             }
             window.removeEventListener('blur', me['@{dd&stop.proxy}']);
-            let node = info['@{dd&node}'];
+            //let node = info['@{dd&node}'];
             let stop = info['@{dd&stop}'];
             let iStop = info['@{dd&stop.is.function}'];
-            if (node.releaseCapture) {
-                node.releaseCapture();
-            } else if (node.releasePointerCapture && e.pointerId) {
-                node.releasePointerCapture(e.pointerId);
-            }
+            // if (node.releaseCapture) {
+            //     node.releaseCapture();
+            // } else if (node.releasePointerCapture && e.pointerId) {
+            //     node.releasePointerCapture(e.pointerId);
+            // }
             if (iStop) {
                 stop(e);
             }
@@ -55,15 +55,15 @@ export default {
         me['@{dd&drag.end}']();
         if (e) {
             ClearSelection();
-            let node = e.eventTarget || e.target;
-            if (node.setCapture) {
-                node.setCapture();
-            } else if (node.setPointerCapture && e.pointerId) {
-                node.setPointerCapture(e.pointerId);
-            }
+            //let node = e.eventTarget || e.target;
+            // if (node.setCapture) {
+            //     //node.setCapture();
+            // } else if (node.setPointerCapture && e.pointerId) {
+            //     node.setPointerCapture(e.pointerId);
+            // }
             me['@{dd&drag.object}'] = {
                 '@{dd&stop}': endCallback,
-                '@{dd&node}': node,
+                //'@{dd&node}': node,
                 '@{dd&stop.is.function}': !!endCallback
             };
             let moveIsFunction = !!moveCallback;

@@ -1,8 +1,11 @@
-<div class="color" mx-contextmenu="@{prevent}()">
+<div class="color{{if disabled}} notallowed{{/if}}" mx-contextmenu="@{prevent}()" id="root_{{=id}}">
     {{if text}}
     <div class="text unselectable" style="{{if textWidth}}width:{{=textWidth}}px{{/if}}" mx-click="@{toggle}()">{{=text}}</div>
     {{/if}}
-    <div class="picker unselectable" mx-click="@{toggle}()" style="background:{{=color}};{{if !text}}width:100%{{/if}}">picker</div>
+    <div class="picker unselectable" mx-click="@{toggle}()" style="{{if color}}background:{{=color}};{{/if}}{{if !text}}width:100%{{/if}}">picker</div>
+    {{if clear&&color}}
+    <i class="mc-iconfont remove" mx-click="@{clear.color}()" title="{{=i18n('@{lang#remove.color}')}}">&#xe67f;</i>
+    {{/if}}
     <div id="bd_{{=id}}" class="color-zone placement--{{=placement}}" style="{{=align}}:-1px">
         {{if renderUI}}
         <ul class="shortcuts clearfix" id="scs_{{=id}}">
@@ -48,9 +51,16 @@
                 <div class="slide-indicator" id="si_{{=id}}"></div>
             </div>
         </div>
+        {{if alpha}}
+        <div class="alpha pr">
+            <div class="alpha-tracker pr" id="at_{{=id}}" mx-mousedown="@{alpha.drag}()">
+                <div class="alpha-indicator" id="ai_{{=id}}"></div>
+            </div>
+        </div>
+        {{/if}}
         <div class="foot">
             <span class="bgcolor" id="bc_{{=id}}"></span>
-            <input class="input color-value" readonly id="v_{{=id}}" value="{{=color}}" />
+            <input class="input color-value" readonly id="v_{{=id}}" value="{{=current}}" />
             <button class="btn btn-brand" type="button" mx-click="@{enter}();">确定</button>
         </div>
         {{/if}}

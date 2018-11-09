@@ -35,7 +35,7 @@
                 {{/if}}
                 {{/for}}
                 {{for(let i=0;i<xEnd;i+=step)}}
-                {{let temp=i/scale}}
+                {{temp=i/scale}}
                 {{if temp%space===0}}
                 <rect width="1" height="{{=hbar}}" x="{{=xStart+i)}}" y="{{=20-hbar-1}}" style="fill:{{=barColor}};"/>
                 <text x="{{=xStart+i+2}}" y="14" style="font-size:10px;fill:#999;">{{=temp}}</text>

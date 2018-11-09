@@ -12,6 +12,7 @@ export default Magix.View.extend({
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.elements.change}', update);
         State.on('@{event#stage.select.elements.change}', update);
+        State.on('@{event#stage.select.element.props.update}', update);
     },
     render() {
         let stageElements = State.get('@{stage.elements}');
@@ -22,6 +23,9 @@ export default Magix.View.extend({
         });
     },
     '@{move.element}<click>'(e) {
+        if (e.eventTarget.classList.contains('@toolbar.less:toolbar-item-disabled')) {
+            return;
+        }
         let { to } = e.params;
         let element = this.get('elements')[0];
         if (StageElements["@{move.element}"](to, element)) {

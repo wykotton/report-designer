@@ -6,6 +6,9 @@
         <span>{{=e.ctor.title}}</span>
     </li>
     {{each e.ctor.props as p}}
+        {{if p.type==props['@{spliter}']}}
+        <li class="props-item-spliter"></li>
+        {{else}}
         <li class="props-item">
             <span class="props-item-title">
                 {{=i18n(p.tip)}}
@@ -15,11 +18,17 @@
                 {{data/=scale}}
             {{/if}}
             {{if p.type==props['@{number}']}}
-            <mx-number class="ipt" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',scale:{{=p.scale||0}},use:'value',element:{{@e}}})"/>
+            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',scale:{{=p.scale||0}},use:'value',element:{{@e}}})"/>
             {{else if p.type==props['@{color}']}}
-            <mx-color class="ipt" color="{{@data}}" *align="right" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
+            <mx-color clear="{{=p.clear}}" class="ipt" color="{{@data}}" *align="right" *disabled="{{=e.props.locked}}" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
+            {{else if p.type==props['@{boolean}']}}
+            <label class="switch">
+                <input class="switch-input" type="checkbox" @checked="{{@e.props[p.key]}}" mx-change="@{update.prop}({key:'{{=p.key}}',bool:1,element:{{@e}},refresh:{{@p.refresh}}})"/>
+                <i class="switch-button"></i>
+            </label>
             {{/if}}
         </li>
+        {{/if}}
     {{/each}}
 </ul>
 {{else}}

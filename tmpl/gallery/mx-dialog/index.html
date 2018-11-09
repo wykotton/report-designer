@@ -2,7 +2,7 @@
 <div class="scroll-cnt" style="z-index:{{=zIndex}};">
     <div class="dialog{{if !removeClass}} anim-body{{/if}}" id="body_{{=id}}" style="left:{{=left}}px;top:{{=top}}px;width:{{=width}}px;">
         <input id="focus_{{=id}}" class="focus" />
-        <span class="mc-iconfont iconfont-ext dialog-close {{= closable ? '' : 'none' }}" mx-click="@{close}()">&#xe67f;</span>
+        <span class="mc-iconfont dialog-close {{= closable ? '' : 'none' }}" mx-click="@{close}()">&#xe67f;</span>
         <div class="dialog-content dialog-content-ext" id="cnt_{{=id}}">
             <div class="loading loading-ext"><span class="loading-anim"></span></div>
         </div>

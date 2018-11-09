@@ -1,14 +1,29 @@
 <ul class="props">
     <li class="props-item">
-        <span class="props-item-title">页面宽度：</span>
+        <span class="props-item-title">{{=i18n('@{lang#props.page.width}')}}</span>
         <mx-number class="ipt" min="0" value="{{@page.width}}" mx-input="@{change.page}({use:'width'})"/>
     </li>
     <li class="props-item">
-        <span class="props-item-title">页面高度：</span>
+        <span class="props-item-title">{{=i18n('@{lang#props.page.height}')}}</span>
         <mx-number class="ipt" min="0" value="{{@page.height}}" mx-input="@{change.page}({use:'height'})"/>
     </li>
     <li class="props-item">
-        <span class="props-item-title">背景颜色：</span>
+        <span class="props-item-title">{{=i18n('@{lang#props.page.scale}')}}</span>
+        <mx-dropdown class="ipt" selected="{{=page.scaleType}}" list="{{@scaleTypes}}" text-key="text" value-key="value" mx-change="@{change.page}({use:'scaleType',from:'value'})"/>
+    </li>
+    <li class="props-item-spliter"></li>
+    <li class="props-item">
+        <span class="props-item-title">{{=i18n('@{lang#props.background}')}}</span>
         <mx-color color="{{@page.background}}" class="ipt" *align="right" mx-input="@{change.page}({use:'background',from:'color'})"/>
     </li>
+    <li class="props-item dock-top">
+        <span class="props-item-title">{{=i18n('@{lang#props.background.image}')}}</span>
+        <mx-picture class="ipt dock-top-content" src="{{=page.backgroundImage}}" mx-change="@{change.page}({use:'backgroundImage',from:'src',refresh:true})"/>
+    </li>
+    {{if page.backgroundImage}}
+    <li class="props-item">
+        <span class="props-item-title">{{=i18n('@{lang#props.background.repeat}')}}</span>
+        <mx-dropdown class="ipt" selected="{{=page.backgroundRepeat}}" list="{{@repeats}}" text-key="text" value-key="value" mx-change="@{change.page}({use:'backgroundRepeat',from:'value'})"/>
+    </li>
+    {{/if}}
 </ul>

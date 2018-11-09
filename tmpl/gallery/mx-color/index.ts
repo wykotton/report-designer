@@ -62,13 +62,15 @@ export default Magix.View.extend({
     },
     assign(data) {
         let me = this;
-        me['@{color}'] = data.color || '#ffffff';
+        me['@{color}'] = data.color;
+        me['@{show.alpha}'] = (data.alpha + '') == 'true';
         me['@{hsv.info}'] = {
             h: 0,
             s: 1,
             v: 1
         };
         me.set({
+            clear: (data.clear + '') == 'true',
             text: data.text || '',
             disabled: (data.disabled + '') == 'true',
             align: data.align || 'left',
@@ -79,7 +81,9 @@ export default Magix.View.extend({
     },
     render() {
         this.digest({
-            color: this['@{color}']
+            alpha: this['@{show.alpha}'],
+            color: this['@{color}'],
+            current: this['@{color}']
         });
     },
     '@{set.hsv}'(hsv, ignoreSyncUI) {
@@ -120,20 +124,40 @@ export default Magix.View.extend({
     '@{set.color}'(hex) {
         let me = this;
         let r = parseInt(hex.substr(1, 2), 16);
+        if (isNaN(r)) r = 255;
         let g = parseInt(hex.substr(3, 2), 16);
+        if (isNaN(g)) g = 255;
         let b = parseInt(hex.substr(5, 2), 16);
+        if (isNaN(b)) b = 255;
+        let hsv = RGB2HSV(r, g, b);
         let a = parseInt(hex.substr(7, 2), 16);
         if (isNaN(a)) {
             a = 255;
         }
         me['@{hex.alpha}'] = ('0' + a.toString(16)).slice(-2);
-        let hsv = RGB2HSV(r, g, b);
         me['@{set.hsv}'](hsv);
+        if (me['@{show.alpha}']) {
+            me['@{set.alpha}'](a);
+        }
+    },
+    '@{set.alpha}'(a) {
+        let me = this;
+        let ai = node('ai_' + me.id);
+        let alphaWidth = node('at_' + me.id).clientWidth;
+        let slider = ai.clientWidth / 2;
+        a /= 255;
+        a *= alphaWidth;
+        a -= slider;
+        ai.style.left = a + 'px';
     },
     '@{sync.color}'() {
         let me = this;
-        let hex = me['@{hex.color}'];
         let n = node('bc_' + me.id);
+        let hex = me['@{hex.color}'];
+        if (me['@{show.alpha}']) {
+            node('at_' + me.id).style.background = 'linear-gradient(to right, ' + hex + '00 0%,' + hex + ' 100%)';
+            hex += me['@{hex.alpha}'];
+        }
         n.style.background = hex;
         let n1 = node('v_' + me.id) as HTMLInputElement;
         n1.value = hex;
@@ -214,16 +238,42 @@ export default Magix.View.extend({
             }, true);
         });
     },
+    '@{alpha.drag}<mousedown>'(e: Magix.DOMEvent) {
+        let current = e.eventTarget;
+        let me = this;
+        let indicator = node('ai_' + me.id);
+        let alphaWidth = node('at_' + me.id).clientWidth;
+        let slider = indicator.clientWidth / 2;
+        let offset = current.getBoundingClientRect(),
+            left = e.pageX - offset.left,
+            a = (left / alphaWidth * 255) | 0;
+        me['@{hex.alpha}'] = ('0' + a.toString(16)).slice(-2);
+        me['@{set.alpha}'](a);
+        me['@{sync.color}']();
+        let styles = getComputedStyle(indicator);
+        let startX = parseInt(styles.left, 10);
+        me['@{drag.drop}'](e, (event) => {
+            let offsetX = event.pageX - e.pageX;
+            offsetX += startX;
+            if (offsetX <= -slider) offsetX = -slider;
+            else if (offsetX >= (alphaWidth - slider)) offsetX = alphaWidth - slider;
+            indicator.style.left = offsetX + 'px';
+            let a = Math.round((offsetX + slider) / alphaWidth * 255);
+            me['@{hex.alpha}'] = ('0' + a.toString(16)).slice(-2);
+            me['@{sync.color}']();
+        });
+    },
     '@{enter}<click>'() {
         let me = this;
+        me['@{hide}']();
         let n = node('v_' + me.id) as HTMLInputElement;
         let c = n.value;
-        me['@{hide}']();
         if (c != me['@{color}']) {
             me.digest({
-                color: c
+                color: c,
+                current: c
             });
-            Magix.fire(node(me.id), 'input', {
+            Magix.dispatch(me.id, 'input', {
                 color: me['@{color}'] = c
             });
         }
@@ -241,6 +291,7 @@ export default Magix.View.extend({
         if (d == 'none') {
             n.style.display = 'block';
             Monitor["@{add}"](this);
+            node('root_' + this.id).classList.add('@scoped.style:input-focus');
             if (!this['@{init.sync.color}']) {
                 this.digest({
                     renderUI: true
@@ -255,11 +306,13 @@ export default Magix.View.extend({
         let n = node('bd_' + this.id);
         let d = getComputedStyle(n).display;
         if (d != 'none') {
+            node('root_' + this.id).classList.remove('@scoped.style:input-focus');
             n.style.display = 'none';
             Monitor["@{remove}"](this);
         }
     },
     '@{toggle}<click>'() {
+        if (this.get('disabled')) return;
         let n = node('bd_' + this.id);
         let d = getComputedStyle(n).display;
         if (d == 'none') {
@@ -267,5 +320,19 @@ export default Magix.View.extend({
         } else {
             this['@{hide}']();
         }
+    },
+    '@{clear.color}<click>'() {
+        let me = this, c = '';
+        if (me['@{init.sync.color}']) {
+            let cr = (node('v_' + me.id) as HTMLInputElement).value;
+            me['@{hide}']();
+            me.digest({
+                color: '',
+                current: cr
+            });
+        }
+        Magix.dispatch(me.id, 'input', {
+            color: me['@{color}'] = c
+        });
     }
 });

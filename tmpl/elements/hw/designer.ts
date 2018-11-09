@@ -20,10 +20,12 @@ export default Designer.extend({
                 x,
                 y,
                 rotate: 0,
-                width: 100,
-                height: 100,
+                width: 150,
+                height: 30,
+                background: '',
                 forecolor: '#000000',
-                background: '#eeeeee'
+                fontsize: 14,
+                locked: false
             }
         },
         props: [{
@@ -55,12 +57,29 @@ export default Designer.extend({
             max: 360,
             min: -360
         }, {
+            type: Props["@{spliter}"]
+        }, {
             tip: '@{lang#props.background}',
             key: 'background',
+            clear: true,
+            alpha: true,
             type: Props["@{color}"]
         }, {
             tip: '@{lang#props.forecolor}',
             key: 'forecolor',
             type: Props["@{color}"]
+        }, {
+            tip: '@{lang#props.font.size}',
+            key: 'fontsize',
+            type: Props["@{number}"],
+            min: '0'
+        }, {
+            type: Props["@{spliter}"]
+        }, {
+            tip: '@{lang#props.locked}',
+            key: 'locked',
+            type: Props["@{boolean}"],
+            refresh: true,
+            free: true
         }]
     });

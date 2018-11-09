@@ -64,11 +64,7 @@ export default Magix.View.extend({
             hbar: 12,//关键指示条,
             barColor: '#aaa'//颜色
         });
-        let update = e => {
-            if (e.scale || e.step) {
-                this.render();
-            }
-        };
+        let update = this.render.bind(this);
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.scale.change}', update);
     },

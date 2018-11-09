@@ -9,6 +9,15 @@
     align-items: center;
     cursor: pointer;
     padding: 1px;
+    transition: border-color @duration;
+    &:hover{
+        border-color: @color-border-hover;
+    }
+}
+
+.picker,
+.alpha{
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
 }
 .picker{
     min-width: @input-height - 4;
@@ -16,6 +25,16 @@
     text-indent: -100000em;
     border:solid 1px #ccc;
     position: relative;
+}
+.notallowed{
+    cursor: not-allowed;
+    background-color: @color-disabled;
+    &:hover{
+        border-color:@color-border;
+    }
+    .picker{
+        opacity: 0.4;
+    }
 }
 .text{
     padding:3px 4px;
@@ -125,4 +144,31 @@
     vertical-align: middle;
     border: 1px solid #ddd;
   }
-  
+.remove{
+    position: absolute;
+    right:5px;
+    top:3px;
+    font-size: 12px;
+    opacity: 0.2;
+    &:hover{
+        opacity: 0.5;
+    }
+}
+
+.alpha{
+    width:174px;
+    height:12px;
+    margin-bottom: 5px;
+  }
+  .alpha-tracker{
+    height: 100%;
+  }
+  .alpha-indicator{
+    position: absolute;
+    left:-2px;
+    top:2px;
+    height:8px;
+    width:4px;
+    box-shadow: 0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);
+    background:#fff;
+  }

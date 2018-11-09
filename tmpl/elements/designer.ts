@@ -140,23 +140,23 @@ export default Magix.View.extend({
         let beginY = props.y;
         let minWidth = 0, minHeight = 0,
             maxWidth = Number.MAX_VALUE, maxHeight = Number.MAX_VALUE;
-        // for (let p of ctor.props) {
-        //     if (p.key == 'width') {
-        //         if (Magix.has(p, 'max')) {
-        //             maxWidth = p.max;
-        //         }
-        //         if (Magix.has(p, 'min')) {
-        //             minWidth = p.min;
-        //         }
-        //     } else if (p.key == 'height') {
-        //         if (Magix.has(p, 'max')) {
-        //             maxHeight = p.max;
-        //         }
-        //         if (Magix.has(p, 'min')) {
-        //             minHeight = p.min;
-        //         }
-        //     }
-        // }
+        for (let p of ctor.props) {
+            if (p.key == 'width') {
+                if (Magix.has(p, 'max')) {
+                    maxWidth = p.max;
+                }
+                if (Magix.has(p, 'min')) {
+                    minWidth = p.min;
+                }
+            } else if (p.key == 'height') {
+                if (Magix.has(p, 'max')) {
+                    maxHeight = p.max;
+                }
+                if (Magix.has(p, 'min')) {
+                    minHeight = p.min;
+                }
+            }
+        }
         let transformedRect = Transform["@{rotate.rect}"](props, rotate);
         // 获取当前点和对角线点
         let pointAndOpposite = Transform["@{get.point.and.opposite}"](transformedRect.point, key);

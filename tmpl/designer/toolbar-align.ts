@@ -17,6 +17,9 @@ export default Magix.View.extend({
         });
     },
     '@{align.elements}<click>'(e: Magix.DOMEvent) {
+        if (e.eventTarget.classList.contains('@toolbar.less:toolbar-item-disabled')) {
+            return;
+        }
         let { to } = e.params;
         let elements = State.get('@{stage.select.elements}');
         let maxRight = -Number.MAX_SAFE_INTEGER;

@@ -17,6 +17,9 @@ export default Magix.View.extend({
         });
     },
     '@{do.exec}<click>'(e) {
+        if (e.eventTarget.classList.contains('@toolbar.less:toolbar-item-disabled')) {
+            return;
+        }
         let { s, b } = e.params;
         if (b) {
             if (s == '-') {

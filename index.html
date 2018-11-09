@@ -16,5 +16,10 @@
         !function(t,e,n,a){n=0,t=setInterval(function(){e=document.getElementById("pb"),e?(a=.2*Math.random(),n+a<.9&&(n+=a,e=e.getElementsByTagName("div")[0],e.style.width=Math.round(100*n)+"%")):clearInterval(t)},200)}();
         </script>
         <script id="boot" type="text/javascript" src="dist/report.js"></script>
+        <script>
+        Designer.init({
+            getBackgroundImageUrl:'./apis/background.json'
+        });
+        </script>
     </body>
 </html>

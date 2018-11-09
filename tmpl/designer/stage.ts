@@ -47,16 +47,65 @@ export default Magix.View.extend({
                 });
             }
         };
+        let bakScale = 0;
         let updateStage = e => {
-            if (e.step) {
+            if (e.step || e.fullscreen) {
                 let elements = State.get('@{stage.elements}');
-                for (let { props } of elements) {
-                    props.x *= e.step;
-                    props.y *= e.step;
-                    props.width *= e.step;
-                    props.height *= e.step;
+                if (e.fullscreen) {
+                    let page = State.get('@{stage.page}');
+                    if (e.full) {
+                        let rwidth = screen.width / page.width;
+                        let rheight = screen.height / page.height;
+                        let rbest = Math.min(rwidth, rheight);
+                        let rx = 0, ry = 0;
+                        if (page.scaleType == 'auto') {
+                            rx = rbest;
+                            ry = rbest;
+                        } else {
+                            rx = rwidth;
+                            ry = rheight;
+                        }
+                        let marginTop = (screen.height - ry * page.height) / 2,
+                            marginLeft = (screen.width - rx * page.width) / 2;
+                        let current = State.get('@{stage.scale}');
+                        if (current != 1) {
+                            e.step = 1 / current;
+                            bakScale = current;
+                        } else {
+                            bakScale = 0;
+                        }
+                        State.set({
+                            '@{stage.scale}': 1
+                        });
+                        this.set({
+                            rx,
+                            ry,
+                            marginTop,
+                            marginLeft
+                        });
+                    } else {
+                        if (bakScale != 0) {
+                            e.step = bakScale;
+                            State.set({
+                                '@{stage.scale}': bakScale
+                            });
+                        }
+                    }
+                    this.set({
+                        fullscreen: e.full
+                    });
                 }
-                this.set({ elements });
+                if (e.step) {
+                    for (let { props } of elements) {
+                        props.x *= e.step;
+                        props.y *= e.step;
+                        props.width *= e.step;
+                        props.height *= e.step;
+                    }
+                }
+                this.set({
+                    elements
+                });
             }
             this.render();
         };
@@ -72,6 +121,7 @@ export default Magix.View.extend({
                 ps.display = 'none';
             }
         };
+        State.on('@{event#preview}', updateStage);
         State.on('@{event#history.shift}', updateStage);
         State.on('@{event#stage.scale.change}', updateStage);
         State.on('@{event#stage.page.change}', updateStage);
@@ -89,9 +139,13 @@ export default Magix.View.extend({
         });
     },
     '@{element.start.drag}<mousedown>'(e) {
+        let fs = this.get('fullscreen');
+        if (fs) return;
         StageElements["@{select.or.move.elements}"](e, this);
     },
     '@{stage.start.drag}<mousedown>'(e: Magix.DOMEvent) {
+        let fs = this.get('fullscreen');
+        if (fs) return;
         let target = e.target as HTMLDivElement;
         if (target.id == 'stage_canvas' ||
             Magix.inside('stage_canvas', target)) {
@@ -152,6 +206,8 @@ export default Magix.View.extend({
         }
     },
     '@{stage.keydown}<keydown>'(e: Magix.DOMEvent) {
+        let fs = this.get('fullscreen');
+        if (fs) return;
         if (e.metaKey || e.ctrlKey) {
             if (e.keyCode == Keys.Z) {
                 e.preventDefault();
@@ -193,24 +249,26 @@ export default Magix.View.extend({
                 if (selectElements.length) {
                     let propsChanged = false;
                     for (let m of selectElements) {
-                        if (e.keyCode == Keys.UP) {
-                            propsChanged = true;
-                            m.props.y -= step;
-                        } else if (e.keyCode == Keys.DOWN) {
-                            propsChanged = true;
-                            m.props.y += step;
-                        } else if (e.keyCode == Keys.LEFT) {
-                            propsChanged = true;
-                            m.props.x -= step;
-                        } else if (e.keyCode == Keys.RIGHT) {
-                            propsChanged = true;
-                            m.props.x += step;
-                        }
-                        if (propsChanged) {
-                            let vf = Vframe.get(m.id);
-                            if (vf) {
-                                if (vf.invoke('assign', [{ element: m }])) {
-                                    vf.invoke('render');
+                        if (!m.props.locked) {
+                            if (e.keyCode == Keys.UP) {
+                                propsChanged = true;
+                                m.props.y -= step;
+                            } else if (e.keyCode == Keys.DOWN) {
+                                propsChanged = true;
+                                m.props.y += step;
+                            } else if (e.keyCode == Keys.LEFT) {
+                                propsChanged = true;
+                                m.props.x -= step;
+                            } else if (e.keyCode == Keys.RIGHT) {
+                                propsChanged = true;
+                                m.props.x += step;
+                            }
+                            if (propsChanged) {
+                                let vf = Vframe.get(m.id);
+                                if (vf) {
+                                    if (vf.invoke('assign', [{ element: m }])) {
+                                        vf.invoke('render');
+                                    }
                                 }
                             }
                         }
@@ -227,7 +285,6 @@ export default Magix.View.extend({
     '@{prevent}<contextmenu>'(e: MouseEvent) {
         e.preventDefault();
         if (Magix.inside(e.target as HTMLElement, 'stage_canvas')) {
-            let me = this;
             let lang = Magix.config('lang');
             let list = Contextmenu.stage(lang);
             let disabled = {};
@@ -244,10 +301,12 @@ export default Magix.View.extend({
                 let bottomElement = stageElements[0];
                 let atTop = topElement.id == element.id;
                 let atBottom = bottomElement.id == element.id;
-                disabled[Contextmenu.upId] = atTop;
-                disabled[Contextmenu.topId] = atTop;
-                disabled[Contextmenu.bottomId] = atBottom;
-                disabled[Contextmenu.downId] = atBottom;
+                let locked = element.props.locked;
+                disabled[Contextmenu.cutId] = locked;
+                disabled[Contextmenu.upId] = locked || atTop;
+                disabled[Contextmenu.topId] = locked || atTop;
+                disabled[Contextmenu.bottomId] = locked || atBottom;
+                disabled[Contextmenu.downId] = locked || atBottom;
             } else if (selectCount > 1) {
                 list = Contextmenu.multipleElement(lang);
             }
@@ -264,7 +323,9 @@ export default Magix.View.extend({
                             x: e.pageX,
                             y: e.pageY
                         });
-                        Clipboard["@{paste.elements}"](p);
+                        if (Clipboard["@{paste.elements}"](p)) {
+                            DHistory["@{save}"]();
+                        }
                     } else if (menu.id == Contextmenu.cutId) {
                         Clipboard["@{cut.elements}"]();
                     } else if (menu.id == Contextmenu.deleteId) {
@@ -282,7 +343,7 @@ export default Magix.View.extend({
             });
         }
     },
-    '@{stage.active}<focusin>'() {
+    '@{stage.active}<focusin>'(e: Magix.DOMEvent) {
         node(this.id).classList.remove('@index.less:stage-deactive');
     },
     '@{stage.deactive}<focusout>'() {

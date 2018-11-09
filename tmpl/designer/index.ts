@@ -54,7 +54,12 @@ export default Magix.View.extend({
             '@{stage.page}': {
                 width: Consts["@{stage.width}"],
                 height: Consts["@{stage.height}"],
-                background:'#ffffff'
+                background: '#ffffff',
+                backgroundImage: '',
+                backgroundRepeat: 'full',
+                backgroundWidth: 0,
+                backgroundHeight: 0,
+                scaleType: 'auto'
             },
             '@{stage.scale}': Consts["@{stage.scale}"],
             '@{stage.elements}': [],

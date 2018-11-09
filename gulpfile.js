@@ -15,7 +15,7 @@ combineTool.config({
     commonFolder: tmplFolder,
     compiledFolder: srcFolder,
     cssSelectorPrefix: 'p',
-    loaderType: 'cmd',
+    loaderType: 'cmd_es',
     md5CssSelectorLen: 3,
     //sourceMapCss:true,
     //magixVframeHost:true,
@@ -34,7 +34,7 @@ combineTool.config({
         var str = ts.transpileModule(content, {
             compilerOptions: {
                 lib: ['es7'],
-                target: 'es3',
+                target: 'es6',
                 module: ts.ModuleKind.None
             }
         });
@@ -45,7 +45,7 @@ combineTool.config({
         var str = ts.transpileModule(content, {
             compilerOptions: {
                 lib: ['es7'],
-                target: 'es3',
+                target: 'es6',
                 module: ts.ModuleKind.None
             }
         });
@@ -78,18 +78,18 @@ gulp.task('watch', ['combine'], () => {
     });
 });
 
-var uglify = require('gulp-uglify');
-gulp.task('cleanBuild', function () {
+var terser = require('gulp-terser-scoped');
+gulp.task('cleanBuild', () => {
     return del(buildFolder);
 });
 
-gulp.task('build', ['cleanBuild', 'cleanSrc'], function () {
+gulp.task('build', ['cleanBuild', 'cleanSrc'], () => {
     combineTool.config({
         debug: false
     });
     combineTool.combine().then(() => {
         gulp.src(srcFolder + '/**/*.js')
-            .pipe(uglify({
+            .pipe(terser({
                 compress: {
                     drop_console: true,
                     drop_debugger: true,
@@ -117,30 +117,16 @@ gulp.task('dist', ['cleanSrc'], () => {
             './src/i18n/**',
             './src/util/**',
             './src/panels/**',
+            './src/elements/**',
             './src/designer/**'])
             .pipe(concat('report.js'))
-            .pipe(gulp.dest('./dist'));
-    }).then(() => {
-        return gulp.src('./dist/*.js')
-            .pipe(uglify({
-                compress: {
-                    drop_console: true,
-                    drop_debugger: true,
-                    global_defs: {
-                        DEBUG: false
-                    }
-                },
-                output: {
-                    ascii_only: true
-                }
-            }))
             .pipe(gulp.dest('./dist'));
     });
 });
 
 gulp.task('cdist', () => {
     return gulp.src('./dist/*.js')
-        .pipe(uglify({
+        .pipe(terser({
             compress: {
                 drop_console: true,
                 drop_debugger: true,

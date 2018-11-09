@@ -128,7 +128,7 @@ export default Magix.View.extend({
                 selectedText
             });
             let node = Magix.node(me.id);
-            Magix.fire(node, 'change', {
+            Magix.dispatch(node, 'change', {
                 item,
                 value: valueKey ? item[valueKey] : item,
                 text: textKey ? item[textKey] : item
