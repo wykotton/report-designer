@@ -1,8 +1,12 @@
-<div class="stage-outer{{if fullscreen}} fullscreen{{/if}}" id="stage_outer" mx-contextmenu="@{prevent}()" mx-mousedown="@{stage.start.drag}()" tabindex="0" mx-focusin="@{stage.active}()" mx-focusout="@{stage.deactive}()" mx-keydown="@{stage.keydown}()">
-    <div class="stage-workaround" style="{{if fullscreen}}transform:scaleX({{=rx}}) scaleY({{=ry}});transform-origin:0 0;margin:{{=marginTop}}px 0 0 {{=marginLeft}}px;{{/if}}">
-        <div class="stage-canvas pr" style="width:{{=page.width*scale}}px;height:{{=page.height*scale}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth*scale}}px {{=page.backgroundHeight*scale}}px;{{/if}}{{/if}}" id="stage_canvas">
-            {{each elements as e}}
-                <mx-vframe id="{{=e.id}}" src="@../elements/{{=e.type}}/designer" *element="{{@e}}" *fullscreen="{{@fullscreen}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})"/>
+<div class="stage-outer" id="stage_outer" mx-contextmenu="@{prevent}()" mx-mousedown="@{stage.start.drag}()" tabindex="0" mx-focusin="@{stage.active}()" mx-focusout="@{stage.deactive}()" mx-keydown="@{stage.keydown}()">
+    <div class="stage-workaround">
+        <div class="stage-canvas{{if page.mode=='auto'}} pr{{/if}}" style="width:{{=page.width*scale}}px;height:{{=page.height*scale}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth*scale}}px {{=page.backgroundHeight*scale}}px;{{/if}}{{/if}}" id="stage_canvas">
+            {{each columns as col cIndex last}}
+                <div style="flex:{{=col.width}};{{if !last}}border-right:dotted 1px #ddd{{/if}}" col="{{=cIndex}}">
+                    {{each col.elements as e}}
+                    <mx-vframe id="{{=e.id}}" src="@../elements/{{=e.type}}/designer" *element="{{@e}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})"/>
+                    {{/each}}
+                </div>
             {{/each}}
         </div>
     </div>

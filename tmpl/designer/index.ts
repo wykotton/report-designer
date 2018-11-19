@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State } from 'magix';
+import Magix, { State, mix } from 'magix';
 import Elements from '../elements/index';
 import Dialog from '../gallery/mx-dialog/index';
 import Consts from './const';
@@ -10,13 +10,20 @@ import Panels from '../panels/index';
 Magix.applyStyle('@index.less');
 let ApplyState = json => {
     let page = State.get('@{stage.page}');
-    let elements = State.get('@{stage.elements}');
+    let columns = State.get('@{stage.columns}');
     let select = State.get('@{stage.select.elements}');
     let xLines = State.get('@{stage.x.help.lines}');
     let yLines = State.get('@{stage.y.help.lines}');
-    let { elements: lElements, map } = Elements["@{by.json}"](json.elements);
-    elements.length = 0;
-    elements.push(...lElements);
+    let elementsMap = {};
+    columns.length = 0;
+    for (let col of json.columns) {
+        let { elements, map } = Elements["@{by.json}"](col.elements);
+        columns.push({
+            width: col.width,
+            elements
+        });
+        mix(elementsMap, map);
+    }
     xLines.length = 0;
     if (json.xLines) {
         xLines.push(...json.xLines);
@@ -30,7 +37,7 @@ let ApplyState = json => {
     select.length = 0;
     if (json.select) {
         for (let s of json.select) {
-            let e = map[s.id];
+            let e = elementsMap[s.id];
             if (e) {
                 sMap[e.id] = 1;
                 select.push(e);
@@ -59,10 +66,10 @@ export default Magix.View.extend({
                 backgroundRepeat: 'full',
                 backgroundWidth: 0,
                 backgroundHeight: 0,
-                scaleType: 'auto'
+                mode: 'auto'
             },
             '@{stage.scale}': Consts["@{stage.scale}"],
-            '@{stage.elements}': [],
+            '@{stage.columns}': [],//init　at stage render fn
             '@{stage.select.elements}': [],
             '@{stage.select.elements.map}': {},
             '@{stage.x.help.lines}': [],

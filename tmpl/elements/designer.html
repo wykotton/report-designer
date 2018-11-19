@@ -1,8 +1,9 @@
 {{set props=element.props}}
 <mx-vframe src="{{=view}}" id="entity_{{=id}}" *props="{{@props}}" />
+{{if page.mode=='auto'}}
 {{set r=props.rotate%360}}
-<div id="mask_{{=id}}" style="left:{{=props.x}}px;top:{{=props.y}}px;width:{{=props.width}}px;height:{{=props.height}}px;{{if r}}transform:rotate({{=r}}deg);{{/if}}" class="pa unselectable{{if selected&&!fullscreen}} {{if props.locked}}locked-line{{else}}focus-line{{/if}}{{/if}}">
-    {{if !fullscreen&&!props.locked}}
+<div id="mask_{{=id}}" style="left:{{=props.x}}px;top:{{=props.y}}px;width:{{=props.width}}px;height:{{=props.height}}px;{{if r}}transform:rotate({{=r}}deg);{{/if}}" class="pa unselectable{{if selected}} {{if props.locked}}locked-line{{else}}focus-line{{/if}}{{/if}}">
+    {{if !props.locked}}
     {{if selected}}
     <div class="cross"></div>
     {{if count==1}}
@@ -21,3 +22,4 @@
     {{/if}}
     {{/if}}
 </div>
+{{/if}}

@@ -12,7 +12,7 @@ let GetSnapshot = () => {
     return JSON.stringify({
         page: State.get('@{stage.page}'),
         scale: State.get('@{stage.scale}'),
-        elements: State.get('@{stage.elements}'),
+        columns: State.get('@{stage.columns}'),
         select: State.get('@{stage.select.elements}'),
         xLines: State.get('@{stage.x.help.lines}'),
         yLines: State.get('@{stage.y.help.lines}')
@@ -28,13 +28,6 @@ let UpdateStage = jsonStr => {
     State.fire('@{event#history.shift}', {
         scale: c !== s
     });
-    // if (c !== s) {
-    //     State.fire('@{event#stage.scale.change}');
-    // }
-    // State.fire('@{event#stage.page.change}');
-    // State.fire('@{event#history.status.change}');
-    // State.fire('@{event#stage.elements.change}');
-    // State.fire('@{event#stage.select.elements.change}');
 };
 export default {
     '@{save.default}'() {
@@ -79,19 +72,22 @@ export default {
             }
         }
         RedoList.length = 0;
+        let pushUndo = status => {
+            UndoList.push(status);
+            if (UndoList.length > Consts["@{history.max.count}"]) {
+                DefaultStage = UndoList.shift();
+            }
+            State.fire('@{event#history.status.change}');
+        };
         if (waiting) {
             BuferStage = stage;
             clearTimeout(BuferTimer);
             BuferTimer = setTimeout(() => {
-                UndoList.push(BuferStage);
+                pushUndo(BuferStage);
                 BuferStage = null;
             }, waiting);
         } else {
-            UndoList.push(stage);
+            pushUndo(stage);
         }
-        if (UndoList.length > Consts["@{history.max.count}"]) {
-            DefaultStage = UndoList.shift();
-        }
-        State.fire('@{event#history.status.change}');
     }
 };

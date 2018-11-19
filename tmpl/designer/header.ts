@@ -6,7 +6,6 @@ import Elements from '../elements/index';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import Follower from '../gallery/mx-pointer/follower';
 Magix.applyStyle('@header.less');
-let Fullscreens = ['requestFullscreen', 'webkitRequestFullScreen', 'webkitRequestFullscreen', 'mozRequestFullScreen', 'msRequestFullscreen'];
 export default Magix.View.extend({
     tmpl: '@header.html',
     mixins: [Dragdrop],
@@ -42,24 +41,6 @@ export default Magix.View.extend({
                     pageY: ex.pageY
                 });
             }
-        });
-    },
-    '@{preview}<click>'() {
-        let cavans = node('stage_outer');
-        for (let fs of Fullscreens) {
-            if (cavans[fs]) {
-                cavans[fs]();
-                break;
-            }
-        }
-    },
-    '$doc<webkitfullscreenchange,mozfullscreenchange,fullscreenchange>'(e) {
-        let element = document.fullscreenElement ||
-            document.webkitCurrentFullScreenElement ||
-            document.mozFullScreenElement || null;
-        State.fire('@{event#preview}', {
-            fullscreen: true,
-            full: !!element
         });
     }
 });

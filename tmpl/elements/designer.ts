@@ -70,7 +70,9 @@ export default Magix.View.extend({
         return true;
     },
     render() {
-        this.digest();
+        this.digest({
+            page: State.get('@{stage.page}')
+        });
     },
     '@{update}'(element) {
         this.digest({

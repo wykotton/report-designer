@@ -62,7 +62,10 @@ export default {
     '@{lang#props.repeat.x}': '横向平铺',
     '@{lang#props.repeat.y}': '垂直平铺',
     '@{lang#props.repeat}': '双向平铺',
-    '@{lang#props.scale.auto}': '自适应',
-    '@{lang#props.scale.full}': '全屏铺满',
-    '@{lang#props.locked}': '锁定编辑：'
+    '@{lang#props.locked}': '锁定编辑：',
+    '@{lang#props.page.mode}': '布局模式：',
+    '@{lang#props.free.mode}':'自由布局',
+    '@{lang#props.full.mode}':'通栏',
+    '@{lang#props.page.min.width}': '最小宽度：',
+    '@{lang#props.page.min.height}': '最小高度：',
 };

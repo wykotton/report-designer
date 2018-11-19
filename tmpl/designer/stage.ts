@@ -36,75 +36,32 @@ export default Magix.View.extend({
             }
         };
         let updateElements = (e?: any) => {
-            let elements = State.get('@{stage.elements}');
+            let columns = State.get('@{stage.columns}');
             if (e) {
                 this.digest({
-                    elements
+                    columns
                 });
             } else {
                 this.set({
-                    elements
+                    columns
                 });
             }
         };
-        let bakScale = 0;
         let updateStage = e => {
-            if (e.step || e.fullscreen) {
-                let elements = State.get('@{stage.elements}');
-                if (e.fullscreen) {
-                    let page = State.get('@{stage.page}');
-                    if (e.full) {
-                        let rwidth = screen.width / page.width;
-                        let rheight = screen.height / page.height;
-                        let rbest = Math.min(rwidth, rheight);
-                        let rx = 0, ry = 0;
-                        if (page.scaleType == 'auto') {
-                            rx = rbest;
-                            ry = rbest;
-                        } else {
-                            rx = rwidth;
-                            ry = rheight;
-                        }
-                        let marginTop = (screen.height - ry * page.height) / 2,
-                            marginLeft = (screen.width - rx * page.width) / 2;
-                        let current = State.get('@{stage.scale}');
-                        if (current != 1) {
-                            e.step = 1 / current;
-                            bakScale = current;
-                        } else {
-                            bakScale = 0;
-                        }
-                        State.set({
-                            '@{stage.scale}': 1
-                        });
-                        this.set({
-                            rx,
-                            ry,
-                            marginTop,
-                            marginLeft
-                        });
-                    } else {
-                        if (bakScale != 0) {
-                            e.step = bakScale;
-                            State.set({
-                                '@{stage.scale}': bakScale
-                            });
-                        }
-                    }
-                    this.set({
-                        fullscreen: e.full
-                    });
-                }
+            if (e.step) {
+                let columns = State.get('@{stage.columns}');
                 if (e.step) {
-                    for (let { props } of elements) {
-                        props.x *= e.step;
-                        props.y *= e.step;
-                        props.width *= e.step;
-                        props.height *= e.step;
+                    for (let { elements } of columns) {
+                        for (let { props } of elements) {
+                            props.x *= e.step;
+                            props.y *= e.step;
+                            props.width *= e.step;
+                            props.height *= e.step;
+                        }
                     }
                 }
                 this.set({
-                    elements
+                    columns
                 });
             }
             this.render();
@@ -121,7 +78,6 @@ export default Magix.View.extend({
                 ps.display = 'none';
             }
         };
-        State.on('@{event#preview}', updateStage);
         State.on('@{event#history.shift}', updateStage);
         State.on('@{event#stage.scale.change}', updateStage);
         State.on('@{event#stage.page.change}', updateStage);
@@ -133,21 +89,38 @@ export default Magix.View.extend({
     },
     render() {
         let page = State.get('@{stage.page}');
+        let cols = page.mode.split(' ');
+        let columns = State.get('@{stage.columns}');
+        for (let i = 0; i < cols.length; i++) {
+            if (!columns[i]) {
+                columns[i] = {
+                    width: cols[i],
+                    elements: []
+                };
+            } else {
+                columns[i].width = cols[i];
+            }
+        }
+        let first = columns[0].elements;
+        if (columns.length > cols.length) {
+            for (let i = columns.length; i-- > cols.length;) {
+                first.push.apply(columns[0].elements);
+            }
+            columns.splice(cols.length, columns.length - cols.length);
+        }
         this.digest({
+            columns,
             scale: State.get('@{stage.scale}'),
             page
         });
     },
     '@{element.start.drag}<mousedown>'(e) {
-        let fs = this.get('fullscreen');
-        if (fs) return;
         StageElements["@{select.or.move.elements}"](e, this);
     },
     '@{stage.start.drag}<mousedown>'(e: Magix.DOMEvent) {
-        let fs = this.get('fullscreen');
-        if (fs) return;
         let target = e.target as HTMLDivElement;
         if (target.id == 'stage_canvas' ||
+            target.hasAttribute('col') ||
             Magix.inside('stage_canvas', target)) {
             let bak = null, count = 0;
             let last = State.get('@{stage.select.elements.map}');
@@ -161,6 +134,8 @@ export default Magix.View.extend({
                     count++;
                 }
             }
+            let page = State.get('@{stage.page}');
+            if (page.mode != 'auto') return;
             this['@{last.intereset.count}'] = count;
             Select["@{init}"]();
             let showedCursor = 0;
@@ -206,8 +181,6 @@ export default Magix.View.extend({
         }
     },
     '@{stage.keydown}<keydown>'(e: Magix.DOMEvent) {
-        let fs = this.get('fullscreen');
-        if (fs) return;
         if (e.metaKey || e.ctrlKey) {
             if (e.keyCode == Keys.Z) {
                 e.preventDefault();

@@ -15,7 +15,8 @@ export default Magix.View.extend({
         State.on('@{event#stage.select.element.props.update}', update);
     },
     render() {
-        let stageElements = State.get('@{stage.elements}');
+        let columns = State.get('@{stage.columns}');
+        let stageElements = columns[0].elements;
         this.digest({
             top: stageElements[stageElements.length - 1],
             bottom: stageElements[0],

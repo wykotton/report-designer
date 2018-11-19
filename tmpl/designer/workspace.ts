@@ -110,7 +110,8 @@ export let StageElements = {
     '@{add.element}'(e: MouseEvent, focus: boolean) {
         let element = State.get('@{memory.cache.element}');
         if (element) {
-            let elements = State.get('@{stage.elements}');
+            let columns = State.get('@{stage.columns}');
+            let elements = columns[0].elements;
             let props = element.getProps(e.pageX, e.pageY);
             let scale = State.get('@{stage.scale}');
             props.width *= scale;
@@ -254,7 +255,8 @@ export let StageElements = {
         return update;
     },
     '@{get.elements.location}'() {
-        let elements = State.get('@{stage.elements}');
+        let columns = State.get('@{stage.columns}');
+        let elements = columns[0].elements;
         let locations = [],
             props, rotate;
         for (let e of elements) {
