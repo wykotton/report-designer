@@ -26,16 +26,6 @@
     border:solid 1px #ccc;
     position: relative;
 }
-.notallowed{
-    cursor: not-allowed;
-    background-color: @color-disabled;
-    &:hover{
-        border-color:@color-border;
-    }
-    .picker{
-        opacity: 0.4;
-    }
-}
 .text{
     padding:3px 4px;
 }
@@ -172,3 +162,20 @@
     box-shadow: 0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);
     background:#fff;
   }
+
+.notallowed{
+    cursor: not-allowed;
+    background-color: @color-disabled;
+    &:hover{
+        border-color:@color-border;
+        .remove{
+            opacity: 0.1;
+        }
+    }
+    .picker{
+        opacity: 0.4;
+    }
+    .remove{
+        opacity: 0.1;
+    }
+}

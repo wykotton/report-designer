@@ -322,6 +322,7 @@ export default Magix.View.extend({
         }
     },
     '@{clear.color}<click>'() {
+        if (this.get('disabled')) return;
         let me = this, c = '';
         if (me['@{init.sync.color}']) {
             let cr = (node('v_' + me.id) as HTMLInputElement).value;

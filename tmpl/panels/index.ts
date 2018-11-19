@@ -14,7 +14,7 @@ let Panels = [{
     title: '@{lang#panel.props}',
     icon: '&#xe7a1;',
     width: 210,
-    height: 220,
+    height: 120,
     right: 10,
     top: 90,
     show: true,
