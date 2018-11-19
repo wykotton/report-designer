@@ -67,6 +67,7 @@ export default Magix.View.extend({
         let update = this.render.bind(this);
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.scale.change}', update);
+        State.on('@{event#stage.page.change}', update);
     },
     '@{rerender}'() {
         if (this['@{can.render}']) {
