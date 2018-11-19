@@ -23,22 +23,6 @@ let MenuPaste = {
     text: '@{lang#menu.paste}',
     short: ' (Ctrl+V)'
 };
-let MenuUp = {
-    id: 5,
-    text: '@{lang#menu.move.up}'
-};
-let MenuDown = {
-    id: 6,
-    text: '@{lang#menu.move.down}'
-};
-let MenuTop = {
-    id: 3,
-    text: '@{lang#menu.to.top}'
-};
-let MenuBottom = {
-    id: 4,
-    text: '@{lang#menu.to.bottom}'
-};
 let MenuDelete = {
     id: 7,
     text: '@{lang#menu.delete}',
@@ -71,14 +55,10 @@ let TranslateMenu = menus => {
 export default {
     allId: MenuAll.id,
     pasteId: MenuPaste.id,
-    topId: MenuTop.id,
-    upId: MenuUp.id,
-    bottomId: MenuBottom.id,
-    downId: MenuDown.id,
     cutId: MenuCut.id,
     copyId: MenuCopy.id,
     deleteId: MenuDelete.id,
-    singleElement: TranslateMenu([MenuCopy, MenuCut, MenuDelete, MenuSpliter, MenuUp, MenuTop, MenuSpliter, MenuDown, MenuBottom]),
-    multipleElement: TranslateMenu([MenuCopy, MenuCut, MenuDelete]),
+    singleElement: TranslateMenu([MenuCopy, MenuCut, MenuSpliter, MenuDelete]),
+    multipleElement: TranslateMenu([MenuCopy, MenuCut, MenuSpliter, MenuDelete]),
     stage: TranslateMenu([MenuAll, MenuPaste])
 }

@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State, node } from 'magix';
+import Magix, { State } from 'magix';
 import Elements from '../elements/index';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import Follower from '../gallery/mx-pointer/follower';

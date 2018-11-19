@@ -1,16 +1,5 @@
 import Magix, { node, State, Vframe } from 'magix';
 let Panels = [{
-    title: '@{lang#panel.elements}',
-    icon: '&#xe629;',
-    width: 100,
-    height: 120,
-    left: 25,
-    top: 90,
-    show: false,
-    resizeY: true,
-    id: 'p-elements',
-    view: '@./elements/index'
-}, {
     title: '@{lang#panel.props}',
     icon: '&#xe7a1;',
     width: 210,

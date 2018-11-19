@@ -67,15 +67,15 @@ export default Magix.View.extend({
         let update = this.render.bind(this);
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.scale.change}', update);
+        State.on('@{event#stage.page.change}', update);
+        State.on('@{event#stage.elements.change}', update);
     },
     '@{rerender}'() {
         if (this['@{can.render}']) {
             let n = this['@{scroll.node}'];
             let sa = State.get('@{stage.scale}');
-            let page = State.get('@{stage.page}');
-            let { width: sWidth, height: sHeight } = page;
-            let width = Math.max(sWidth * sa, window.innerWidth) + 500;
-            let height = Math.max(sHeight * sa, window.innerHeight) + 300;
+            let width = Math.max(n.scrollWidth, window.innerWidth) + 500;
+            let height = Math.max(n.scrollHeight, window.innerHeight) + 300;
             let xStart = 0;
             let xEnd = 0;
             let axisWidth = 20;

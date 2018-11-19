@@ -17,11 +17,6 @@ export default Designer.extend({
         resizeX: true,
         getProps(x, y) {
             return {
-                x,
-                y,
-                rotate: 0,
-                width: 150,
-                height: 30,
                 background: '',
                 forecolor: '#000000',
                 fontsize: 14,
@@ -29,36 +24,6 @@ export default Designer.extend({
             }
         },
         props: [{
-            tip: '@{lang#props.x}',
-            key: 'x',
-            type: Props["@{number}"],
-            scale: true
-        }, {
-            tip: '@{lang#props.y}',
-            key: 'y',
-            type: Props["@{number}"],
-            scale: true
-        }, {
-            tip: '@{lang#props.width}',
-            key: 'width',
-            type: Props["@{number}"],
-            scale: true,
-            min: '0'
-        }, {
-            tip: '@{lang#props.height}',
-            key: 'height',
-            type: Props["@{number}"],
-            scale: true,
-            min: '0'
-        }, {
-            tip: '@{lang#props.rotate}',
-            key: 'rotate',
-            type: Props["@{number}"],
-            max: 360,
-            min: -360
-        }, {
-            type: Props["@{spliter}"]
-        }, {
             tip: '@{lang#props.background}',
             key: 'background',
             clear: true,

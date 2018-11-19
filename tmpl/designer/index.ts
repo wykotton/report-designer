@@ -66,10 +66,13 @@ export default Magix.View.extend({
                 backgroundRepeat: 'full',
                 backgroundWidth: 0,
                 backgroundHeight: 0,
-                mode: 'auto'
+                mode: '1'
             },
             '@{stage.scale}': Consts["@{stage.scale}"],
-            '@{stage.columns}': [],//init　at stage render fn
+            '@{stage.columns}': [{
+                width: 1,
+                elements: []
+            }],
             '@{stage.select.elements}': [],
             '@{stage.select.elements.map}': {},
             '@{stage.x.help.lines}': [],
