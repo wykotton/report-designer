@@ -79,19 +79,22 @@ export default {
             }
         }
         RedoList.length = 0;
+        let pushUndo = status => {
+            UndoList.push(status);
+            if (UndoList.length > Consts["@{history.max.count}"]) {
+                DefaultStage = UndoList.shift();
+            }
+            State.fire('@{event#history.status.change}');
+        };
         if (waiting) {
             BuferStage = stage;
             clearTimeout(BuferTimer);
             BuferTimer = setTimeout(() => {
-                UndoList.push(BuferStage);
+                pushUndo(BuferStage);
                 BuferStage = null;
             }, waiting);
         } else {
-            UndoList.push(stage);
+            pushUndo(stage);
         }
-        if (UndoList.length > Consts["@{history.max.count}"]) {
-            DefaultStage = UndoList.shift();
-        }
-        State.fire('@{event#history.status.change}');
     }
 };
