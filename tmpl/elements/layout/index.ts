@@ -1,0 +1,27 @@
+/*
+    author:xinglie.lkf@alibaba-inc.com
+*/
+import Magix, { State } from 'magix';
+import { StageElements } from '../../designer/workspace';
+import DragDrop from '../../gallery/mx-dragdrop/index';
+Magix.applyStyle('@index.less');
+export default Magix.View.extend({
+    tmpl: '@index.html',
+    mixins: [DragDrop],
+    init(data) {
+        this.assign(data);
+    },
+    assign(data) {
+        this.set(data);
+        return true;
+    },
+    render() {
+        this.digest();
+    },
+    '@{element.start.drag}<mousedown>'(e) {
+        if (e.from != 'layout') {
+            e.from = 'layout';
+            StageElements["@{select.or.move.elements}"](e, this);
+        }
+    }
+});

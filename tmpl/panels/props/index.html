@@ -3,22 +3,20 @@
 <ul class="props">
     <li class="props-item">
         <span class="props-item-title">{{=i18n('@{lang#props.type}')}}</span>
-        <span>{{=e.ctor.title}}</span>
+        <span>{{=e.ctrl.title}}</span>
     </li>
-    {{each e.ctor.props as p}}
+    {{each e.ctrl.props as p}}
         {{if p.type==props['@{spliter}']}}
         <li class="props-item-spliter"></li>
         {{else}}
-        <li class="props-item">
+        {{set data=e.props[p.key]}}
+        {{if !p.ifShow||p.ifShow(e.props)}}
+        <li class="props-item{{if p.dockTop}} dock-top{{/if}}">
             <span class="props-item-title">
                 {{=i18n(p.tip)}}
             </span>
-            {{set data=e.props[p.key]}}
-            {{if p.scale}}
-                {{data/=scale}}
-            {{/if}}
             {{if p.type==props['@{number}']}}
-            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',scale:{{=p.scale||0}},use:'value',element:{{@e}}})"/>
+            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
             {{else if p.type==props['@{color}']}}
             <mx-color clear="{{=p.clear}}" class="ipt" color="{{@data}}" *align="right" *disabled="{{=e.props.locked}}" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
             {{else if p.type==props['@{boolean}']}}
@@ -26,8 +24,13 @@
                 <input class="switch-input" type="checkbox" @checked="{{@e.props[p.key]}}" mx-change="@{update.prop}({key:'{{=p.key}}',bool:1,element:{{@e}},refresh:{{@p.refresh}}})"/>
                 <i class="switch-button"></i>
             </label>
+            {{else if p.type==props['@{column}']}}
+            <mx-layout.column *columns="{{@data}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',element:{{@e}}})"/>
+            {{else if p.type==props['@{guage}']}}
+            <mx-layout.guage *guage="{{@data}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
             {{/if}}
         </li>
+        {{/if}}
         {{/if}}
     {{/each}}
 </ul>

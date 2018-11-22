@@ -15,32 +15,27 @@ export default Magix.View.extend({
         });
     },
     '@{add.element}<mousedown>'(e) {
-        let { ctor } = e.params;
-        Follower["@{update}"](ctor.icon);
-        let moved = false, hoverNode = null;
+        let { ctrl } = e.params;
+        Follower["@{update}"](ctrl.icon);
         State.set({
-            '@{memory.cache.element}': ctor
+            '@{memory.cache.element.ctrl}': ctrl
         });
         this['@{drag.drop}'](e, ex => {
             Follower["@{show}"](ex);
-            moved = true;
+            State.fire('@{event#toolbox.drag.hover.change}', {
+                pageX: ex.pageX,
+                pageY: ex.pageY,
+                clientX: ex.clientX,
+                clientY: ex.clientY
+            });
         }, (ex: Magix.DOMEvent) => {
             Follower["@{hide}"]();
-            if (!moved) {
-                State.fire('@{event#toolbox.add.element}', {
-                    pageX: (Math.random() * 50) | 0,
-                    pageY: (Math.random() * 50) | 0
-                });
-                return;
-            }
             if (ex) {
-                hoverNode = Dragdrop["@{from.point}"](ex.clientX, ex.clientY);
-                State.fire('@{event#toolbox.drag.element.drop}', {
-                    node: hoverNode,
-                    pageX: ex.pageX,
-                    pageY: ex.pageY
-                });
+                State.fire('@{event#toolbox.drag.element.drop}');
             }
+            State.set({
+                '@{memory.cache.element.ctrl}': null
+            });
         });
     }
 });

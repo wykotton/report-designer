@@ -66,7 +66,6 @@ export default Magix.View.extend({
         });
         let update = this.render.bind(this);
         State.on('@{event#history.shift}', update);
-        State.on('@{event#stage.scale.change}', update);
         State.on('@{event#stage.page.change}', update);
         State.on('@{event#stage.elements.change}', update);
     },
@@ -90,7 +89,7 @@ export default Magix.View.extend({
             let left = Math.round(offset.left - outerOffset.left);
             xStart = left + axisWidth;
             xEnd = width - xStart;
-            yStart = Math.round(offset.top - outerOffset.top /*- (page.header || 0)*/);
+            yStart = Math.round(offset.top - outerOffset.top);
             yEnd = height - yStart;
             vHeight = n.offsetHeight;
             vWidth = n.offsetWidth;

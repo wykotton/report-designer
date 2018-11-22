@@ -11,10 +11,9 @@ export default Designer.extend({
     }
 }, {
         type: 'hw',
+        role: 'hw',
         title: '文本',
         icon: '&#xe6bc;',
-        resize: true,
-        resizeX: true,
         getProps(x, y) {
             return {
                 background: '',

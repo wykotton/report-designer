@@ -937,8 +937,8 @@ let Magix = {
     guid: G_Id,
     Cache: G_Cache,
     use: G_Require,
-    dispatch(elem,type,data){
-        G_Trigger(G_GetById(elem),type,data);
+    dispatch(element, type, data) {
+        G_Trigger(G_GetById(element), type, data);
     },
     match: G_TargetMatchSelector,
     type: G_Type,
@@ -2714,9 +2714,6 @@ let Updater_Digest = (view, digesting) => {
         V_SetChildNodes(node, view['$n'], vdom, ref, vf, keys);
         view['$n'] = vdom;
         
-        for (vdom of ref.d) {
-            vdom[0].id = vdom[1];
-        }
         /*
             在dom diff patch时，如果已渲染的vframe有变化，则会在vom tree上先派发created事件，同时传递inner标志，vom tree处理alter事件派发状态，未进入created事件派发状态
 
@@ -2727,6 +2724,9 @@ let Updater_Digest = (view, digesting) => {
         vf['$b'] = tmpl = ref.c || !view['$g'];
         for (vdom of ref.v) {
             vdom['$f']();
+        }
+        for (vdom of ref.d) {
+            vdom[0].id = vdom[1];
         }
         if (tmpl) {
             view.endUpdate(selfId);

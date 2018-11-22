@@ -10,20 +10,13 @@ import Panels from '../panels/index';
 Magix.applyStyle('@index.less');
 let ApplyState = json => {
     let page = State.get('@{stage.page}');
-    let columns = State.get('@{stage.columns}');
+    let layouts = State.get('@{stage.layouts}');
     let select = State.get('@{stage.select.elements}');
     let xLines = State.get('@{stage.x.help.lines}');
     let yLines = State.get('@{stage.y.help.lines}');
-    let elementsMap = {};
-    columns.length = 0;
-    for (let col of json.columns) {
-        let { elements, map } = Elements["@{by.json}"](col.elements);
-        columns.push({
-            width: col.width,
-            elements
-        });
-        mix(elementsMap, map);
-    }
+    let { elements, map } = Elements["@{by.json}"](json.layouts);
+    layouts.length = 0;
+    layouts.push(...elements);
     xLines.length = 0;
     if (json.xLines) {
         xLines.push(...json.xLines);
@@ -37,7 +30,7 @@ let ApplyState = json => {
     select.length = 0;
     if (json.select) {
         for (let s of json.select) {
-            let e = elementsMap[s.id];
+            let e = map[s.id];
             if (e) {
                 sMap[e.id] = 1;
                 select.push(e);
@@ -65,14 +58,10 @@ export default Magix.View.extend({
                 backgroundImage: '',
                 backgroundRepeat: 'full',
                 backgroundWidth: 0,
-                backgroundHeight: 0,
-                mode: '1'
+                backgroundHeight: 0
             },
             '@{stage.scale}': Consts["@{stage.scale}"],
-            '@{stage.columns}': [{
-                width: 1,
-                elements: []
-            }],
+            '@{stage.layouts}': [],
             '@{stage.select.elements}': [],
             '@{stage.select.elements.map}': {},
             '@{stage.x.help.lines}': [],

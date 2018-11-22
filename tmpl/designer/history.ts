@@ -12,7 +12,7 @@ let GetSnapshot = () => {
     return JSON.stringify({
         page: State.get('@{stage.page}'),
         scale: State.get('@{stage.scale}'),
-        columns: State.get('@{stage.columns}'),
+        layouts: State.get('@{stage.layouts}'),
         select: State.get('@{stage.select.elements}'),
         xLines: State.get('@{stage.x.help.lines}'),
         yLines: State.get('@{stage.y.help.lines}')

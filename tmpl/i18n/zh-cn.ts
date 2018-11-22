@@ -21,10 +21,6 @@ export default {
     '@{lang#props.type}': '类型：',
     '@{lang#props.background}': '背景颜色：',
     '@{lang#props.forecolor}': '文字颜色：',
-    '@{lang#menu.select.all}': '全选',
-    '@{lang#menu.paste}': '粘贴',
-    '@{lang#menu.copy}': '复制',
-    '@{lang#menu.cut}': '剪切',
     '@{lang#menu.delete}': '删除',
     '@{lang#load.img.error}': '获取图片尺寸失败，请重试～～',
     '@{lang#remove.image}': '清除图片',
@@ -40,8 +36,9 @@ export default {
     '@{lang#props.repeat.y}': '垂直平铺',
     '@{lang#props.repeat}': '双向平铺',
     '@{lang#props.locked}': '锁定编辑：',
-    '@{lang#props.page.mode}': '布局模式：',
-    '@{lang#props.full.mode}':'通栏',
     '@{lang#props.page.min.width}': '最小宽度：',
     '@{lang#props.page.min.height}': '最小高度：',
+    '@{lang#props.col.rate}': '列分配：',
+    '@{lang#props.margin}': '外边距：',
+    '@{lang#props.padding}': '内边距：'
 };

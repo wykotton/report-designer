@@ -1,8 +1,12 @@
 @import "../gallery/mx-style/_vars.less";
 
-.focus-line,
-.locked-line{
-    border:dashed 2px @color-brand;
+.through{
+    pointer-events: none;
+}
+.container{
+    display: flex;
+}
+.mask{
     position: absolute;
     left:0;
     top:0;
@@ -10,6 +14,14 @@
     bottom: 0;
     background: #0000;
 }
+.focus-line,
+.locked-line{
+    border:solid 1px @color-brand;
+}
 .locked-line{
     border-color:@placeholder-color;
+}
+.element{
+    border:dotted 1px #ddd;
+    user-select: none;
 }

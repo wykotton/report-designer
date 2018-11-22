@@ -1,183 +1,113 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { node, State, Vframe } from 'magix';
+import Magix, { node, State } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import DHistory from './history';
 import Keys from './keys';
-import { StageElements, StageSelectElements, Clipboard } from './workspace';
-import Converter from '../util/converter';
-import Select from '../gallery/mx-pointer/select';
-import Cursor from '../gallery/mx-pointer/cursor';
-import Menu from '../gallery/mx-menu/index';
-import Contextmenu from './contextmenu';
+import { StageElements, StageSelectElements } from './workspace';
 Magix.applyStyle('@stage.less');
 export default Magix.View.extend({
     tmpl: '@stage.html',
     mixins: [Dragdrop],
     init() {
+        let hoverInfo = null;
+        let lastHoverNode = null;
+        let barStyle = null;
+        let outerBound = null;
+        let lastPosition = null;
         let addElements = e => {
-            if (e.node) {
-                if (Magix.inside(e.node, 'stage_canvas')) {
-                    let p = Converter["@{real.to.stage.coord}"]({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    e.pageX = p.x;
-                    e.pageY = p.y;
+            if (lastPosition) {
+                let barStyle = node(this.id + '_bar').style;
+                barStyle.display = 'none';
+                if (hoverInfo.moved) {
+                    StageElements["@{move.element}"](lastPosition, hoverInfo.moved);
                 } else {
-                    return;
+                    StageElements["@{add.element}"](lastPosition);
                 }
-            }
-            let elements = StageElements["@{add.element}"](e, true);
-            if (elements) {
                 State.fire('@{event#stage.elements.change}');
                 DHistory["@{save}"]();
             }
+            lastHoverNode = null;
+            barStyle = null;
+            outerBound = null;
+            hoverInfo = null;
+            lastPosition = null;
         };
         let updateElements = (e?: any) => {
-            let columns = State.get('@{stage.columns}');
+            let layouts = State.get('@{stage.layouts}');
             if (e) {
                 this.digest({
-                    columns
+                    layouts
                 });
             } else {
                 this.set({
-                    columns
+                    layouts
                 });
             }
         };
-        let updateStage = e => {
-            if (e.step) {
-                let columns = State.get('@{stage.columns}');
-                if (e.step) {
-                    for (let { elements } of columns) {
-                        for (let { props } of elements) {
-                            props.x *= e.step;
-                            props.y *= e.step;
-                            props.width *= e.step;
-                            props.height *= e.step;
-                        }
-                    }
+        let updateStage = this.render.bind(this);
+        let findPlace = e => {
+            let n = Dragdrop["@{from.point}"](e.clientX, e.clientY);
+            if (n != lastHoverNode) {
+                lastHoverNode = n;
+                if (!barStyle) {
+                    barStyle = node(this.id + '_bar').style;
                 }
-                this.set({
-                    columns
-                });
+                if (!outerBound) {
+                    outerBound = node('stage_outer').getBoundingClientRect();
+                }
+                let i = StageElements["@{find.best.place.info}"](n, e.moved);
+                if (i) {
+                    hoverInfo = i;
+                } else {
+                    hoverInfo = null;
+                }
             }
-            this.render();
-        };
-        let togglePole = e => {
-            let o = node(this.id);
-            let p = node('pole_' + this.id);
-            let ps = p.style;
-            if (e.show) {
-                ps.width = o.scrollWidth + 'px';
-                ps.height = o.scrollHeight + 'px';
-                ps.display = 'block';
-            } else {
-                ps.display = 'none';
+            if (hoverInfo) {
+                let pos = StageElements["@{find.under.position}"](hoverInfo, e);
+                if (pos) {
+                    lastPosition = pos;
+                    barStyle.left = pos.rect.left - outerBound.left + 'px';
+                    barStyle.top = pos.rect.top - outerBound.top + 'px';
+                    barStyle.width = pos.rect.width + 'px';
+                    barStyle.display = 'block';
+                } else {
+                    lastPosition = null;
+                    barStyle.display = 'none';
+                }
+            } else if (barStyle) {
+                lastPosition = null;
+                barStyle.display = 'none';
             }
         };
         State.on('@{event#history.shift}', updateStage);
-        State.on('@{event#stage.scale.change}', updateStage);
         State.on('@{event#stage.page.change}', updateStage);
         State.on('@{event#toolbox.add.element}', addElements);
         State.on('@{event#toolbox.drag.element.drop}', addElements);
         State.on('@{event#stage.elements.change}', updateElements);
-        State.on('@{event#stage.lock.scroll}', togglePole);
+        State.on('@{event#toolbox.drag.hover.change}', findPlace);
         updateElements();
     },
     render() {
         let page = State.get('@{stage.page}');
-        let cols = page.mode.split(' ');
-        let columns = State.get('@{stage.columns}');
-        for (let i = 0; i < cols.length; i++) {
-            if (!columns[i]) {
-                columns[i] = {
-                    width: cols[i],
-                    elements: []
-                };
-            } else {
-                columns[i].width = cols[i];
-            }
-        }
-        let first = columns[0].elements;
-        if (columns.length > cols.length) {
-            for (let i = columns.length; i-- > cols.length;) {
-                first.push.apply(columns[0].elements);
-            }
-            columns.splice(cols.length, columns.length - cols.length);
-        }
         this.digest({
-            columns,
             scale: State.get('@{stage.scale}'),
             page
         });
     },
     '@{element.start.drag}<mousedown>'(e) {
-        StageElements["@{select.or.move.elements}"](e, this);
+        if (e.from != 'layout') {
+            StageElements["@{select.or.move.elements}"](e, this);
+        }
     },
     '@{stage.start.drag}<mousedown>'(e: Magix.DOMEvent) {
         let target = e.target as HTMLDivElement;
         if (target.id == 'stage_canvas' ||
-            target.hasAttribute('col') ||
             Magix.inside('stage_canvas', target)) {
-            let bak = null, count = 0;
-            let last = State.get('@{stage.select.elements.map}');
-            if (!e.shiftKey) {
+            if (!(e.shiftKey || e.metaKey || e.ctrlKey)) {
                 StageSelectElements["@{set}"]();
-            } else {
-                bak = {};
-                let old = State.get('@{stage.select.elements}');
-                for (let e of old) {
-                    bak[e.id] = 1;
-                    count++;
-                }
             }
-            let page = State.get('@{stage.page}');
-            if (page.mode != 'auto') return;
-            this['@{last.intereset.count}'] = count;
-            Select["@{init}"]();
-            let showedCursor = 0;
-            let elementLocations = StageElements["@{get.elements.location}"]();
-            this['@{drag.drop}'](e, ex => {
-                if (!showedCursor) {
-                    showedCursor = 1;
-                    Cursor["@{show.by.type}"]('default');
-                }
-                let width = Math.abs(e.pageX - ex.pageX);
-                let height = Math.abs(e.pageY - ex.pageY);
-                let left = Math.min(e.pageX, ex.pageX);
-                let top = Math.min(e.pageY, ex.pageY);
-                Select["@{update}"](left, top, width, height);
-                let rect = Converter["@{real.to.stage.coord}"]({
-                    x: left,
-                    y: top
-                }) as {
-                        x: number
-                        y: number
-                        width: number
-                        height: number
-                    };
-                rect.width = width;
-                rect.height = height;
-                if (elementLocations.length) {
-                    let intersectElements = StageElements["@{get.intersect.elements}"](elementLocations, rect, bak);
-                    let count = intersectElements.length;
-                    if (count !== this['@{last.intereset.count}']) {
-                        this['@{last.intereset.count}'] = count;
-                        StageSelectElements["@{set.all}"](intersectElements);
-                    }
-                }
-            }, () => {
-                if (showedCursor) {
-                    Select["@{hide}"]();
-                    Cursor["@{hide}"]();
-                }
-                if (StageSelectElements["@{has.changed}"](last)) {
-                    DHistory["@{save}"]();
-                }
-            });
         }
     },
     '@{stage.keydown}<keydown>'(e: Magix.DOMEvent) {
@@ -192,18 +122,6 @@ export default Magix.View.extend({
             } else if (e.keyCode == Keys.Y) {
                 e.preventDefault();
                 DHistory["@{redo}"]();
-            } else if (e.keyCode == Keys.A) {
-                e.preventDefault();
-                StageElements["@{select.all}"]();
-            } else if (e.keyCode == Keys.X) {
-                e.preventDefault();
-                Clipboard["@{cut.elements}"]();
-            } else if (e.keyCode == Keys.C) {
-                e.preventDefault();
-                Clipboard["@{copy.elements}"]();
-            } else if (e.keyCode == Keys.V) {
-                e.preventDefault();
-                Clipboard["@{paste.elements}"]();
             }
         } else {
             if (e.keyCode == Keys.TAB) {
@@ -215,106 +133,11 @@ export default Magix.View.extend({
                     State.fire('@{event#stage.elements.change}');
                     DHistory["@{save}"]();
                 }
-            } else {
-                let step = e.shiftKey ? 10 : 1;
-                step *= State.get('@{stage.scale}');
-                let selectElements = State.get('@{stage.select.elements}');
-                if (selectElements.length) {
-                    let propsChanged = false;
-                    for (let m of selectElements) {
-                        if (!m.props.locked) {
-                            if (e.keyCode == Keys.UP) {
-                                propsChanged = true;
-                                m.props.y -= step;
-                            } else if (e.keyCode == Keys.DOWN) {
-                                propsChanged = true;
-                                m.props.y += step;
-                            } else if (e.keyCode == Keys.LEFT) {
-                                propsChanged = true;
-                                m.props.x -= step;
-                            } else if (e.keyCode == Keys.RIGHT) {
-                                propsChanged = true;
-                                m.props.x += step;
-                            }
-                            if (propsChanged) {
-                                let vf = Vframe.get(m.id);
-                                if (vf) {
-                                    if (vf.invoke('assign', [{ element: m }])) {
-                                        vf.invoke('render');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (propsChanged) {
-                        e.preventDefault();
-                        State.fire('@{event#stage.select.element.props.change}');
-                        DHistory["@{save}"]('@{history#move.element.by.keyboard}', 500);
-                    }
-                }
             }
         }
     },
     '@{prevent}<contextmenu>'(e: MouseEvent) {
         e.preventDefault();
-        if (Magix.inside(e.target as HTMLElement, 'stage_canvas')) {
-            let lang = Magix.config('lang');
-            let list = Contextmenu.stage(lang);
-            let disabled = {};
-            let stageElements = State.get('@{stage.elements}');
-            let selectElements = State.get('@{stage.select.elements}');
-            let hasElements = Clipboard["@{has.elements}"]();
-            disabled[Contextmenu.allId] = !stageElements.length;
-            disabled[Contextmenu.pasteId] = !hasElements;
-            let selectCount = selectElements.length;
-            let element = selectElements[0];
-            if (selectCount == 1) {
-                list = Contextmenu.singleElement(lang);
-                let topElement = stageElements[stageElements.length - 1];
-                let bottomElement = stageElements[0];
-                let atTop = topElement.id == element.id;
-                let atBottom = bottomElement.id == element.id;
-                let locked = element.props.locked;
-                disabled[Contextmenu.cutId] = locked;
-                disabled[Contextmenu.upId] = locked || atTop;
-                disabled[Contextmenu.topId] = locked || atTop;
-                disabled[Contextmenu.bottomId] = locked || atBottom;
-                disabled[Contextmenu.downId] = locked || atBottom;
-            } else if (selectCount > 1) {
-                list = Contextmenu.multipleElement(lang);
-            }
-            Menu.show(this, e, {
-                list: list,
-                disabled,
-                picked(menu) {
-                    if (menu.id == Contextmenu.allId) {
-                        StageElements["@{select.all}"]();
-                    } else if (menu.id == Contextmenu.copyId) {
-                        Clipboard["@{copy.elements}"]();
-                    } else if (menu.id == Contextmenu.pasteId) {
-                        let p = Converter["@{real.to.stage.coord}"]({
-                            x: e.pageX,
-                            y: e.pageY
-                        });
-                        if (Clipboard["@{paste.elements}"](p)) {
-                            DHistory["@{save}"]();
-                        }
-                    } else if (menu.id == Contextmenu.cutId) {
-                        Clipboard["@{cut.elements}"]();
-                    } else if (menu.id == Contextmenu.deleteId) {
-                        if (StageElements["@{delete.select.elements}"]()) {
-                            State.fire('@{event#stage.elements.change}');
-                            DHistory["@{save}"]();
-                        }
-                    } else if (menu.id >= 3 && menu.id <= 6) {
-                        if (StageElements["@{move.element}"](menu.id, element)) {
-                            State.fire('@{event#stage.elements.change}');
-                            DHistory["@{save}"]();
-                        }
-                    }
-                }
-            });
-        }
     },
     '@{stage.active}<focusin>'(e: Magix.DOMEvent) {
         node(this.id).classList.remove('@index.less:stage-deactive');

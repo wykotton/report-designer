@@ -1,4 +1,4 @@
-
+@import '../gallery/mx-style/_vars.less';
 .stage-outer{
     outline: 0;
     display: flex;
@@ -10,5 +10,12 @@
 .stage-canvas{
     background: #fff;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,.3);
-    display: flex;
+}
+.place-bar{
+    height:3px;
+    background: @color-brand;
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    margin-top: -1px;
 }

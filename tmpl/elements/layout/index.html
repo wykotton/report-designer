@@ -1,0 +1,9 @@
+<div style="margin:{{=props.margin}};padding:{{=props.padding}};" class="root">
+    {{each props.columns as col index}}
+        <div style="flex-basis:{{=col.width*100}}%;" class="col" role="column" index="{{=index}}" pid="{{=element.id}}">
+            {{each col.elements as e}}
+                <mx-vframe class="pr" #eid="{{=e.id}}" src="@../{{=e.ctrl.role}}/designer" *element="{{@e}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})" #role="{{=e.ctrl.role}}"/>
+            {{/each}}
+        </div>
+    {{/each}}
+</div>
