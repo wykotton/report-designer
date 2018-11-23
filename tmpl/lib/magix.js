@@ -1,81 +1,320 @@
 //#snippet;
 //#uncheck = jsThis,jsLoop;
 //#exclude = loader,allProcessor;
-/*!3.8.12 Licensed MIT*/
+/*!5.0.0 Licensed MIT*/
 /*
 author:kooboy_li@163.com
 loader:cmd
-enables:style,viewInit,resource,viewMerge,autoEndUpdate,linkage,updaterQuick,state,viewProtoMixins,simpleState,service,ceach
+enables:
 
-optionals:base,updaterDOM,updaterAsync,serviceCombine,servicePush,router,tipRouter,tipLockUrlRouter,edgeRouter,forceEdgeRouter,urlRewriteRouter,updateTitleRouter,cnum,defaultView,viewInitAsync,configIni,viewChildren,dispatcherRecast
+optionals:router
 */
 define('magix', () => {
-    if (typeof DEBUG == 'undefined') window.DEBUG = true;
-    let G_Type = o => Object.prototype.toString.call(o).slice(8, -1);
-let G_IsType = type => o => G_Type(o) == type;
-let G_IsObject = G_IsType('Object');
-let G_IsArray = G_IsType('Array');
-let $ = selector => G_DOCUMENT.querySelectorAll(selector);
-let G_Trigger = (element, type, data) => {
-    let e = G_DOCUMENT.createEvent('Events');
+    //VARS
+if (typeof DEBUG == 'undefined') window.DEBUG = true;
+let Counter = 0;
+let Empty = '';
+let Empty_Array = [];
+let Comma = ',';
+let Null = null;
+let Doc_Window = window;
+let Undefined = void Counter;
+let Doc_Document = document;
+let Timeout = Doc_Window.setTimeout;
+let Changed = 'changed';
+let Change = 'change';
+let Page_Unload = 'pageunload';
+let Value = 'value';
+let Tag_Static_Key = 'mxs';
+let Tag_View_Params_Key = 'mxv';
+let Hash_Key = '#';
+function Noop() { }
+let JSON_Stringify = JSON.stringify;
+let Doc_Body = Doc_Document.body;
+let Date_Now = Date.now;
+/*
+    关于spliter
+    出于安全考虑，使用不可见字符\u0000，然而，window手机上ie11有这样的一个问题：'\u0000'+"abc",结果却是一个空字符串，好奇特。
+ */
+let Spliter = '\x1e';
+let Prototype = 'prototype';
+let Params = 'params';
+let Path = 'path';
+let MX_View = 'mx-view';
+let Str_Object = 'object';
+let Type = o => Object[Prototype].toString.call(o).slice(8, -1);
+let IsObject = o => Type(o) == 'Object';
+let IsArray = Array.isArray;
+let GUID = prefix => (prefix || 'mx_') + Counter++;
+let MxGlobalView = GUID();
+let Mx_Cfg = {
+    rootId: GUID(),
+    defaultView: MxGlobalView,
+    error(e) {
+        throw e;
+    }
+};
+let IsPrimitive = args => !args || typeof args != Str_Object;
+let UpdateData = (newData, oldData, keys, unchanged) => {
+    let changed = 0,
+        now, old, p;
+    for (p in newData) {
+        now = newData[p];
+        old = oldData[p];
+        if ((!IsPrimitive(now) || old !== now) && !Has(unchanged, p)) {
+            keys[p] = 1;
+            changed = 1;
+        }
+        oldData[p] = now;
+    }
+    return changed;
+};
+let NodeIn = (a, b, r) => {
+    if (a && b) {
+        r = a == b;
+        if (!r) {
+            try {
+                r = (b.compareDocumentPosition(a) & 16) == 16;
+            } catch (_magix) { }
+        }
+    }
+    return r;
+};
+let {
+    assign: Assign,
+    keys: Keys,
+    hasOwnProperty: HasProp
+} = Object;
+let Header = Doc_Document.head;
+let Temp = Doc_Document.createElement('div');
+let GA = Temp.getAttribute;
+let GetAttribute = (node, attr) => GA.call(node, attr);
+let ApplyStyle = (key, css) => {
+    if (DEBUG && IsArray(key)) {
+        for (let i = 0; i < key.length; i += 2) {
+            ApplyStyle(key[i], key[i + 1]);
+        }
+        return;
+    }
+    if (css && !ApplyStyle[key]) {
+        ApplyStyle[key] = 1;
+        if (DEBUG) {
+            if (key.indexOf('$throw_') === 0) {
+                throw new Error(css);
+            }
+            Temp.innerHTML = `<style id="${key}">${css}`;
+            Header.appendChild(Temp.firstChild);
+        } else {
+            Temp.innerHTML = `<style>${css}`;
+            Header.appendChild(Temp.firstChild);
+        }
+    }
+};
+let ToTry = (fns, args, context, r, e) => {
+    args = args || Empty_Array;
+    if (!IsArray(fns)) fns = [fns];
+    if (!IsArray(args)) args = [args];
+    for (e of fns) {
+        try {
+            r = e && e.apply(context, args);
+        } catch (x) {
+            Mx_Cfg.error(x);
+        }
+    }
+    return r;
+};
+
+let Has = (owner, prop) => owner && HasProp.call(owner, prop);
+let TranslateData = (data, params) => {
+    let p, val;
+    if (IsPrimitive(params)) {
+        p = params + Empty;
+        if (p[0] == Spliter && Has(data, p)) {
+            params = data[p];
+        }
+    } else {
+        for (p in params) {
+            val = params[p];
+            val = TranslateData(data, val);
+            params[p] = val;
+        }
+    }
+    return params;
+};
+    let CacheSort = (a, b) => b.f - a.f || b.t - a.t;
+/**
+ * Magix.Cache 类
+ * @name Cache
+ * @constructor
+ * @param {Integer} [max] 缓存最大值，默认20
+ * @param {Integer} [buffer] 缓冲区大小，默认5
+ * @param {Function} [remove] 当缓存的元素被删除时调用
+ * @example
+ * let c = new Magix.cache(5,2);//创建一个可缓存5个，且缓存区为2个的缓存对象
+ * c.set('key1',{});//缓存
+ * c.get('key1');//获取
+ * c.del('key1');//删除
+ * c.has('key1');//判断
+ * //注意：缓存通常配合其它方法使用，在Magix中，对路径的解析等使用了缓存。在使用缓存优化性能时，可以达到节省CPU和内存的双赢效果
+ */
+function Cache(max, buffer, remove, me) {
+    me = this;
+    me.c = [];
+    me.b = buffer || 5; //buffer先取整，如果为0则再默认5
+    me.x = me.b + (max || 20);
+    me.r = remove;
+}
+
+Assign(Cache[Prototype], {
+    /**
+     * @lends Cache#
+     */
+    /**
+     * 获取缓存的值
+     * @param  {String} key
+     * @return {Object} 初始设置的缓存对象
+     */
+    get(key) {
+        let me = this;
+        let c = me.c;
+        let r = c[Spliter + key];
+        if (r) {
+            r.f++;
+            r.t = Counter++;
+            r = r.v;
+        }
+        return r;
+    },
+    /**
+     * 循环缓存
+     * @param  {Function} cb 回调
+     * @param  {Object} [ops] 回调时传递的额外参数
+     * @beta
+     * @module ceach|service
+     */
+    each(cb, ops, me, c, i) {
+        me = this;
+        c = me.c;
+        for (i of c) {
+            cb(i.v, ops, me);
+        }
+    },
+    /**
+     * 设置缓存
+     * @param {String} key 缓存的key
+     * @param {Object} value 缓存的对象
+     */
+    set(okey, value) {
+        let me = this;
+        let c = me.c;
+        let key = Spliter + okey;
+        let r = c[key];
+        let t = me.b;
+        if (!r) {
+            if (c.length >= me.x) {
+                c.sort(CacheSort);
+                while (t--) {
+                    r = c.pop();
+                    //为什么要判断r.f>0,考虑这样的情况：用户设置a,b，主动删除了a,重新设置a,数组中的a原来指向的对象残留在列表里，当排序删除时，如果不判断则会把新设置的删除，因为key都是a
+                    //
+                    if (r.f > 0) me.del(r.o); //如果没有引用，则删除
+                }
+            }
+            r = {
+                o: okey
+            };
+            c.push(r);
+            c[key] = r;
+        }
+        r.v = value;
+        r.f = 1;
+        r.t = Counter++;
+    },
+    /**
+     * 删除缓存
+     * @param  {String} key 缓存key
+     */
+    del(k) {
+        k = Spliter + k;
+        let c = this.c;
+        let r = c[k],
+            m = this.r;
+        if (r) {
+            r.f = -1;
+            r.v = Empty;
+            delete c[k];
+            if (m) {
+                ToTry(m, r.o);
+            }
+        }
+    },
+    /**
+     * 检测缓存中是否有给定的key
+     * @param  {String} key 缓存key
+     * @return {Boolean}
+     */
+    has(k) {
+        return Has(this.c, Spliter + k);
+    }
+});
+    let DispatchEvent = (element, type, data) => {
+    let e = Doc_Document.createEvent('Events');
     e.initEvent(type, true, true);
     for (let p in data) {
         e[p] = data[p];
     }
     element.dispatchEvent(e);
 };
-let G_TargetMatchSelector = (element, selector) => {
+let TargetMatchSelector = (element, selector) => {
     if (!selector || !element || element.nodeType !== 1) return 0;
     let matchesSelector = element.matchesSelector || element.webkitMatchesSelector || element.mozMatchesSelector || element.oMatchesSelector;
     return matchesSelector.call(element, selector);
 };
-let G_MxId = e => e._mx || (e._mx = G_Id('e'));
-let G_EventHandlers = {};
-let returnTrue = () => true,
-    returnFalse = () => false,
-    eventMethods = {
+let AttachMxId = e => e._mx || (e._mx = GUID('e'));
+let AttachEventHandlers = {};
+let ReturnTrue = () => true,
+    ReturnFalse = () => false,
+    EventMethods = {
         preventDefault: 'isDefaultPrevented',
-        //stopImmediatePropagation: 'isImmediatePropagationStopped',
         stopPropagation: 'isPropagationStopped'
     };
 
-let G_EventCompatible = e => {
+let EventCompatible = e => {
     if (!e.isDefaultPrevented) {
-        for (let key in eventMethods) {
-            let value = eventMethods[key];
+        for (let key in EventMethods) {
+            let value = EventMethods[key];
             let src = e[key];
             e[key] = (...a) => {
-                e[value] = returnTrue;
+                e[value] = ReturnTrue;
                 return src && src.apply(e, a);
             };
-            e[value] = returnFalse;
+            e[value] = ReturnFalse;
         }
         if (e.defaultPrevented !== undefined ? e.defaultPrevented :
             'returnValue' in e ? e.returnValue === false :
                 e.getPreventDefault && e.getPreventDefault())
-            e.isDefaultPrevented = returnTrue;
+            e.isDefaultPrevented = ReturnTrue;
     }
     return e;
 };
-let G_AddEvent = (element, type, data, fn) => {
-    let id = G_MxId(element);
-    let collections = G_EventHandlers[id] || (G_EventHandlers[id] = []);
+let AddEventListener = (element, type, fn, data) => {
+    let id = AttachMxId(element);
+    let collections = AttachEventHandlers[id] || (AttachEventHandlers[id] = []);
     let h = {
         'a': data && data.i,
         'b': fn,
         'c': type,
         'd'(e) {
-            e = G_EventCompatible(e);
-            //if (e.isImmediatePropagationStopped()) return;
+            e = EventCompatible(e);
             fn.call(element, e, data);
         }
     };
     collections.push(h);
     element.addEventListener(type, h['d'], data && data.m);
 };
-let G_RemoveEvent = (element, type, data, cb) => {
-    let id = G_MxId(element);
-    let collections = G_EventHandlers[id];
+let RemoveEventListener = (element, type, cb, data) => {
+    let id = AttachMxId(element);
+    let collections = AttachEventHandlers[id];
     if (collections) {
         let found;
         for (let c, i = collections.length; i--;) {
@@ -94,328 +333,172 @@ let G_RemoveEvent = (element, type, data, cb) => {
         }
     }
 };
-let G_DOMGlobalProcessor = (e, d) => {
-    //d = e.data;
+let GlobalDomEventProcessor = (e, d) => {
     e.eventTarget = d.e;
-    G_ToTry(d.f, e, d.v);
+    ToTry(d.f, e, d.v);
 };
-let G_DOMEventLibBind = (node, type, cb, remove, scope) => {
-    if (remove) {
-        G_RemoveEvent(node, type, scope, cb);
-    } else {
-        G_AddEvent(node, type, scope, cb);
-    }
-};
-    let G_COUNTER = 0;
-let G_EMPTY = '';
-let G_EMPTY_ARRAY = [];
-let G_COMMA = ',';
-let G_NULL = null;
-let G_WINDOW = window;
-let G_Undefined = void G_COUNTER;
-let G_DOCUMENT = document;
-let Timeout = G_WINDOW.setTimeout;
-let G_CHANGED = 'changed';
-let G_CHANGE = 'change';
-let G_PAGE_UNLOAD = 'pageunload';
-let G_VALUE = 'value';
-let G_Tag_Key = 'mxs';
-let G_Tag_Attr_Key = 'mxa';
-let G_Tag_View_Key = 'mxv';
-let G_Tag_View_Owner = 'mxo';
-let G_HashKey = '#';
-function G_NOOP() { }
-let JSONStringify = JSON.stringify;
-let G_DOCBODY; //initilize at vframe_root
-/*
-    关于spliter
-    出于安全考虑，使用不可见字符\u0000，然而，window手机上ie11有这样的一个问题：'\u0000'+"abc",结果却是一个空字符串，好奇特。
- */
-let G_SPLITER = '\x1e';
-let Magix_StrObject = 'object';
-let G_PROTOTYPE = 'prototype';
-let G_PARAMS = 'params';
-let G_PATH = 'path';
-let G_MX_VIEW = 'mx-view';
-// let Magix_PathRelativeReg = /\/\.(?:\/|$)|\/[^\/]+?\/\.{2}(?:\/|$)|\/\/+|\.{2}\//; // ./|/x/../|(b)///
-// let Magix_PathTrimFileReg = /\/[^\/]*$/;
-// let Magix_ProtocalReg = /^(?:https?:)?\/\//i;
-let Magix_PathTrimParamsReg = /[#?].*$/;
-let Magix_ParamsReg = /([^=&?\/#]+)=?([^&#?]*)/g;
-let Magix_IsParam = /(?!^)=|&/;
-let G_Id = prefix => (prefix || 'mx_') + G_COUNTER++;
-
-let Magix_Cfg = {
-    rootId: G_Id(),
     
-    error(e) {
-        throw e;
-    }
-};
+let Path_Trim_Params_Reg = /[#?].*$/;
+let Path_Params_Reg = /([^=&?\/#]+)=?([^&#?]*)/g;
+let Path_Is_Param_Reg = /(?!^)=|&/;
+let PathToObject = new Cache();
+let ParamsObjectTemp;
+let ParamsFn = (match, name, value) => {
+    try {
+        value = decodeURIComponent(value);
+    } catch (_magix) {
 
-let G_GetById = id => typeof id == Magix_StrObject ? id : G_DOCUMENT.getElementById(id);
-let G_IsPrimitive = args => !args || typeof args != Magix_StrObject;
-let G_Set = (newData, oldData, keys, unchanged) => {
-    let changed = 0,
-        now, old, p;
-    for (p in newData) {
-        now = newData[p];
-        old = oldData[p];
-        if ((!G_IsPrimitive(now) || old !== now) && !G_Has(unchanged, p)) {
-            keys[p] = 1;
-            changed = 1;
-        }
-        oldData[p] = now;
     }
-    return changed;
+    ParamsObjectTemp[name] = value;
 };
-let G_NodeIn = (a, b, r) => {
-    a = G_GetById(a);
-    b = G_GetById(b);
-    if (a && b) {
-        r = a == b;
-        if (!r) {
-            try {
-                r = (b.compareDocumentPosition(a) & 16) == 16;
-            } catch (_magix) { }
-        }
-    }
-    return r;
-};
-
-let {
-    assign: G_Assign,
-     keys: G_Keys,
-    hasOwnProperty: Magix_HasProp
-} = Object;
-
-
-let Header = document.head;
-let Temp = document.createElement('div');
-let GA = Temp.getAttribute;
-let G_GetAttribute = (node, attr) => GA.call(node, attr);
-let View_ApplyStyle = (key, css) => {
-    if (DEBUG && G_IsArray(key)) {
-        for (let i = 0; i < key.length; i += 2) {
-            View_ApplyStyle(key[i], key[i + 1]);
-        }
-        return;
-    }
-    if (css && !View_ApplyStyle[key]) {
-        View_ApplyStyle[key] = 1;
-        if (DEBUG) {
-            if (key.indexOf('$throw_') === 0) {
-                throw new Error(css);
-            }
-            Temp.innerHTML = `<style id="${key}">${css}`;
-            Header.appendChild(Temp.firstChild);
-        } else {
-            Temp.innerHTML = `<style>${css}`;
-            Header.appendChild(Temp.firstChild);
-        }
-    }
-};
-
-let IdIt = n => G_GetAttribute(n, 'id') || (n.id = G_Id());
-let G_ToTry = (fns, args, context, r, e) => {
-    args = args || G_EMPTY_ARRAY;
-    if (!G_IsArray(fns)) fns = [fns];
-    if (!G_IsArray(args)) args = [args];
-    for (e of fns) {
-        try {
-            r = e && e.apply(context, args);
-        } catch (x) {
-            Magix_Cfg.error(x);
-        }
-    }
-    return r;
-};
-
-let G_Has = (owner, prop) => owner && Magix_HasProp.call(owner, prop); //false 0 G_NULL '' undefined
-let G_TranslateData = (data, params) => {
-    let p, val;
-    if (G_IsPrimitive(params)) {
-        p = params + G_EMPTY;
-        if (p[0] == G_SPLITER && G_Has(data, p)) {
-            params = data[p];
-        }
-    } else {
-        for (p in params) {
-            val = params[p];
-            val = G_TranslateData(data, val);
-            params[p] = val;
-        }
-    }
-    return params;
-};
-    let Magix_CacheSort = (a, b) =>   b.f - a.f || b.t - a.t;
 /**
- * Magix.Cache 类
- * @name Cache
- * @constructor
- * @param {Integer} [max] 缓存最大值，默认20
- * @param {Integer} [buffer] 缓冲区大小，默认5
- * @param {Function} [remove] 当缓存的元素被删除时调用
+ * 把路径字符串转换成对象
+ * @param  {String} path 路径字符串
+ * @return {Object} 解析后的对象
  * @example
- * let c = new Magix.cache(5,2);//创建一个可缓存5个，且缓存区为2个的缓存对象
- * c.set('key1',{});//缓存
- * c.get('key1');//获取
- * c.del('key1');//删除
- * c.has('key1');//判断
- * //注意：缓存通常配合其它方法使用，在Magix中，对路径的解析等使用了缓存。在使用缓存优化性能时，可以达到节省CPU和内存的双赢效果
+ * let obj = Magix.parseUri('/xxx/?a=b&c=d');
+ * // obj = {path:'/xxx/',params:{a:'b',c:'d'}}
  */
-function G_Cache(max, buffer, remove, me) {
-    me = this;
-    me.c = [];
-    me.b = buffer || 5; //buffer先取整，如果为0则再默认5
-    me.x = me.b + (max || 20);
-    me.r = remove;
-}
-
-G_Assign(G_Cache[G_PROTOTYPE], {
-    /**
-     * @lends Cache#
-     */
-    /**
-     * 获取缓存的值
-     * @param  {String} key
-     * @return {Object} 初始设置的缓存对象
-     */
-    get(key) {
-        let me = this;
-        let c = me.c;
-        let r = c[G_SPLITER + key];
-        if (r) {
-            r.f++;
-            r.t = G_COUNTER++;
-            //console.log(r.f);
-            r = r.v;
-            //console.log('hit cache:'+key);
-        }
-        return r;
-    },
-    
-    
-    /**
-     * 循环缓存
-     * @param  {Function} cb 回调
-     * @param  {Object} [ops] 回调时传递的额外参数
-     * @beta
-     * @module ceach|service
-     */
-    each(cb, ops, me, c, i) {
-        me = this;
-        c = me.c;
-        for (i of c) {
-            cb(i.v, ops, me);
-        }
-    },
-    
-    /**
-     * 设置缓存
-     * @param {String} key 缓存的key
-     * @param {Object} value 缓存的对象
-     */
-    set(okey, value) {
-        let me = this;
-        let c = me.c;
-
-        let key = G_SPLITER + okey;
-        let r = c[key];
-        let t = me.b,
-            f;
-        if (!r) {
-            if (c.length >= me.x) {
-                c.sort(Magix_CacheSort);
-                while (t--) {
-                    
-                    r = c.pop();
-                    
-                    //为什么要判断r.f>0,考虑这样的情况：用户设置a,b，主动删除了a,重新设置a,数组中的a原来指向的对象残留在列表里，当排序删除时，如果不判断则会把新设置的删除，因为key都是a
-                    //
-                    if (r.f > 0) me.del(r.o); //如果没有引用，则删除
-                    
-                }
-                
-            }
-            r = {
-                
-                o: okey
-            };
-            c.push(r);
-            c[key] = r;
-        }
-        r.v = value;
-        r.f = 1;
-        r.t = G_COUNTER++;
-    },
-    /**
-     * 删除缓存
-     * @param  {String} key 缓存key
-     */
-    del(k) {
-        k = G_SPLITER + k;
-        let c = this.c;
-        let r = c[k],
-            m = this.r;
-        if (r) {
-            r.f = -1;
-            r.v = G_EMPTY;
-            delete c[k];
-            if (m) {
-                G_ToTry(m, r.o);
-            }
-        }
-    },
-    /**
-     * 检测缓存中是否有给定的key
-     * @param  {String} key 缓存key
-     * @return {Boolean}
-     */
-    has(k) {
-        return G_Has(this.c, G_SPLITER + k);
+let ParseUri = path => {
+    //把形如 /xxx/?a=b&c=d 转换成对象 {path:'/xxx/',params:{a:'b',c:'d'}}
+    //1. /xxx/a.b.c.html?a=b&c=d  path /xxx/a.b.c.html
+    //2. /xxx/?a=b&c=d  path /xxx/
+    //3. /xxx/#?a=b => path /xxx/
+    //4. /xxx/index.html# => path /xxx/index.html
+    //5. /xxx/index.html  => path /xxx/index.html
+    //6. /xxx/#           => path /xxx/
+    //7. a=b&c=d          => path ''
+    //8. /s?src=b#        => path /s params:{src:'b'}
+    //9. a=YT3O0sPH1No=   => path '' params:{a:'YT3O0sPH1No='}
+    //10.a=YT3O0sPH1No===&b=c => path '' params:{a:'YT3O0sPH1No===',b:'c'}
+    //11. ab?a&b          => path ab  params:{a:'',b:''}
+    //12. a=b&c           => path '' params:{a:'b',c:''}
+    //13. =abc            => path '=abc'
+    //14. ab=             => path '' params:{ab:''}
+    //15. a&b             => path '' params:{a:'',b:''}
+    let r = PathToObject.get(path),
+        pathname;
+    if (!r) {
+        ParamsObjectTemp = {};
+        pathname = path.replace(Path_Trim_Params_Reg, Empty);
+        if (path == pathname && Path_Is_Param_Reg.test(pathname)) pathname = Empty; //考虑 YT3O0sPH1No= base64后的pathname
+        path.replace(pathname, Empty).replace(Path_Params_Reg, ParamsFn);
+        PathToObject.set(path, r = {
+            a: pathname,
+            b: ParamsObjectTemp
+        });
     }
-});
-    
-    let G_Require = (name, fn) => {
+    return {
+        path: r.a,
+        params: Assign({}, r.b)
+    };
+};
+/**
+ * 转换成字符串路径
+ * @param  {String} path 路径
+ * @param {Object} params 参数对象
+ * @param {Object} [keo] 保留空白值的对象
+ * @return {String} 字符串路径
+ * @example
+ * let str = Magix.toUri('/xxx/',{a:'b',c:'d'});
+ * // str == /xxx/?a=b&c=d
+ *
+ * let str = Magix.toUri('/xxx/',{a:'',c:2});
+ *
+ * // str == /xxx/?a=&c=2
+ *
+ * let str = Magix.toUri('/xxx/',{a:'',c:2},{c:1});
+ *
+ * // str == /xxx/?c=2
+ * let str = Magix.toUri('/xxx/',{a:'',c:2},{a:1,c:1});
+ *
+ * // str == /xxx/?a=&c=2
+ */
+let ToUri = (path, params, keo) => {
+    let arr = [], v, p, f;
+    for (p in params) {
+        v = params[p] + Empty;
+        if (!keo || v || Has(keo, p)) {
+            v = encodeURIComponent(v);
+            arr.push(f = p + '=' + v);
+        }
+    }
+    if (f) {
+        path += (path && (~path.indexOf('?') ? '&' : '?')) + arr.join('&');
+    }
+    return path;
+};
+let ToMap = (list, key) => {
+    let e, map = {};
+    if (list) {
+        for (e of list) {
+            map[(key && e) ? e[key] : e] = key ? e : (map[e] | 0) + 1; //对于简单数组，采用累加的方式，以方便知道有多少个相同的元素
+        }
+    }
+    return map;
+};
+let ParseExprCache = new Cache();
+let ParseExpr = (expr, data, result) => {
+    if (ParseExprCache.has(expr)) {
+        result = ParseExprCache.get(expr);
+    } else {
+        //jshint evil:true
+        result = ToTry(Function(`return ${expr}`));
+        if (expr.indexOf(Spliter) > -1) {
+            TranslateData(data, result);
+        } else {
+            ParseExprCache.set(expr, result);
+        }
+    }
+    if (DEBUG) {
+        result = Safeguard(result);
+    }
+    return result;
+};
+    let MxDefaultViewEntity;
+    let Async_Require = (name, fn) => {
         if (name) {
             let a = [], n;
-            
-                if (G_WINDOW.seajs) {
-                    seajs.use(name, (...g) => {
-                        for (let m of g) {
-                            a.push(m && m.__esModule && m.default || m);
-                        }
-                        if (fn) fn(...a);
-                    });
-                } else {
-                    if (!G_IsArray(name)) name = [name];
-                    for (n of name) {
-                        n = require(n);
-                        a.push(n && n.__esModule && n.default || n);
+            if (MxGlobalView == name) {
+                if (!MxDefaultViewEntity) {
+                    MxDefaultViewEntity = View.extend();
+                }
+                fn(MxDefaultViewEntity);
+            } else if (Doc_Window.seajs) {
+                seajs.use(name, (...g) => {
+                    for (let m of g) {
+                        a.push(m && m.__esModule && m.default || m);
                     }
                     if (fn) fn(...a);
+                });
+            } else {
+                if (!IsArray(name)) name = [name];
+                for (n of name) {
+                    n = require(n);
+                    a.push(n && n.__esModule && n.default || n);
                 }
+                if (fn) fn(...a);
+            }
         } else {
             fn();
         }
     };
     function T() { }
-let G_Extend = (ctor, base, props, statics, cProto) => {
+let Extend = (ctor, base, props, statics, cProto) => {
     //bProto.constructor = base;
-    T[G_PROTOTYPE] = base[G_PROTOTYPE];
+    T[Prototype] = base[Prototype];
     cProto = new T();
-    G_Assign(cProto, props);
-    G_Assign(ctor, statics);
+    Assign(cProto, props);
+    Assign(ctor, statics);
     cProto.constructor = ctor;
-    ctor[G_PROTOTYPE] = cProto;
+    ctor[Prototype] = cProto;
     return ctor;
 };
     let Safeguard = data => data;
 if (DEBUG && window.Proxy) {
     let ProxiesPool = new Map();
     Safeguard = (data, getter, setter, root) => {
-        if (G_IsPrimitive(data)) {
+        if (IsPrimitive(data)) {
             return data;
         }
         let build = (prefix, o) => {
@@ -446,8 +529,8 @@ if (DEBUG && window.Proxy) {
                     if (!prefix && getter) {
                         getter(property);
                     }
-                    if (!root && G_Has(target, property) &&
-                        (G_IsArray(out) || G_IsObject(out))) {
+                    if (!root && Has(target, property) &&
+                        (IsArray(out) || IsObject(out))) {
                         return build(prefix + property + '.', out);
                     }
                     return out;
@@ -462,497 +545,12 @@ if (DEBUG && window.Proxy) {
         return build('', data);
     };
 }
-    let Magix_PathToObjCache = new G_Cache();
-let Magix_Booted = 0;
-//let Magix_PathCache = new G_Cache();
-let Magix_ParamsObjectTemp;
-let Magix_ParamsFn = (match, name, value) => {
-    try {
-        value = decodeURIComponent(value);
-    } catch (_magix) {
-
-    }
-    Magix_ParamsObjectTemp[name] = value;
-};
-/**
- * 路径
- * @param  {String} url  参考地址
- * @param  {String} part 相对参考地址的片断
- * @return {String}
- * @example
- * http://www.a.com/a/b.html?a=b#!/home?e=f   /   => http://www.a.com/
- * http://www.a.com/a/b.html?a=b#!/home?e=f   ./     =>http://www.a.com/a/
- * http://www.a.com/a/b.html?a=b#!/home?e=f   ../../    => http://www.a.com/
- * http://www.a.com/a/b.html?a=b#!/home?e=f   ./../  => http://www.a.com/
- * //g.cn/a.html
- */
-/*let G_Path = function(url, part) {
-    let key = url + G_SPLITER + part;
-    let result = Magix_PathCache.get(key),
-        domain = G_EMPTY,
-        idx;
-    if (!Magix_PathCache.has(key)) { //有可能结果为空，url='' path='';
-        let m = url.match(Magix_ProtocalReg);
-        if (m) {
-            idx = url.indexOf(Magix_SLASH, m[0].length);
-            if (idx < 0) idx = url.length;
-            domain = url.slice(0, idx);
-            url = url.slice(idx);
-        }
-        url = url.replace(Magix_PathTrimParamsReg, G_EMPTY).replace(Magix_PathTrimFileReg, Magix_SLASH);
-        if (!part.indexOf(Magix_SLASH)) {
-            url = G_EMPTY;
-        }
-        result = url + part;
-        console.log('url', url, 'part', part, 'result', result);
-        while (Magix_PathRelativeReg.test(result)) {
-            result = result.replace(Magix_PathRelativeReg, Magix_SLASH);
-        }
-        Magix_PathCache.set(key, result = domain + result);
-    }
-    return result;
-};*/
-
-/**
- * 把路径字符串转换成对象
- * @param  {String} path 路径字符串
- * @return {Object} 解析后的对象
- * @example
- * let obj = Magix.parseUri('/xxx/?a=b&c=d');
- * // obj = {path:'/xxx/',params:{a:'b',c:'d'}}
- */
-let G_ParseUri = path => {
-    //把形如 /xxx/?a=b&c=d 转换成对象 {path:'/xxx/',params:{a:'b',c:'d'}}
-    //1. /xxx/a.b.c.html?a=b&c=d  path /xxx/a.b.c.html
-    //2. /xxx/?a=b&c=d  path /xxx/
-    //3. /xxx/#?a=b => path /xxx/
-    //4. /xxx/index.html# => path /xxx/index.html
-    //5. /xxx/index.html  => path /xxx/index.html
-    //6. /xxx/#           => path /xxx/
-    //7. a=b&c=d          => path ''
-    //8. /s?src=b#        => path /s params:{src:'b'}
-    //9. a=YT3O0sPH1No=   => path '' params:{a:'YT3O0sPH1No='}
-    //10.a=YT3O0sPH1No===&b=c => path '' params:{a:'YT3O0sPH1No===',b:'c'}
-    //11. ab?a&b          => path ab  params:{a:'',b:''}
-    //12. a=b&c           => path '' params:{a:'b',c:''}
-    //13. =abc            => path '=abc'
-    //14. ab=             => path '' params:{ab:''}
-    //15. a&b             => path '' params:{a:'',b:''}
-    let r = Magix_PathToObjCache.get(path),
-        pathname;
-    if (!r) {
-        Magix_ParamsObjectTemp = {};
-        pathname = path.replace(Magix_PathTrimParamsReg, G_EMPTY);
-        if (path == pathname && Magix_IsParam.test(pathname)) pathname = G_EMPTY; //考虑 YT3O0sPH1No= base64后的pathname
-        path.replace(pathname, G_EMPTY).replace(Magix_ParamsReg, Magix_ParamsFn);
-        Magix_PathToObjCache.set(path, r = {
-            a: pathname,
-            b: Magix_ParamsObjectTemp
-        });
-    }
-    return {
-        path: r.a,
-        params: { ...r.b }
-    };
-};
-
-/**
- * 转换成字符串路径
- * @param  {String} path 路径
- * @param {Object} params 参数对象
- * @param {Object} [keo] 保留空白值的对象
- * @return {String} 字符串路径
- * @example
- * let str = Magix.toUri('/xxx/',{a:'b',c:'d'});
- * // str == /xxx/?a=b&c=d
- *
- * let str = Magix.toUri('/xxx/',{a:'',c:2});
- *
- * // str == /xxx/?a=&c=2
- *
- * let str = Magix.toUri('/xxx/',{a:'',c:2},{c:1});
- *
- * // str == /xxx/?c=2
- * let str = Magix.toUri('/xxx/',{a:'',c:2},{a:1,c:1});
- *
- * // str == /xxx/?a=&c=2
- */
-let G_ToUri = (path, params, keo) => {
-    let arr = [], v, p, f;
-    for (p in params) {
-        v = params[p] + G_EMPTY;
-        if (!keo || v || G_Has(keo, p)) {
-            v = encodeURIComponent(v);
-            arr.push(f = p + '=' + v);
-        }
-    }
-    if (f) {
-        path += (path && (~path.indexOf('?') ? '&' : '?')) + arr.join('&');
-    }
-    return path;
-};
-let G_ToMap = (list, key) => {
-    let e, map = {},
-        l;
-    if (list) {
-        for (e of list) {
-            map[(key && e) ? e[key] : e] = key ? e : (map[e] | 0) + 1; //对于简单数组，采用累加的方式，以方便知道有多少个相同的元素
-        }
-    }
-    return map;
-};
-
-let G_ParseCache = new G_Cache();
-let G_ParseExpr = (expr, data, result) => {
-    if (G_ParseCache.has(expr)) {
-        result = G_ParseCache.get(expr);
-    } else {
-        //jshint evil:true
-        result = G_ToTry(Function(`return ${expr}`));
-        if (expr.indexOf(G_SPLITER) > -1) {
-            G_TranslateData(data, result);
-        } else {
-            G_ParseCache.set(expr, result);
-        }
-    }
-    if (DEBUG) {
-        result = Safeguard(result);
-    }
-    return result;
-};
-/**
- * Magix对象，提供常用方法
- * @name Magix
- * @namespace
- */
-let Magix = {
     /**
-     * @lends Magix
-     */
-    /**
-     * 设置或获取配置信息
-     * @param  {Object} cfg 初始化配置参数对象
-     * @param {String} cfg.defaultView 默认加载的view
-     * @param {String} cfg.defaultPath 当无法从地址栏取到path时的默认值。比如使用hash保存路由信息，而初始进入时并没有hash,此时defaultPath会起作用
-     * @param {Object} cfg.routes path与view映射关系表
-     * @param {String} cfg.unmatchView 在routes里找不到匹配时使用的view，比如显示404
-     * @param {String} cfg.rootId 根view的id
-     * @param {Array} cfg.exts 需要加载的扩展
-     * @param {Function} cfg.error 发布版以try catch执行一些用户重写的核心流程，当出错时，允许开发者通过该配置项进行捕获。注意：您不应该在该方法内再次抛出任何错误！
-     * @example
-     * Magix.config({
-     *      rootId:'J_app_main',
-     *      defaultView:'app/views/layouts/default',//默认加载的view
-     *      defaultPath:'/home',
-     *      routes:{
-     *          "/home":"app/views/layouts/default"
-     *      }
-     * });
-     *
-     *
-     * let config = Magix.config();
-     *
-     * console.log(config.rootId);
-     *
-     * // 可以多次调用该方法，除内置的配置项外，您也可以缓存一些数据，如
-     * Magix.config({
-     *     user:'彳刂'
-     * });
-     *
-     * console.log(Magix.config('user'));
-     */
-    config(cfg, r) {
-        r = Magix_Cfg;
-        if (cfg) {
-            if (G_IsObject(cfg)) {
-                r = G_Assign(r, cfg);
-            } else {
-                r = r[cfg];
-            }
-        }
-        return r;
-    },
-
-    /**
-     * 应用初始化入口
-     * @function
-     * @param {Object} [cfg] 配置信息对象,更多信息请参考Magix.config方法
-     * @return {Object} 配置信息对象
-     * @example
-     * Magix.boot({
-     *      rootId:'J_app_main'
-     * });
-     *
-     */
-    
-    boot(cfg) {
-        G_Assign(Magix_Cfg, cfg);
-        G_Require(Magix_Cfg.exts, () => {
-            Vframe_Root().mountView(Magix_Cfg.defaultView);
-            
-        });
-    },
-    
-    
-    /**
-     * 把列表转化成hash对象
-     * @param  {Array} list 源数组
-     * @param  {String} [key]  以数组中对象的哪个key的value做为hash的key
-     * @return {Object}
-     * @example
-     * let map = Magix.toMap([1,2,3,5,6]);
-     * //=> {1:1,2:1,3:1,4:1,5:1,6:1}
-     *
-     * let map = Magix.toMap([{id:20},{id:30},{id:40}],'id');
-     * //=>{20:{id:20},30:{id:30},40:{id:40}}
-     *
-     * console.log(map['30']);//=> {id:30}
-     * //转成对象后不需要每次都遍历数组查询
-     */
-    toMap: G_ToMap,
-    
-    /**
-     * 以try cache方式执行方法，忽略掉任何异常
-     * @function
-     * @param  {Array} fns     函数数组
-     * @param  {Array} [args]    参数数组
-     * @param  {Object} [context] 在待执行的方法内部，this的指向
-     * @return {Object} 返回执行的最后一个方法的返回值
-     * @example
-     * let result = Magix.toTry(function(){
-     *     return true
-     * });
-     *
-     * // result == true
-     *
-     * let result = Magix.toTry(function(){
-     *     throw new Error('test');
-     * });
-     *
-     * // result == undefined
-     *
-     * let result = Magix.toTry([function(){
-     *     throw new Error('test');
-     * },function(){
-     *     return true;
-     * }]);
-     *
-     * // result == true
-     *
-     * //异常的方法执行时，可以通过Magix.config中的error来捕获，如
-     *
-     * Magix.config({
-     *     error:function(e){
-     *         console.log(e);//在这里可以进行错误上报
-     *     }
-     * });
-     *
-     * let result = Magix.toTry(function(a1,a2){
-     *     return a1 + a2;
-     * },[1,2]);
-     *
-     * // result == 3
-     * let o={
-     *     title:'test'
-     * };
-     * let result = Magix.toTry(function(){
-     *     return this.title;
-     * },null,o);
-     *
-     * // result == 'test'
-     */
-    toTry: G_ToTry,
-    
-    /**
-     * 转换成字符串路径
-     * @function
-     * @param  {String} path 路径
-     * @param {Object} params 参数对象
-     * @param {Object} [keo] 保留空白值的对象
-     * @return {String} 字符串路径
-     * @example
-     * let str = Magix.toUrl('/xxx/',{a:'b',c:'d'});
-     * // str == /xxx/?a=b&c=d
-     *
-     * let str = Magix.toUrl('/xxx/',{a:'',c:2});
-     *
-     * // str==/xxx/?a=&c=2
-     *
-     * let str = Magix.toUrl('/xxx/',{a:'',c:2},{c:1});
-     *
-     * // str == /xxx/?c=2
-     * let str = Magix.toUrl('/xxx/',{a:'',c:2},{a:1,c:1});
-     *
-     * // str == /xxx/?a=&c=2
-     */
-    toUrl: G_ToUri,
-    
-    /**
-     * 把路径字符串转换成对象
-     * @function
-     * @param  {String} path 路径字符串
-     * @return {Object} 解析后的对象
-     * @example
-     * let obj = Magix.parseUrl('/xxx/?a=b&c=d');
-     * // obj = {path:'/xxx/',params:{a:'b',c:'d'}}
-     */
-    parseUrl: G_ParseUri,
-    /*
-     * 路径
-     * @function
-     * @param  {String} url  参考地址
-     * @param  {String} part 相对参考地址的片断
-     * @return {String}
-     * @example
-     * http://www.a.com/a/b.html?a=b#!/home?e=f   /   => http://www.a.com/
-     * http://www.a.com/a/b.html?a=b#!/home?e=f   ./     =>http://www.a.com/a/
-     * http://www.a.com/a/b.html?a=b#!/home?e=f   ../../    => http://www.a.com/
-     * http://www.a.com/a/b.html?a=b#!/home?e=f   ./../  => http://www.a.com/
-     */
-    //path: G_Path,
-    /**
-     * 把src对象的值混入到aim对象上
-     * @function
-     * @param  {Object} aim    要mix的目标对象
-     * @param  {Object} src    mix的来源对象
-     * @example
-     * let o1={
-     *     a:10
-     * };
-     * let o2={
-     *     b:20,
-     *     c:30
-     * };
-     *
-     * Magix.mix(o1,o2);//{a:10,b:20,c:30}
-     *
-     *
-     * @return {Object}
-     */
-    mix: G_Assign,
-    /**
-     * 检测某个对象是否拥有某个属性
-     * @function
-     * @param  {Object}  owner 检测对象
-     * @param  {String}  prop  属性
-     * @example
-     * let obj={
-     *     key1:undefined,
-     *     key2:0
-     * }
-     *
-     * Magix.has(obj,'key1');//true
-     * Magix.has(obj,'key2');//true
-     * Magix.has(obj,'key3');//false
-     *
-     *
-     * @return {Boolean} 是否拥有prop属性
-     */
-    has: G_Has,
-    
-    /**
-     * 获取对象的keys
-     * @param {Object} object 获取key的对象
-     * @type {Array}
-     * @beta
-     * @module linkage|router
-     * @example
-     * let o = {
-     *     a:1,
-     *     b:2,
-     *     test:3
-     * };
-     * let keys = Magix.keys(o);
-     *
-     * // keys == ['a','b','test']
-     * @return {Array}
-     */
-    keys: G_Keys,
-    
-    /**
-     * 判断一个节点是否在另外一个节点内，如果比较的2个节点是同一个节点，也返回true
-     * @function
-     * @param {String|HTMLElement} node节点或节点id
-     * @param {String|HTMLElement} container 容器
-     * @example
-     * let root = $('html');
-     * let body = $('body');
-     *
-     * let r = Magix.inside(body[0],root[0]);
-     *
-     * // r == true
-     *
-     * let r = Magix.inside(root[0],body[0]);
-     *
-     * // r == false
-     *
-     * let r = Magix.inside(root[0],root[0]);
-     *
-     * // r == true
-     *
-     * @return {Boolean}
-     */
-    inside: G_NodeIn,
-    /**
-     * document.getElementById的简写
-     * @param {String} id
-     * @return {HTMLElement|Null}
-     * @example
-     * // html
-     * // <div id="root"></div>
-     *
-     * let node = Magix.node('root');
-     *
-     * // node => div[id='root']
-     *
-     * // node是document.getElementById的简写
-     */
-    node: G_GetById,
-    
-    /**
-     * 应用样式
-     * @beta
-     * @module style
-     * @param {String} prefix 样式的名称前缀
-     * @param {String} css 样式字符串
-     * @example
-     * // 该方法配合magix-combine工具使用
-     * // 更多信息可参考magix-combine工具：https://github.com/thx/magix-combine
-     * // 样式问题可查阅这里：https://github.com/thx/magix-combine/issues/6
-     *
-     */
-    applyStyle: View_ApplyStyle,
-    
-    /**
-     * 返回全局唯一ID
-     * @function
-     * @param {String} [prefix] 前缀
-     * @return {String}
-     * @example
-     *
-     * let id = Magix.guid('mx-');
-     * // id maybe mx-7
-     */
-    
-    guid: G_Id,
-    Cache: G_Cache,
-    use: G_Require,
-    dispatch(element, type, data) {
-        G_Trigger(G_GetById(element), type, data);
-    },
-    match: G_TargetMatchSelector,
-    type: G_Type,
-    nodeId: IdIt,
-    guard: Safeguard
-    
-};
-    
-/**
  * 多播事件对象
  * @name Event
  * @namespace
  */
-let MEvent = {
+let MxEvent = {
     /**
      * @lends MEvent
      */
@@ -964,7 +562,7 @@ let MEvent = {
      * @param {Boolean} [lastToFirst] 是否从后向前触发事件的监听列表
      */
     fire(name, data, remove, lastToFirst) {
-        let key = G_SPLITER + name,
+        let key = Spliter + name,
             me = this,
             list = me[key],
             end, len, idx, t;
@@ -978,8 +576,8 @@ let MEvent = {
                 t = list[idx];
                 if (t.f) {
                     t.x = 1;
-                    G_ToTry(t.f, data, me);
-                    t.x = G_EMPTY;
+                    ToTry(t.f, data, me);
+                    t.x = Empty;
                 } else if (!t.x) {
                     list.splice(idx, 1);
                     len--;
@@ -987,7 +585,7 @@ let MEvent = {
             }
         }
         list = me[`on${name}`];
-        if (list) G_ToTry(list, data, me);
+        if (list) ToTry(list, data, me);
         if (remove) me.off(name);
         return me;
     },
@@ -1010,7 +608,7 @@ let MEvent = {
      */
     on(name, f) {
         let me = this;
-        let key = G_SPLITER + name;
+        let key = Spliter + name;
         let list = me[key] || (me[key] = []);
         list.push({
             f
@@ -1023,7 +621,7 @@ let MEvent = {
      * @param {Function} [fn] 事件处理函数
      */
     off(name, fn) {
-        let key = G_SPLITER + name,
+        let key = Spliter + name,
             me = this,
             list = me[key],
             t;
@@ -1031,7 +629,7 @@ let MEvent = {
             if (list) {
                 for (t of list) {
                     if (t.f == fn) {
-                        t.f = G_EMPTY;
+                        t.f = Empty;
                         break;
                     }
                 }
@@ -1043,11 +641,7 @@ let MEvent = {
         return me;
     }
 };
-Magix.Event = MEvent;
-
-    
     let State_AppData = {};
-
 /**
  * 可观察的内存数据对象
  * @name State
@@ -1058,7 +652,7 @@ Magix.Event = MEvent;
  * @beta
  * @module router
  */
-let State = {
+let State = Assign({
     /**
      * @lends State
      */
@@ -1069,81 +663,26 @@ let State = {
      */
     get(key) {
         let r = key ? State_AppData[key] : State_AppData;
-        if (DEBUG) {
-            
-            r = Safeguard(r, dataKey => {
-                
-            }, (path, value) => {
-            });
-        }
         return r;
     },
     /**
      * 设置数据
      * @param {Object} data 数据对象
      */
-    set(data, unchanged) {
-        
-        G_Assign(State_AppData, data);
-        
-        return this;
-    },
-    ...MEvent
-    
-    /**
-     * 当State中的数据有改变化后触发
-     * @name State.changed
-     * @event
-     * @param {Object} e 事件对象
-     * @param {Object} e.keys  包含哪些数据变化的key集合
-     */
-};
-Magix.State = State;
-    
+    set(data) {
+        Assign(State_AppData, data);
+    }
+}, MxEvent);
     
     
     let Vframe_RootVframe;
-let Vframe_GlobalAlter;
 let Vframe_Vframes = {};
-let Vframe_NotifyCreated = vframe => {
-    if (!vframe['$a'] && !vframe['$b'] && vframe['$cc'] == vframe['$rc']) { //childrenCount === readyCount
-        if (!vframe['$cr']) { //childrenCreated
-            vframe['$cr'] = 1; //childrenCreated
-            vframe['$ca'] = 0; //childrenAlter
-            
-            vframe.fire('created'); //不在view上派发事件，如果view需要绑定，则绑定到owner上，view一般不用该事件，如果需要这样处理：this.owner.oncreated=function(){};this.ondestroy=function(){this.owner.off('created')}
-            
-        }
-        let { id, pId } = vframe, p = Vframe_Vframes[pId];
-        if (p && !G_Has(p['$d'], id)) { //readyChildren
-            p['$d'][id] = 1; //readyChildren
-            p['$rc']++; //readyCount
-            Vframe_NotifyCreated(p);
-        }
-    }
-};
-let Vframe_NotifyAlter = (vframe, e) => {
-    if (!vframe['$ca'] && vframe['$cr']) { //childrenAlter childrenCreated 当前vframe触发过created才可以触发alter事件
-        vframe['$cr'] = 0; //childrenCreated
-        vframe['$ca'] = 1; //childreAleter
-        
-        vframe.fire('alter', e);
-        
-        let { id, pId } = vframe, p = Vframe_Vframes[pId];
-        //let vom = vframe.owner;
-        if (p && G_Has(p['$d'], id)) { //readyMap
-            p['$rc']--; //readyCount
-            delete p['$d'][id]; //readyMap
-            Vframe_NotifyAlter(p, e);
-        }
-    }
-};
 let Vframe_TranslateQuery = (pId, src, params, pVf) => {
     pVf = Vframe_Vframes[pId];
     pVf = pVf && pVf['$v'];
     pVf = pVf ? pVf['$a'] : {};
-    if (src.indexOf(G_SPLITER) > 0) {
-        G_TranslateData(pVf, params);
+    if (src.indexOf(Spliter) > 0) {
+        TranslateData(pVf, params);
     }
 };
 /**
@@ -1153,36 +692,45 @@ let Vframe_TranslateQuery = (pId, src, params, pVf) => {
  */
 let Vframe_Root = (rootId, e) => {
     if (!Vframe_RootVframe) {
-        /*
-            尽可能的延迟配置，防止被依赖时，配置信息不正确
-        */
-        G_DOCBODY = G_DOCUMENT.body;
-
-        rootId = Magix_Cfg.rootId;
-        e = G_GetById(rootId);
+        rootId = Mx_Cfg.rootId;
+        e = Doc_Document.getElementById(rootId);
         if (!e) {
-            G_DOCBODY.id = rootId;
+            e = Doc_Body;
         }
-        Vframe_RootVframe = new Vframe(rootId);
+        Vframe_RootVframe = new Vframe(e);
     }
     return Vframe_RootVframe;
 };
 
 
 let Vframe_AddVframe = (id, vframe) => {
-    if (!G_Has(Vframe_Vframes, id)) {
+    if (!Has(Vframe_Vframes, id)) {
         Vframe_Vframes[id] = vframe;
-        
         Vframe.fire('add', {
             vframe
         });
-        
-        
+    }
+};
+let Vframe_RemoveVframe = (id, vframe) => {
+    vframe = Vframe_Vframes[id];
+    if (vframe) {
+        delete Vframe_Vframes[id];
+        vframe.root['$a'] = 0;
+        Vframe.fire('remove', {
+            vframe
+        });
+        vframe.id = vframe.root = vframe.pId = vframe['$c'] = Null; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
+        if (DEBUG) {
+            let nodes = Doc_Document.querySelectorAll('#' + id);
+            if (nodes.length > 1) {
+                Mx_Cfg.error(Error(`remove vframe error. dom id:"${id}" duplicate`));
+            }
+        }
     }
 };
 
 let Vframe_RunInvokes = (vf, list, o) => {
-    list = vf['$e']; //invokeList
+    list = vf['$a']; //invokeList
     while (list.length) {
         o = list.shift();
         if (!o.r) { //remove
@@ -1192,80 +740,25 @@ let Vframe_RunInvokes = (vf, list, o) => {
     }
 };
 
-let Vframe_Cache = [];
-let Vframe_RemoveVframe = (id, fcc, vframe) => {
-    vframe = Vframe_Vframes[id];
-    if (vframe) {
-        delete Vframe_Vframes[id];
-        
-        Vframe.fire('remove', {
-            vframe,
-            fcc //fireChildrenCreated
-        });
-        
-        if (DEBUG) {
-            let nodes = G_DOCUMENT.querySelectorAll('#' + id);
-            if (nodes.length > 1) {
-                Magix_Cfg.error(Error(`remove vframe error. dom id:"${id}" duplicate`));
-            }
-        }
-        id = G_GetById(id);
-        if (id) {
-            id['$a'] = 0;
-            
-            
-        }
-    }
-};
+let Vframe_GetVfId = node => node['$b'] || (node['$b'] = GUID());
 /**
  * Vframe类
  * @name Vframe
  * @class
  * @constructor
- * @borrows Event.on as on
- * @borrows Event.fire as fire
- * @borrows Event.off as off
- * @borrows Event.on as #on
- * @borrows Event.fire as #fire
- * @borrows Event.off as #off
- * @param {String} id vframe id
- * @property {String} id vframe id
- * @property {String} path 当前view的路径名，包括参数
- * @property {String} pId 父vframe的id，如果是根节点则为undefined
  */
-function Vframe(id, pId, me) {
-    me = this;
-    me.id = id;
-    if (DEBUG) {
-        let bad = 0;
-        if (!pId && id != Magix_Cfg.rootId) {
-            bad = 1;
-        }
-        if (!bad && id && pId) {
-            let parent = Vframe_Vframes[pId];
-            if (!parent || !parent['$c'][id]) {
-                bad = 1;
-            }
-        }
-        if (bad) {
-            console.error('beware! Avoid use new Magix.Vframe() outside');
-        }
-    }
-    //me.vId=id+'_v';
-    me['$c'] = {}; //childrenMap
-    me['$cc'] = 0; //childrenCount
-    me['$rc'] = 0; //readyCount
-    me['$f'] = me['$f'] || 1; //signature
-    me['$d'] = {}; //readyMap
-    
-    me['$e'] = []; //invokeList
-    
-    
+function Vframe(root, pId) {
+    let me = this;
+    let vfId = Vframe_GetVfId(root);
+    me.id = vfId;
+    me.root = root;
     me.pId = pId;
-    Vframe_AddVframe(id, me);
+    me['$c'] = {}; //childrenMap
+    me['$b'] = 1; //signature
+    me['$a'] = []; //invokeList
+    Vframe_AddVframe(vfId, me);
 }
-
-G_Assign(Vframe, {
+Assign(Vframe, {
     /**
      * @lends Vframe
      */
@@ -1281,27 +774,12 @@ G_Assign(Vframe, {
      * @param {String} id vframe的id
      * @return {Vframe|undefined} vframe对象
      */
-    get(id) {
-        return Vframe_Vframes[id];
+    get(node) {
+        return Vframe_Vframes[node['$b']];
     }
-    /**
-     * 注册vframe对象时触发
-     * @name Vframe.add
-     * @event
-     * @param {Object} e
-     * @param {Vframe} e.vframe
-     */
-    /**
-     * 删除vframe对象时触发
-     * @name Vframe.remove
-     * @event
-     * @param {Object} e
-     * @param {Vframe} e.vframe
-     * @param {Boolean} e.fcc 是否派发过created事件
-     */
-}, MEvent);
+}, MxEvent);
 
-G_Assign(Vframe[G_PROTOTYPE], MEvent, {
+Assign(Vframe[Prototype], {
     /**
      * @lends Vframe#
      */
@@ -1312,39 +790,34 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
      */
     mountView(viewPath, viewInitParams /*,keepPreHTML*/) {
         let me = this;
-        let id = me.id;
-        let node = G_GetById(id),
-            pId = me.pId, po, sign, view, params , ctors ;
-        if (!me['$g'] && node) { //alter
-            me['$g'] = 1;
-            me['$h'] = node.innerHTML; //.replace(ScriptsReg, ''); template
+        let { id, root, pId } = me;
+        let po, sign, view, params, ctors;
+        if (!me['$d'] && root) { //alter
+            me['$d'] = 1;
+            me['$e'] = root.innerHTML;
         }
-        me.unmountView(/*keepPreHTML*/);
-        me['$a'] = 0; //destroyed 详见unmountView
-        po = G_ParseUri(viewPath || G_EMPTY);
-        view = po[G_PATH];
-        if (node && view) {
-            me[G_PATH] = viewPath;
-            params = po[G_PARAMS];
+        me.unmountView();
+        po = ParseUri(viewPath || Empty);
+        view = po[Path];
+        if (root && view) {
+            me[Path] = viewPath;
+            params = po[Params];
             Vframe_TranslateQuery(pId, viewPath, params);
-            me['$i'] = po[G_PATH];
-            G_Assign(params, viewInitParams);
-            sign = me['$f'];
-            G_Require(view, TView => {
-                if (sign == me['$f']) { //有可能在view载入后，vframe已经卸载了
+            me['$f'] = view;
+            Assign(params, viewInitParams);
+            sign = me['$b'];
+            Async_Require(view, TView => {
+                if (sign == me['$b']) { //有可能在view载入后，vframe已经卸载了
                     if (!TView) {
-                        return Magix_Cfg.error(Error(`id:${id} cannot load:${view}`));
+                        return Mx_Cfg.error(Error(`id:${id} cannot load:${view}`));
                     }
-                    
                     ctors = View_Prepare(TView);
-                    
-                    view = new TView(id, me, params, ctors );
+                    view = new TView(id, root, me, params, ctors);
 
                     if (DEBUG) {
                         let viewProto = TView.prototype;
                         let importantProps = {
                             id: 1,
-                            updater: 1,
                             owner: 1,
                             '$l': 1,
                             '$r': 1,
@@ -1354,15 +827,15 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
                             '$e': 1
                         };
                         for (let p in view) {
-                            if (G_Has(view, p) && viewProto[p]) {
+                            if (Has(view, p) && viewProto[p]) {
                                 throw new Error(`avoid write ${p} at file ${viewPath}!`);
                             }
                         }
                         view = Safeguard(view, null, (key, value) => {
-                            if (G_Has(viewProto, key) ||
-                                (G_Has(importantProps, key) &&
+                            if (Has(viewProto, key) ||
+                                (Has(importantProps, key) &&
                                     (key != '$b' || !isFinite(value)) &&
-                                    (key != 'owner' || value !== 0))) {
+                                    ((key != 'owner' && key != 'root') || value !== Null))) {
                                 throw new Error(`avoid write ${key} at file ${viewPath}!`);
                             }
                         }, true);
@@ -1370,18 +843,14 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
                     me['$v'] = view;
                     
                     View_DelegateEvents(view);
-                    
-                     G_ToTry(view.init, params, view);
-                    
-                    
-                            view['$f']();
-                            if (!view.tmpl) { //无模板
-                                me['$g'] = 0; //不会修改节点，因此销毁时不还原
-                                if (!view['$g']) {
-                                    view.endUpdate();
-                                }
-                            }
-                            
+                    ToTry(view.init, params, view);
+                    view['$f']();
+                    if (!view.tmpl) { //无模板
+                        me['$d'] = 0; //不会修改节点，因此销毁时不还原
+                        if (!view['$g']) {
+                            view.endUpdate();
+                        }
+                    }
                 }
             });
         }
@@ -1389,48 +858,28 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
     /**
      * 销毁对应的view
      */
-    unmountView( /*keepPreHTML*/) {
+    unmountView() {
         let me = this;
-        let { '$v': v, id } = me,
-            node, reset;
-        
-        me['$e'] = []; //invokeList 销毁当前view时，连同调用列表一起销毁
-        
+        let { '$v': v, id, root } = me;
+        me['$a'] = [];
         if (v) {
-            if (!Vframe_GlobalAlter) {
-                reset = 1;
-                Vframe_GlobalAlter = {
-                    id
-                };
-            }
-            me['$a'] = 1; //用于标记当前vframe处于$v销毁状态，在当前vframe上再调用unmountZone时不派发created事件
-            me.unmountZone(0, 1);
-            Vframe_NotifyAlter(me, Vframe_GlobalAlter);
-
+            me.unmountZone();
             me['$v'] = 0; //unmountView时，尽可能早的删除vframe上的$v对象，防止$v销毁时，再调用该 vfrmae的类似unmountZone方法引起的多次created
             if (v['$b'] > 0) {
                 v['$b'] = 0;
                 delete Body_RangeEvents[id];
-                delete Body_RangeVframes[id];
-                
-                
+                delete Body_RangeVframes[id]
                 v.fire('destroy', 0, 1, 1);
-                
-                
                 View_DestroyAllResources(v, 1);
-                
                 View_DelegateEvents(v, 1);
-                v.owner = 0;
+                v.owner = v.root = Null;
             }
             v['$b']--;
-            node = G_GetById(id);
-            if (node && me['$g'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
-                node.innerHTML = me['$h'];
+            if (root && me['$d'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
+                root.innerHTML = me['$e'];
             }
-            if (reset)
-                Vframe_GlobalAlter = 0;
         }
-        me['$f']++; //增加signature，阻止相应的回调，见mountView
+        me['$b']++; //增加signature，阻止相应的回调，见mountView
     },
     /**
      * 加载vframe
@@ -1447,32 +896,19 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
      * view.owner.mountVframe('magix_vf_defer','app/views/list',{page:2})
      * //注意：动态向某个节点渲染view时，该节点无须是vframe标签
      */
-    mountVframe(vfId, viewPath, viewInitParams /*, keepPreHTML*/) {
+    mountVframe(node, viewPath, viewInitParams) {
         let me = this,
             vf, id = me.id, c = me['$c'];
-        Vframe_NotifyAlter(me, {
-            id: vfId
-        }); //如果在就绪的vframe上渲染新的vframe，则通知有变化
-        //let vom = me.owner;
+        let vfId = Vframe_GetVfId(node);
         vf = Vframe_Vframes[vfId];
         if (!vf) {
-            if (!G_Has(c, vfId)) { //childrenMap,当前子vframe不包含这个id
-                
-                me['$j'] = 0; //childrenList 清空缓存的子列表
-                
-                me['$cc']++; //childrenCount ，增加子节点
+            if (!Has(c, vfId)) { //childrenMap,当前子vframe不包含这个id
+                me['$g'] = 0; //childrenList 清空缓存的子列表
             }
             c[vfId] = vfId; //map
-            //
-            vf = Vframe_Cache.pop();
-            if (vf) {
-                Vframe.call(vf, vfId, id);
-            } else {
-                vf = new Vframe(vfId, id);
-            }
-            //vf = Vframe_GetVf(id, me.id);// new Vframe(id, me.id);
+            vf = new Vframe(node, id);
         }
-        vf.mountView(viewPath, viewInitParams /*,keepPreHTML*/);
+        vf.mountView(viewPath, viewInitParams);
         return vf;
     },
     /**
@@ -1486,12 +922,10 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
      *
      * view.onwer.mountZone('zone');//即可完成zone节点下的view渲染
      */
-    mountZone(zoneId, inner /*,keepPreHTML*/) {
-        let me = this;
-        let vf, id, vfs = [];
-        zoneId = zoneId || me.id;
-
-        let vframes = $(`${G_HashKey}${zoneId} [${G_MX_VIEW}]`);
+    mountZone(zone) {
+        let me = this, it;
+        zone = zone || me.root;
+        let vframes = zone.querySelectorAll(`[${MX_View}]`);
         /*
             body(#mx-root)
                 div(mx-vframe=true,mx-view='xx')
@@ -1507,66 +941,34 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
             不过就展现来讲，一般是不会出现嵌套的情况，出现的话，把里面有层级的vframe都挂到body上也未尝不可，比如brix2.0
          */
 
-        me['$b'] = 1; //hold fire creted
+        me['$h'] = 1; //hold fire creted
         //me.unmountZone(zoneId, 1); 不去清理，详情见：https://github.com/thx/magix/issues/27
-        
-        for (vf of vframes) {
-            if (!vf['$a']) { //防止嵌套的情况下深层的view被反复实例化
-                id = IdIt(vf);
-                vf['$a'] = 1;
-                vfs.push([id, G_GetAttribute(vf, G_MX_VIEW)]);
+
+        for (it of vframes) {
+            if (!it['$a']) { //防止嵌套的情况下深层的view被反复实例化
+                it['$a'] = 1;
+                me.mountVframe(it, GetAttribute(it, MX_View));
             }
         }
-        for ([id, vf] of vfs) {
-            if (DEBUG && document.querySelectorAll(`#${id}`).length > 1) {
-                Magix_Cfg.error(Error(`mount vframe error. dom id:"${id}" duplicate`));
-            }
-            if (DEBUG) {
-                if (vfs[id]) {
-                    Magix_Cfg.error(Error(`vf.id duplicate:${id} at ${me[G_PATH]}`));
-                } else {
-                    me.mountVframe(vfs[id] = id, vf);
-                }
-            } else {
-                me.mountVframe(id, vf);
-            }
-        }
-        me['$b'] = 0;
-        if (!inner) {
-            Vframe_NotifyCreated(me);
-        }
+        me['$h'] = 0;
     },
     /**
      * 销毁vframe
      * @param  {String} [id]      节点id
      */
-    unmountVframe(id /*,keepPreHTML*/, inner) { //inner 标识是否是由内部调用，外部不应该传递该参数
+    unmountVframe(node, isVframeId) { //inner 标识是否是由内部调用，外部不应该传递该参数
         let me = this,
-            vf;
-        id = id ? me['$c'][id] : me.id;
-        //let vom = me.owner;
-        vf = Vframe_Vframes[id];
+            vf, pId;
+        node = node ? me['$c'][isVframeId ? node : node['$b']] : me.id;
+        vf = Vframe_Vframes[node];
         if (vf) {
-            let { '$cr': cr, pId } = vf;
-            vf.unmountView(/*keepPreHTML*/);
-            Vframe_RemoveVframe(id, cr);
-            vf.id = vf.pId = vf['$c'] = vf['$d'] = 0; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
-            
-            vf['$g'] = 0;
-            
-            vf.off('alter');
-            vf.off('created');
-            //if (Vframe_Cache.length < 10) {
-            Vframe_Cache.push(vf);
-            //}
+            vf.unmountView();
+            pId = vf.pId;
+            Vframe_RemoveVframe(node);
             vf = Vframe_Vframes[pId];
-            if (vf && G_Has(vf['$c'], id)) { //childrenMap
-                delete vf['$c'][id]; //childrenMap
-                
-                vf['$j'] = 0;
-                
-                vf['$cc']--; //cildrenCount
-                if (!inner) Vframe_NotifyCreated(vf); //移除后通知完成事件
+            if (vf && Has(vf['$c'], node)) { //childrenMap
+                delete vf['$c'][node]; //childrenMap
+                vf['$g'] = 0;
             }
         }
     },
@@ -1574,16 +976,21 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
      * 销毁某个区域下面的所有子vframes
      * @param {HTMLElement|String} [zoneId] 节点对象或id
      */
-    unmountZone(zoneId, inner) {
+    unmountZone(root) {
         let me = this;
-        let p;
+        let p, vf, unmount;
         for (p in me['$c']) {
-            if (!zoneId || (p != zoneId && G_NodeIn(p, zoneId))) {
-                me.unmountVframe(p /*,keepPreHTML,*/, 1);
+            if (root) {
+                vf = Vframe_Vframes[p];
+                unmount = vf && NodeIn(vf.root, root);
+            } else {
+                unmount = 1;
+            }
+            if (unmount) {
+                me.unmountVframe(p, 1);
             }
         }
-        if (!inner) Vframe_NotifyCreated(me);
-    } ,
+    },
     /**
      * 获取父vframe
      * @param  {Integer} [level] 向上查找层级，默认1,取当前vframe的父级
@@ -1610,7 +1017,7 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
      */
     children(me) {
         me = this;
-        return me['$j'] || (me['$j'] = G_Keys(me['$c']));
+        return me['$g'] || (me['$g'] = Keys(me['$c']));
     },
     /**
      * 调用view的方法
@@ -1628,12 +1035,12 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
     invoke(name, args) {
         let result;
         let vf = this,
-            view, fn, o, list = vf['$e'],
+            view, fn, o, list = vf['$a'],
             key;
         if ((view = vf['$v']) && view['$g']) { //view rendered
-            result = (fn = view[name]) && G_ToTry(fn, args, view);
+            result = (fn = view[name]) && ToTry(fn, args, view);
         } else {
-            o = list[key = G_SPLITER + name];
+            o = list[key = Spliter + name];
             if (o) {
                 o.r = args === o.a; //参数一样，则忽略上次的
             }
@@ -1647,40 +1054,7 @@ G_Assign(Vframe[G_PROTOTYPE], MEvent, {
         }
         return result;
     }
-
-
-    
-
-
-    /**
-     * 子孙view修改时触发
-     * @name Vframe#alter
-     * @event
-     * @param {Object} e
-     */
-
-    /**
-     * 子孙view创建完成时触发
-     * @name Vframe#created
-     * @event
-     * @param {Object} e
-     */
 });
-Magix.Vframe = Vframe;
-
-
-/**
- * Vframe 中的2条线
- * 一：
- *     渲染
- *     每个Vframe有$cc(childrenCount)属性和$c(childrenItems)属性
- *
- * 二：
- *     修改与创建完成
- *     每个Vframe有rC(readyCount)属性和$r(readyMap)属性
- *
- *      fca firstChildrenAlter  fcc firstChildrenCreated
- */
     /*
     dom event处理思路
 
@@ -1726,7 +1100,7 @@ Magix.Vframe = Vframe;
         }
     }
  */
-let Body_EvtInfoCache = new G_Cache(30, 10);
+let Body_EvtInfoCache = new Cache(30, 10);
 let Body_EvtInfoReg = /(?:([\w\-]+)\x1e)?([^(]+)\(([\s\S]*)?\)/;
 let Body_RootEvents = {};
 let Body_SearchSelectorEvents = {};
@@ -1736,14 +1110,14 @@ let Body_Guid = 0;
 let Body_FindVframeInfo = (current, eventType) => {
     let vf, tempId, selectorObject, eventSelector, eventInfos = [],
         begin = current,
-        info = G_GetAttribute(current, `mx-${eventType}`),
+        info = GetAttribute(current, `mx-${eventType}`),
         match, view, vfs = [],
-        selectorVfId = G_HashKey,
+        selectorVfId = Hash_Key,
         backtrace = 0;
     if (info) {
         match = Body_EvtInfoCache.get(info);
         if (!match) {
-            match = info.match(Body_EvtInfoReg) || G_EMPTY_ARRAY;
+            match = info.match(Body_EvtInfoReg) || Empty_Array;
             match = {
                 v: match[1],
                 n: match[2],
@@ -1751,24 +1125,21 @@ let Body_FindVframeInfo = (current, eventType) => {
             };
             Body_EvtInfoCache.set(info, match);
         }
-        match = {
-            ...match,
-            r: info
-        };
+        match = Assign({}, match, { r: info });
     }
     //如果有匹配但没有处理的vframe或者事件在要搜索的选择器事件里
     if ((match && !match.v) || Body_SearchSelectorEvents[eventType]) {
-        if ((selectorObject = Body_RangeVframes[tempId = begin['$b']])
-            && selectorObject[begin['$d']] == 1) {
+        if ((selectorObject = Body_RangeVframes[tempId = begin['$d']])
+            && selectorObject[begin['$e']] == 1) {
             view = 1;
             selectorVfId = tempId;//如果节点有缓存，则使用缓存
         }
         if (!view) { //先找最近的vframe
             vfs.push(begin);
-            while (begin != G_DOCBODY && (begin = begin.parentNode)) { //找最近的vframe,且节点上没有mx-autonomy属性
-                if (Vframe_Vframes[tempId = begin.id] ||
-                    ((selectorObject = Body_RangeVframes[tempId = begin['$b']]) &&
-                        selectorObject[begin['$d']] == 1)) {
+            while (begin != Doc_Body && (begin = begin.parentNode)) { //找最近的vframe,且节点上没有mx-autonomy属性
+                if (Vframe_Vframes[tempId = begin['$b']] ||
+                    ((selectorObject = Body_RangeVframes[tempId = begin['$d']]) &&
+                        selectorObject[begin['$e']] == 1)) {
                     selectorVfId = tempId;
                     break;
                 }
@@ -1778,14 +1149,14 @@ let Body_FindVframeInfo = (current, eventType) => {
                 if (!(tempId = Body_RangeVframes[selectorVfId])) {
                     tempId = Body_RangeVframes[selectorVfId] = {};
                 }
-                selectorObject = info['$d'] || (info['$d'] = ++Body_Guid);
+                selectorObject = info['$e'] || (info['$e'] = ++Body_Guid);
                 tempId[selectorObject] = 1;
-                info['$b'] = selectorVfId;
+                info['$d'] = selectorVfId;
             }
         }
-        //if (selectorVfId != G_HashKey) { //从最近的vframe向上查找带有选择器事件的view
+        //if (selectorVfId != Hash_Key) { //从最近的vframe向上查找带有选择器事件的view
         //主要兼容服务端输出，不带id的情况
-        begin = current.id;
+        begin = current['$b'];
         if (Vframe_Vframes[begin]) {
             /*
                 如果当前节点是vframe的根节点，则把当前的vf置为该vframe
@@ -1820,7 +1191,7 @@ let Body_FindVframeInfo = (current, eventType) => {
                                 事件发生时，做为临界的根节点只能触发`$`绑定的事件，其它事件不能触发
                             */
                             if (!backtrace &&
-                                G_TargetMatchSelector(current, tempId)) {
+                                TargetMatchSelector(current, tempId)) {
                                 eventInfos.push(selectorObject);
                             }
                         } else if (backtrace) {
@@ -1851,13 +1222,13 @@ let Body_DOMEventProcessor = domEvent => {
     let vframe, view, eventName, fn;
     let lastVfId;
     let params, arr = [];
-    while (target != G_DOCBODY) {
+    while (target != Doc_Body) {
         eventInfos = Body_FindVframeInfo(target, type);
         if (eventInfos.length) {
             arr = [];
             for (let { v, r, n, i } of eventInfos) {
                 if (!v && DEBUG) {
-                    return Magix_Cfg.error(Error(`bad ${type}:${r}`));
+                    return Mx_Cfg.error(Error(`bad ${type}:${r}`));
                 }
                 if (lastVfId != v) {
                     if (lastVfId && domEvent.isPropagationStopped()) {
@@ -1869,17 +1240,13 @@ let Body_DOMEventProcessor = domEvent => {
                 view = vframe && vframe['$v'];
                 if (view) {
                     if (view['$g']) {
-                        eventName = n + G_SPLITER + type;
+                        eventName = n + Spliter + type;
                         fn = view[eventName];
                         if (fn) {
                             domEvent.eventTarget = target;
-                            params = i ? G_ParseExpr(i, view['$a']) : {};
-                            domEvent[G_PARAMS] = params;
-                            G_ToTry(fn, domEvent, view);
-                            //没发现实际的用途
-                            /*if (domEvent.isImmediatePropagationStopped()) {
-                                break;
-                            }*/
+                            params = i ? ParseExpr(i, view['$a']) : {};
+                            domEvent[Params] = params;
+                            ToTry(fn, domEvent, view);
                         }
                         if (DEBUG) {
                             if (!fn) { //检测为什么找不到处理函数
@@ -1902,8 +1269,8 @@ let Body_DOMEventProcessor = domEvent => {
             }
         }
         /*|| e.mxStop */
-        if (((ignore = Body_RangeEvents[fn = target['$b']]) &&
-            (ignore = ignore[target['$d']]) &&
+        if (((ignore = Body_RangeEvents[fn = target['$d']]) &&
+            (ignore = ignore[target['$e']]) &&
             ignore[type]) ||
             domEvent.isPropagationStopped()) { //避免使用停止事件冒泡，比如别处有一个下拉框，弹开，点击到阻止冒泡的元素上，弹出框不隐藏
             //如果从某个节点开始忽略某个事件的处理，则如果缓存中有待处理的节点，把这些节点owner.vframe处理成当前节点的owner.vframe
@@ -1914,27 +1281,27 @@ let Body_DOMEventProcessor = domEvent => {
         } else {
             //如果某个节点是view临界节点
             //先追加id，后续节点的owner.vframe则是该节点
-            lastVfId = target.id;
+            lastVfId = target['$b'];
             if (Vframe_Vframes[lastVfId]) {
                 arr.push(lastVfId);
             }
             //缓存
             arr.push(target);
         }
-        target = target.parentNode || G_DOCBODY;
+        target = target.parentNode || Doc_Body;
     }
     if ((fn = arr.length)) {
-        ignore = G_HashKey;
+        ignore = Hash_Key;
         for (; fn--;) {
             view = arr[fn];
             if (view.nodeType) {
                 if (!(eventInfos = Body_RangeEvents[ignore])) {
                     eventInfos = Body_RangeEvents[ignore] = {};
                 }
-                lastVfId = view['$d'] || (view['$d'] = ++Body_Guid);
+                lastVfId = view['$e'] || (view['$e'] = ++Body_Guid);
                 if (!(params = eventInfos[lastVfId])) {
                     params = eventInfos[lastVfId] = {};
-                    //view['$b'] = ignore;
+                    //view['$d'] = ignore;
                 }
                 params[type] = 1;
             } else {
@@ -1945,31 +1312,131 @@ let Body_DOMEventProcessor = domEvent => {
 };
 let Body_DOMEventBind = (type, searchSelector, remove) => {
     let counter = Body_RootEvents[type] | 0;
-    let offset = (remove ? -1 : 1);
+    let offset = (remove ? -1 : 1),
+        fn = remove ? RemoveEventListener : AddEventListener;
     if (!counter || remove === counter) { // remove=1  counter=1
-        G_DOMEventLibBind(G_DOCBODY, type, Body_DOMEventProcessor, remove);
+        fn(Doc_Body, type, Body_DOMEventProcessor);
     }
     Body_RootEvents[type] = counter + offset;
     if (searchSelector) { //记录需要搜索选择器的事件
         Body_SearchSelectorEvents[type] = (Body_SearchSelectorEvents[type] | 0) + offset;
     }
 };
+    if (DEBUG) {
+    var Updater_CheckInput = (view, html) => {
+        if (/<(?:input|textarea|select)/i.test(html)) {
+            let url = ParseUri(view.owner.path);
+            let found = false, hasParams = false;
+            for (let p in url.params) {
+                hasParams = true;
+                if (url.params[p][0] == Spliter) {
+                    found = true;
+                }
+            }
+            if (hasParams && !found) {
+                console.warn('[!use at to pass parameter] path:' + view.owner.path + ' at ' + (view.owner.parent().path));
+            }
+        }
+    };
+}
+let Updater_EM = {
+    '&': 'amp',
+    '<': 'lt',
+    '>': 'gt',
+    '"': '#34',
+    '\'': '#39',
+    '\`': '#96'
+};
+let Updater_ER = /[&<>"'\`]/g;
+let Updater_Safeguard = v => '' + (v == Null ? '' : v);
+let Updater_EncodeReplacer = m => `&${Updater_EM[m]};`;
+let Updater_Encode = v => Updater_Safeguard(v).replace(Updater_ER, Updater_EncodeReplacer);
+
+let Updater_UM = {
+    '!': '%21',
+    '\'': '%27',
+    '(': '%28',
+    ')': '%29',
+    '*': '%2A'
+};
+let Updater_URIReplacer = m => Updater_UM[m];
+let Updater_URIReg = /[!')(*]/g;
+let Updater_EncodeURI = v => encodeURIComponent(Updater_Safeguard(v)).replace(Updater_URIReg, Updater_URIReplacer);
+
+let Updater_QR = /[\\'"]/g;
+let Updater_EncodeQ = v => Updater_Safeguard(v).replace(Updater_QR, '\\$&');
+
+let Updater_Ref = ($$, v, k, f) => {
+    for (f = $$[Spliter]; --f;)
+        if ($$[k = Spliter + f] === v) return k;
+    $$[k = Spliter + $$[Spliter]++] = v;
+    return k;
+};
+let Updater_Digest = (view, digesting) => {
+    let keys = view['$h'],
+        changed = view['$i'],
+        vf = view.owner,
+        viewId = view.id,
+        ref = { v: [] },
+        tmpl, vdom, data = view['$d'],
+        refData = view['$a'],
+        redigest = trigger => {
+            if (digesting.i < digesting.length) {
+                Updater_Digest(view, digesting);
+            } else {
+                ref = digesting.slice();
+                digesting.i = digesting.length = 0;
+                if (trigger) {
+                    view.fire('domready');
+                }
+                ToTry(ref);
+            }
+        };
+    digesting.i = digesting.length;
+    view['$i'] = 0;
+    view['$h'] = {};
+    if (changed && view['$b'] > 0 && (tmpl = view.tmpl)) {
+        view.fire('dompatch');
+        delete Body_RangeEvents[viewId];
+        delete Body_RangeVframes[viewId];
+        vdom = tmpl(data, Q_Create, viewId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, IsArray, Assign);
+        if (DEBUG) {
+            Updater_CheckInput(view, vdom['a']);
+        }
+        V_SetChildNodes(view.root, view['$j'], vdom, ref, vf, keys);
+        view['$j'] = vdom;
+        /*
+            在dom diff patch时，如果已渲染的vframe有变化，则会在vom tree上先派发created事件，同时传递inner标志，vom tree处理alter事件派发状态，未进入created事件派发状态
+
+            patch完成后，需要设置vframe hold fire created事件，因为带有assign方法的view在调用render后，vom tree处于就绪状态，此时会导致提前派发created事件，应该hold，统一在endUpdate中派发
+
+            有可能不需要endUpdate，所以hold fire要视情况而定
+        */
+        vf['$h'] = tmpl = ref.c || !view['$g'];
+        for (vdom of ref.v) {
+            vdom['$f']();
+        }
+        if (tmpl) {
+            view.endUpdate();
+        }
+        redigest(1);
+    } else {
+        redigest();
+    }
+};
     
-    
-    
-//let Q_VfToVNodes={};
-let Q_Create = (tag/*, views*/, children, props, unary) => {
+let Q_Create = (tag, children, props, unary) => {
     //html=tag+to_array(attrs)+children.html
     let token;
     if (tag) {
         props = props || {};
-        let compareKey = G_EMPTY,
+        let compareKey = Empty,
             hasMxv,
             prop, value, c,
             reused = {},
             outerHTML = '<' + tag,
             attrs,
-            innerHTML = G_EMPTY,
+            innerHTML = Empty,
             newChildren = [],
             prevNode;
         if (children) {
@@ -1994,8 +1461,7 @@ let Q_Create = (tag/*, views*/, children, props, unary) => {
                         reused[c['d']] = (reused[c['d']] || 0) + 1;
                     }
                     //force diff children
-                    if (c['e'] ||
-                        V_SPECIAL_PROPS[c['b']]) {
+                    if (c['e']) {
                         hasMxv = 1;
                     }
                     prevNode = c;
@@ -2006,33 +1472,27 @@ let Q_Create = (tag/*, views*/, children, props, unary) => {
         for (prop in props) {
             value = props[prop];
             //布尔值
-            if (value === false || value == G_NULL) {
+            if (value === false || value == Null) {
                 delete props[prop];
                 continue;
             } else if (value === true) {
-                value = G_EMPTY;
+                value = Empty;
             }
             if (prop == 'id') {//如果有id优先使用
                 compareKey = value;
-            } else if (prop == G_MX_VIEW && value && !compareKey) {
+            } else if (prop == MX_View && value && !compareKey) {
                 //否则如果是组件,则使用组件的路径做为key
-                compareKey = G_ParseUri(value)[G_PATH];
-            } else if (prop == G_Tag_Key && !compareKey) {
+                compareKey = ParseUri(value)[Path];
+            } else if (prop == Tag_Static_Key && !compareKey) {
                 compareKey = value;
-            } else if (prop == G_Tag_View_Key) {
+            } else if (prop == Tag_View_Params_Key) {
                 hasMxv = 1;
             }
-            if (prop == 'x-html') {
+            if (prop == Value && tag == V_TEXTAREA) {
                 innerHTML = value;
-                newChildren = [{
-                    'b': G_SPLITER,
-                    'a': value
-                }];
-                delete props[prop];
-            } else {
-                props[prop] = value;
-                outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
             }
+            props[prop] = value;
+            outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
         }
         attrs = outerHTML;
         if (unary) {
@@ -2040,15 +1500,12 @@ let Q_Create = (tag/*, views*/, children, props, unary) => {
         } else {
             outerHTML += `>${innerHTML}</${tag}>`;
         }
-        // if (props[G_MX_VIEW]) {
-        //     views.push(newChildren);
-        // }
         token = {
             'a': outerHTML,
             'c': innerHTML,
             'd': compareKey,
             'b': tag,
-            'e': hasMxv,
+            'e': hasMxv || Has(V_SPECIAL_PROPS, tag),
             'f': attrs,
             'g': props,
             'h': newChildren,
@@ -2057,27 +1514,34 @@ let Q_Create = (tag/*, views*/, children, props, unary) => {
         };
     } else {
         token = {
-            'b': V_TEXT_NODE,
-            //'c': children,
-            'a': children + G_EMPTY
+            'b': props ? Spliter : V_TEXT_NODE,
+            'a': children + Empty
         };
     }
     return token;
 };
-    let V_SPECIAL_PROPS = {
-    input: [G_VALUE, 'checked'],
-    textarea: [G_VALUE],
-    option: ['selected']
+    let V_TEXTAREA = 'textarea';
+let V_SPECIAL_PROPS = {
+    input: {
+        [Value]: 1,
+        checked: 1
+    },
+    [V_TEXTAREA]: {
+        [Value]: 1
+    },
+    option: {
+        selected: 1
+    }
 };
 
 if (DEBUG) {
     var CheckNodes = (realNodes, vNodes) => {
         let index = 0;
         if (vNodes.length != 1 ||
-            vNodes[0]['b'] != G_SPLITER) {
+            vNodes[0]['b'] != Spliter) {
             for (let e of realNodes) {
-                if (e.nodeName.toLowerCase() != vNodes[index].b) {
-                    console.warn('real not match virtual!');
+                if (e.nodeName.toLowerCase() != vNodes[index]['b']) {
+                    console.error('real not match virtual!');
                 }
                 index++;
             }
@@ -2085,77 +1549,55 @@ if (DEBUG) {
     };
 }
 
-let V_TEXT_NODE = G_COUNTER;
+let V_TEXT_NODE = Counter;
 if (DEBUG) {
     V_TEXT_NODE = '#text';
 }
-let V_UnmountVframs = (vf, n, id) => {
-    if (n.nodeType == 1) {
-        id = IdIt(n);
-        if (vf['$c'][id]) {
-            vf.unmountVframe(id, 1);
-        } else {
-            vf.unmountZone(id, 1);
-        }
-    }
-};
 let V_NSMap = {
     svg: 'http://www.w3.org/2000/svg',
     math: 'http://www.w3.org/1998/Math/MathML'
 };
-let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref) => {
+let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
     let key, value,
+        specials = V_SPECIAL_PROPS[lastVDOM['b']],
         nMap = newVDOM['g'],
         oMap = lastVDOM['g'];
-    if (lastVDOM) {
-        for (key in oMap) {
-            if (!G_Has(nMap, key)) {//如果旧有新木有
-                if (key == 'id') {
-                    ref.d.push([oldNode, G_EMPTY]);
-                } else {
+    if (common) {
+        if (lastVDOM) {
+            for (key in oMap) {
+                if (!Has(specials, key) && !Has(nMap, key)) {//如果旧有新木有
                     ref.c = 1;
                     oldNode.removeAttribute(key);
                 }
             }
         }
-    }
-    for (key in nMap) {
-        value = nMap[key];
-        //旧值与新值不相等
-        if (!lastVDOM || oMap[key] !== value) {
-            if (key == 'id') {
-                ref.d.push([oldNode, value]);
-            } else {
-                ref.c = 1;
-                oldNode.setAttribute(key, value);
+        for (key in nMap) {
+            if (!Has(specials, key)) {
+                value = nMap[key];
+                //旧值与新值不相等
+                if (!lastVDOM || oMap[key] !== value) {
+                    ref.c = 1;
+                    oldNode.setAttribute(key, value);
+                }
             }
+        }
+    }
+    for (key in specials) {
+        value = Has(nMap, key) ? key != Value || nMap[key] : key == Value && Empty;
+        if (oldNode[key] != value) {
+            ref.c = 1;
+            oldNode[key] = value;
         }
     }
 };
 
-let V_SpecialDiff = (oldNode, lastVDOM, newVDOM) => {
-    let tag = lastVDOM['b'], c, now;
-    let specials = V_SPECIAL_PROPS[tag];
-    let nMap = newVDOM['g'];
-    let result = 0;
-    if (specials) {
-        for (c of specials) {
-            now = G_Has(nMap, c) ? c != G_VALUE || nMap[c] : c == G_VALUE && G_EMPTY;
-            if (oldNode[c] != now) {
-                result = 1;
-                oldNode[c] = now;
-            }
-        }
-    }
-    return result;
-};
 let V_CreateNode = (vnode, owner, ref) => {
     let tag = vnode['b'], c;
     if (tag == V_TEXT_NODE) {
-        c = G_DOCUMENT.createTextNode(vnode['a']);
+        c = Doc_Document.createTextNode(vnode['a']);
     } else {
-        c = G_DOCUMENT.createElementNS(V_NSMap[tag] || owner.namespaceURI, tag);
-        V_SetAttributes(c, 0, vnode, ref);
+        c = Doc_Document.createElementNS(V_NSMap[tag] || owner.namespaceURI, tag);
+        V_SetAttributes(c, 0, vnode, ref, 1);
         if (vnode['c']) {
             c.innerHTML = vnode['c'];
         }
@@ -2164,8 +1606,7 @@ let V_CreateNode = (vnode, owner, ref) => {
 };
 let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
     if (lastVDOM) {//view首次初始化，通过innerHTML快速更新
-        if (
-            lastVDOM['e'] ||
+        if (lastVDOM['e'] ||
             lastVDOM['c'] != newVDOM['c']) {
             let i, oi = 0,
                 oldChildren = lastVDOM['h'],
@@ -2174,7 +1615,6 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 reused = newVDOM['i'],
                 nodes = realNode.childNodes, compareKey,
                 keyedNodes = {},
-                realIndex = 0,
                 oldVIndex = 0;
             for (i = oldCount; i--;) {
                 oc = oldChildren[i];
@@ -2184,69 +1624,54 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     compareKey.push(nodes[i]);
                 }
             }
-            
+            if (DEBUG && realNode.nodeName != 'TEXTAREA') {
+                CheckNodes(nodes, oldChildren);
+            }
             for (i = 0; i < newCount; i++) {
                 nc = newChildren[i];
-                
                 oc = oldChildren[oldVIndex];
-                
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
-                    while (compareKey != nodes[realIndex]) {//如果找到的节点和当前不同，则移动
-                        realNode.appendChild(nodes[realIndex]);
-                        
+                    while (compareKey != nodes[i]) {//如果找到的节点和当前不同，则移动
+                        realNode.appendChild(nodes[i]);
                         oldChildren.push(oldChildren[oldVIndex]);
                         oldChildren.splice(oldVIndex, 1);
                         oc = oldChildren[oldVIndex];
-                        
-                        
+                        if (DEBUG) {
+                            CheckNodes(nodes, oldChildren);
+                        }
                     }
                     if (reused[oc['d']]) {
                         reused[oc['d']]--;
                     }
-                    
                     V_SetNode(compareKey, realNode, oc, nc, ref, vframe, keys);
-                    
                 } else if (oc) {//有旧节点，则更新
                     if (keyedNodes[oc['d']] &&
                         reused[oc['d']]) {
-                        //oldChildren.splice(i, 0, nc);//插入一个占位符，在接下来的比较中才能一一对应
                         oldCount++;
                         ref.c = 1;
-                        
-                        realNode.insertBefore(V_CreateNode(nc, realNode, ref), nodes[realIndex]);
+                        realNode.insertBefore(V_CreateNode(nc, realNode, ref), nodes[i]);
                         oldVIndex--;
-                        
                     } else {
-                        
-                        V_SetNode(nodes[realIndex], realNode, oc, nc, ref, vframe, keys);
-                        
-                        //ref.c = 1;
+                        V_SetNode(nodes[i], realNode, oc, nc, ref, vframe, keys);
                     }
                 } else {//添加新的节点
-                    
                     realNode.appendChild(V_CreateNode(nc, realNode, ref));
-                    
                     ref.c = 1;
                 }
-                
                 oldVIndex++;
-                
-                realIndex++;
             }
             for (i = newCount; i < oldCount; i++) {
-                
                 oi = nodes[newCount];//删除多余的旧节点
-                
-                V_UnmountVframs(vframe, oi);
+                if (oi.nodeType == 1) {
+                    vframe.unmountZone(oi);
+                }
                 if (DEBUG) {
                     if (!oi.parentNode) {
                         console.error('Avoid remove node on view.destroy in digesting');
                     }
                 }
-                
                 realNode.removeChild(oi);
-                
             }
         }
     } else {
@@ -2254,45 +1679,45 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
         realNode.innerHTML = newVDOM['c'];
     }
 };
-let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys
-                ) => {
+let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
     if (DEBUG) {
-        if (lastVDOM['b'] != G_SPLITER &&
-            newVDOM['b'] != G_SPLITER) {
+        if (lastVDOM['b'] != Spliter &&
+            newVDOM['b'] != Spliter) {
             if (oldParent.nodeName == 'TEMPLATE') {
                 console.error('unsupport template tag');
             }
-            if ((realNode.nodeName == '#text' && lastVDOM['b'] != '#text') || (
-                realNode.nodeName != '#text' && realNode.nodeName.toLowerCase() != lastVDOM['b'])) {
+            if (
+                (realNode.nodeName == '#text' &&
+                    lastVDOM['b'] != '#text') ||
+                (realNode.nodeName != '#text' &&
+                    realNode.nodeName.toLowerCase() != lastVDOM['b'])) {
                 console.error('Your code is not match the DOM tree generated by the browser. near:' + lastVDOM['c'] + '. Is that you lost some tags or modified the DOM tree?');
             }
         }
     }
     let lastAMap = lastVDOM['g'],
-        newAMap = newVDOM['g'];
-    if (
-        V_SpecialDiff(realNode, lastVDOM, newVDOM) ||
-        lastVDOM['e'] ||
+        newAMap = newVDOM['g'],
+        lastNodeTag = lastVDOM['b'];
+    if (lastVDOM['e'] ||
         lastVDOM['a'] != newVDOM['a']) {
-        if (lastVDOM['b'] == newVDOM['b']) {
-            if (lastVDOM['b'] == V_TEXT_NODE) {
+        if (lastNodeTag == newVDOM['b']) {
+            if (lastNodeTag == V_TEXT_NODE) {
                 ref.c = 1;
                 realNode.nodeValue = newVDOM['a'];
-                
-            } else if (lastVDOM['b'] == G_SPLITER) {
+            } else if (lastNodeTag == Spliter) {
                 ref.c = 1;
                 oldParent.innerHTML = newVDOM['a'];
-                
-            } else if (!lastAMap[G_Tag_Key] ||
-                lastAMap[G_Tag_Key] != newAMap[G_Tag_Key]) {
-                let newMxView = newAMap[G_MX_VIEW],
-                    newHTML = newVDOM['c'];
-                let updateAttribute = lastVDOM['f'] != newVDOM['f'],
+            } else if (!lastAMap[Tag_Static_Key] ||
+                lastAMap[Tag_Static_Key] != newAMap[Tag_Static_Key]) {
+                let newMxView = newAMap[MX_View],
+                    newHTML = newVDOM['c'],
+                    commonAttrs = lastVDOM['f'] != newVDOM['f'],
+                    updateAttribute = Has(V_SPECIAL_PROPS, lastNodeTag) || commonAttrs,
                     updateChildren, unmountOld,
-                    oldVf = Vframe_Vframes[realNode.id],
+                    oldVf = Vframe_Vframes[realNode['$b']],
                     assign,
                     view,
-                    uri = newMxView && G_ParseUri(newMxView),
+                    uri = newMxView && ParseUri(newMxView),
                     params,
                     htmlChanged,
                     paramsChanged;
@@ -2308,33 +1733,32 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys
                     当传递第一份数据时，input显示值xl，这时候用户修改了input的值且使用第二份数据重新渲染这个view，问input该如何显示？
                 */
                 if (updateAttribute) {
-                    V_SetAttributes(realNode, lastVDOM, newVDOM, ref);
+                    V_SetAttributes(realNode, lastVDOM, newVDOM, ref, commonAttrs);
                 }
                 //旧节点有view,新节点有view,且是同类型的view
                 if (newMxView && oldVf &&
-                    oldVf['$i'] == uri[G_PATH] &&
-                    lastAMap.id == newAMap.id &&//id如果不一样也要销毁，只有id同时存在且相同或同时不存在id才可以
+                    oldVf['$f'] == uri[Path] &&
                     (view = oldVf['$v'])) {
                     htmlChanged = newHTML != lastVDOM['c'];
-                    paramsChanged = newMxView != oldVf[G_PATH];
-                    assign = lastAMap[G_Tag_View_Key];
+                    paramsChanged = newMxView != oldVf[Path];
+                    assign = lastAMap[Tag_View_Params_Key];
                     if (!htmlChanged && !paramsChanged && assign) {
-                        params = assign.split(G_COMMA);
+                        params = assign.split(Comma);
                         for (assign of params) {
-                            if (assign == G_HashKey || G_Has(keys, assign)) {
+                            if (assign == Hash_Key || Has(keys, assign)) {
                                 paramsChanged = 1;
                                 break;
                             }
                         }
                     }
                     if (paramsChanged || htmlChanged || updateAttribute) {
-                        assign = view['$g'] && view['$h'];
+                        assign = view['$g'] && view['$n'];
                         //如果有assign方法,且有参数或html变化
                         if (assign) {
-                            params = uri[G_PARAMS];
+                            params = uri[Params];
                             //处理引用赋值
                             Vframe_TranslateQuery(oldVf.pId, newMxView, params);
-                            oldVf[G_PATH] = newMxView;//update ref
+                            oldVf[Path] = newMxView;//update ref
                             //如果需要更新，则进行更新的操作
                             uri = {
                                 //node: newVDOM,//['h'],
@@ -2347,7 +1771,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys
                                 query: paramsChanged
                             };
                             //updateAttribute = 1;
-                            if (G_ToTry(assign, [params, uri], view)) {
+                            if (ToTry(assign, [params, uri], view)) {
                                 ref.v.push(view);
                             }
                             //默认当一个组件有assign方法时，由该方法及该view上的render方法完成当前区域内的节点更新
@@ -2372,38 +1796,31 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys
                 //自闭合标签不再检测子节点
                 if (updateChildren &&
                     !newVDOM['j']) {
-                    //ref.c = 1;
-                    V_SetChildNodes(realNode, lastVDOM, newVDOM, ref, vframe, keys
-                );
+                    V_SetChildNodes(realNode, lastVDOM, newVDOM, ref, vframe, keys);
                 }
-                
             }
         } else {
-            if (lastVDOM['b'] == G_SPLITER) {
+            if (lastVDOM['b'] == Spliter) {
                 oldParent.innerHTML = ' ';//use text node;
                 realNode = oldParent.firstChild;
             }
-            V_UnmountVframs(vframe, realNode);
-            
-            if (newVDOM['b'] == G_SPLITER) {
+            vframe.unmountZone(realNode);
+            if (newVDOM['b'] == Spliter) {
                 oldParent.innerHTML = newVDOM['a'];
             } else {
                 oldParent.replaceChild(V_CreateNode(newVDOM, oldParent, ref), realNode);
             }
-            
             ref.c = 1;
         }
     }
 };
-    
     let View_EvtMethodReg = /^(\$?)([^<]*)<([^>]+)>(?:&(.+))?$/;
-
 let processMixinsSameEvent = (exist, additional, temp) => {
     if (exist['a']) {
         temp = exist;
     } else {
         temp = function (e) {
-            G_ToTry(temp['a'], e, this);
+            ToTry(temp['a'], e, this);
         };
         temp['a'] = [exist];
         temp['b'] = 1;
@@ -2411,9 +1828,6 @@ let processMixinsSameEvent = (exist, additional, temp) => {
     temp['a'] = temp['a'].concat(additional['a'] || additional);
     return temp;
 };
-
-//let View_MxEvt = /\smx-(?!view|vframe)[a-z]+\s*=\s*"/g;
-
 let View_DestroyAllResources = (me, lastly) => {
     let cache = me['$r'], //reources
         p, c;
@@ -2432,28 +1846,21 @@ let View_DestroyResource = (cache, key, callDestroy, old) => {
         res = o.e; //entity
         fn = res.destroy;
         if (fn && callDestroy) {
-            G_ToTry(fn, G_EMPTY_ARRAY, res);
+            ToTry(fn, Empty_Array, res);
         }
         delete cache[key];
     }
     return res;
 };
-
 let View_WrapMethod = (prop, fName, short, fn, me) => {
     fn = prop[fName];
     prop[fName] = prop[short] = function (...args) {
         me = this;
         if (me['$b'] > 0) { //signature
             me['$b']++;
-            
             me.fire('rendercall');
-            
-            
             View_DestroyAllResources(me);
-            
-            
-            G_ToTry(fn, args, me);
-            
+            ToTry(fn, args, me);
         }
     };
 };
@@ -2465,8 +1872,9 @@ let View_DelegateEvents = (me, destroy) => {
         Body_DOMEventBind(e, selectorObject[
             e], destroy);
     }
+    eventsObject = destroy ? RemoveEventListener : AddEventListener;
     for (e of eventsList) {
-        G_DOMEventLibBind(e.e, e.n, G_DOMGlobalProcessor, destroy, {
+        eventsObject(e.e, e.n, GlobalDomEventProcessor, {
             i: id,
             v: me,
             f: e.f,
@@ -2476,10 +1884,9 @@ let View_DelegateEvents = (me, destroy) => {
     }
 };
 let View_Globals = {
-    win: G_WINDOW,
-    doc: G_DOCUMENT
+    win: Doc_Window,
+    doc: Doc_Document
 };
-
 let View_MergeMixins = (mixins, proto, ctors) => {
     let temp = {}, p, node, fn, exist;
     for (node of mixins) {
@@ -2495,22 +1902,21 @@ let View_MergeMixins = (mixins, proto, ctors) => {
                 } else {
                     fn['b'] = 1;
                 }
-            } else if (DEBUG && exist && p != 'extend' && p != G_SPLITER) { //只在开发中提示
-                Magix_Cfg.error(Error('merge duplicate:' + p));
+            } else if (DEBUG && exist && p != 'extend' && p != Spliter) { //只在开发中提示
+                Mx_Cfg.error(Error('merge duplicate:' + p));
             }
             temp[p] = fn;
         }
     }
     for (p in temp) {
-        if (!G_Has(proto, p)) {
+        if (!Has(proto, p)) {
             proto[p] = temp[p];
         }
     }
 };
-
 function merge(...args) {
     let me = this, _ = me._ || (me._ = []);
-    View_MergeMixins(args, me[G_PROTOTYPE], _);
+    View_MergeMixins(args, me[Prototype], _);
     return me;
 }
 
@@ -2518,24 +1924,21 @@ function extend(props, statics) {
     let me = this;
     props = props || {};
     let ctor = props.ctor;
-    
     let ctors = [];
     if (ctor) ctors.push(ctor);
-    
-    function NView(nodeId, ownerVf, initParams, mixinCtors , cs, z, concatCtors) {
-        me.call(z = this, nodeId, ownerVf, initParams, mixinCtors);
+    function NView(viewId, rootNode, ownerVf, initParams, mixinCtors, cs, z, concatCtors) {
+        me.call(z = this, viewId, rootNode, ownerVf, initParams, mixinCtors);
         cs = NView._;
-        
-        if (cs) G_ToTry(cs, initParams, z);
+
+        if (cs) ToTry(cs, initParams, z);
         concatCtors = ctors.concat(mixinCtors);
         if (concatCtors.length) {
-            G_ToTry(concatCtors, initParams, z);
+            ToTry(concatCtors, initParams, z);
         }
-        
     }
     NView.merge = merge;
     NView.extend = extend;
-    return G_Extend(NView, me, props, statics);
+    return Extend(NView, me, props, statics);
 }
 /**
  * 预处理view
@@ -2543,20 +1946,18 @@ function extend(props, statics) {
  * @param  {Vom} vom vom
  */
 let View_Prepare = oView => {
-    if (!oView[G_SPLITER]) { //只处理一次
-        oView[G_SPLITER] = [] ;
-        let prop = oView[G_PROTOTYPE],
+    if (!oView[Spliter]) { //只处理一次
+        oView[Spliter] = [];
+        let prop = oView[Prototype],
             currentFn, matches, selectorOrCallback, events, eventsObject = {},
             eventsList = [],
             selectorObject = {},
             node, isSelector, p, item, mask, mod, modifiers;
 
-        
         matches = prop.mixins;
         if (matches) {
-            View_MergeMixins(matches, prop, oView[G_SPLITER]);
+            View_MergeMixins(matches, prop, oView[Spliter]);
         }
-        
         for (p in prop) {
             currentFn = prop[p];
             matches = p.match(View_EvtMethodReg);
@@ -2564,12 +1965,12 @@ let View_Prepare = oView => {
                 [, isSelector, selectorOrCallback, events, modifiers] = matches;
                 mod = {};
                 if (modifiers) {
-                    modifiers = modifiers.split(G_COMMA);
+                    modifiers = modifiers.split(Comma);
                     for (item of modifiers) {
                         mod[item] = true;
                     }
                 }
-                events = events.split(G_COMMA);
+                events = events.split(Comma);
                 for (item of events) {
                     node = View_Globals[selectorOrCallback];
                     mask = 1;
@@ -2594,20 +1995,18 @@ let View_Prepare = oView => {
                         }
                     }
                     eventsObject[item] = eventsObject[item] | mask;
-                    item = selectorOrCallback + G_SPLITER + item;
+                    item = selectorOrCallback + Spliter + item;
                     node = prop[item];
-                    
                     //for in 就近遍历，如果有则忽略
                     if (!node) { //未设置过
                         prop[item] = currentFn;
                     } else if (node['b']) { //现有的方法是mixins上的
                         if (currentFn['b']) { //2者都是mixins上的事件，则合并
                             prop[item] = processMixinsSameEvent(currentFn, node);
-                        } else if (G_Has(prop, p)) { //currentFn方法不是mixin上的，也不是继承来的，在当前view上，优先级最高
+                        } else if (Has(prop, p)) { //currentFn方法不是mixin上的，也不是继承来的，在当前view上，优先级最高
                             prop[item] = currentFn;
                         }
                     }
-                    
                 }
             }
         }
@@ -2616,132 +2015,26 @@ let View_Prepare = oView => {
         prop['$eo'] = eventsObject;
         prop['$el'] = eventsList;
         prop['$so'] = selectorObject;
-        prop['$h'] = prop.assign;
+        prop['$n'] = prop.assign;
     }
-    
-    return oView[G_SPLITER];
-    
+    return oView[Spliter];
 };
-
-if (DEBUG) {
-    var Updater_CheckInput = (view, html) => {
-        if (/<(?:input|textarea|select)/i.test(html)) {
-            let url = G_ParseUri(view.owner.path);
-            let found = false, hasParams = false;
-            for (let p in url.params) {
-                hasParams = true;
-                if (url.params[p][0] == G_SPLITER) {
-                    found = true;
-                }
-            }
-            if (hasParams && !found) {
-                console.warn('[!use at to pass parameter] path:' + view.owner.path + ' at ' + (view.owner.parent().path));
+let View_IsObserveChanged = view => {
+    let loc = view['$l'];
+    let res, i, params;
+    if (loc.f) {
+        if (loc.p) {
+            res = Router_LastChanged[Path];
+        }
+        if (!res && loc.k) {
+            params = Router_LastChanged[Params];
+            for (i of loc.k) {
+                res = Has(params, i);
+                if (res) break;
             }
         }
-    };
-}
-let Updater_EM = {
-    '&': 'amp',
-    '<': 'lt',
-    '>': 'gt',
-    '"': '#34',
-    '\'': '#39',
-    '\`': '#96'
-};
-let Updater_ER = /[&<>"'\`]/g;
-let Updater_Safeguard = v => '' + (v == null ? '' : v);
-let Updater_EncodeReplacer = m => `&${Updater_EM[m]};`;
-let Updater_Encode = v => Updater_Safeguard(v).replace(Updater_ER, Updater_EncodeReplacer);
-
-let Updater_Ref = ($$, v, k, f) => {
-    for (f = $$[G_SPLITER]; --f;)
-        if ($$[k = G_SPLITER + f] === v) return k;
-    $$[k = G_SPLITER + $$[G_SPLITER]++] = v;
-    return k;
-};
-let Updater_UM = {
-    '!': '%21',
-    '\'': '%27',
-    '(': '%28',
-    ')': '%29',
-    '*': '%2A'
-};
-let Updater_URIReplacer = m => Updater_UM[m];
-let Updater_URIReg = /[!')(*]/g;
-let Updater_EncodeURI = v => encodeURIComponent(Updater_Safeguard(v)).replace(Updater_URIReg, Updater_URIReplacer);
-
-let Updater_QR = /[\\'"]/g;
-let Updater_EncodeQ = v => Updater_Safeguard(v).replace(Updater_QR, '\\$&');
-
-
-let Updater_Digest = (view, digesting) => {
-    let keys = view['$i'],
-        changed = view['$j'],
-        selfId = view.id,
-        vf = Vframe_Vframes[selfId],
-        ref = { d: [], v: [], n: [] },
-        node = G_GetById(selfId),
-        tmpl, vdom, data = view['$d'],
-        refData = view['$a'],
-        redigest = trigger => {
-            if (digesting.i < digesting.length) {
-                Updater_Digest(updater, digesting);
-            } else {
-                ref = digesting.slice();
-                digesting.i = digesting.length = 0;
-                
-                if (trigger) {
-                    view.fire('domready');
-                }
-                
-                G_ToTry(ref);
-            }
-        };
-    digesting.i = digesting.length;
-    view['$j'] = 0;
-    view['$i'] = {};
-    if (changed && view['$b'] > 0 && (tmpl = view.tmpl)) {
-        view.fire('dompatch');
-        delete Body_RangeEvents[selfId];
-        delete Body_RangeVframes[selfId];
-        
-        vdom = tmpl(data, Q_Create, selfId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, G_IsArray, G_Assign);
-        if (DEBUG) {
-            Updater_CheckInput(view, vdom['a']);
-        }
-        
-        
-        V_SetChildNodes(node, view['$n'], vdom, ref, vf, keys);
-        view['$n'] = vdom;
-        
-        /*
-            在dom diff patch时，如果已渲染的vframe有变化，则会在vom tree上先派发created事件，同时传递inner标志，vom tree处理alter事件派发状态，未进入created事件派发状态
-
-            patch完成后，需要设置vframe hold fire created事件，因为带有assign方法的view在调用render后，vom tree处于就绪状态，此时会导致提前派发created事件，应该hold，统一在endUpdate中派发
-
-            有可能不需要endUpdate，所以hold fire要视情况而定
-        */
-        vf['$b'] = tmpl = ref.c || !view['$g'];
-        for (vdom of ref.v) {
-            vdom['$f']();
-        }
-        for (vdom of ref.d) {
-            vdom[0].id = vdom[1];
-        }
-        if (tmpl) {
-            view.endUpdate(selfId);
-        }
-        
-        if (ref.c) {
-            G_Trigger(G_DOCUMENT, 'htmlchanged', {
-                vId: selfId
-            });
-        }
-        
-        redigest(1);
-    } else {
-        redigest();
     }
+    return res;
 };
 
 /**
@@ -2782,30 +2075,29 @@ let Updater_Digest = (view, digesting) => {
  */
 
 
-function View(id, owner, ops, me) {
+function View(id, root, owner, ops, me) {
     me = this;
+    me.root = root;
     me.owner = owner;
     me.id = id;
-    
-    
+    me['$l'] = {
+        k: []
+    };
     me['$r'] = {};
-    
     me['$b'] = 1; //标识view是否刷新过，对于托管的函数资源，在回调这个函数时，不但要确保view没有销毁，而且要确保view没有刷新过，如果刷新过则不回调
-    me['$j'] = 1;
+    me['$i'] = 1;
     me['$d'] = {
         id
     };
     me['$a'] = {
-        [G_SPLITER]: 1
+        [Spliter]: 1
     };
     me['$e'] = [];
-    me['$i'] = {};
-    
+    me['$h'] = {};
     id = View._;
-    if (id) G_ToTry(id, ops, me);
-    
+    if (id) ToTry(id, ops, me);
 }
-G_Assign(View, {
+Assign(View, {
     /**
      * @lends View
      */
@@ -2838,9 +2130,7 @@ G_Assign(View, {
      *
      *
      */
-    
     merge,
-    
     /**
      * 继承
      * @param  {Object} [props] 原型链上的方法或属性对象
@@ -2873,19 +2163,17 @@ G_Assign(View, {
      */
     extend
 });
-G_Assign(View[G_PROTOTYPE] , MEvent, {
+Assign(View[Prototype], MxEvent, {
     /**
      * @lends View#
      */
-    
     /**
      * 初始化调用的方法
      * @beta
      * @module viewInit
      * @param {Object} extra 外部传递的数据对象
      */
-    init: G_NOOP,
-    
+    init: Noop,
     /*
      * 包装mx-event事件，比如把mx-click="test<prevent>({key:'field'})" 包装成 mx-click="magix_vf_root^test<prevent>({key:'field})"，以方便识别交由哪个view处理
      * @function
@@ -2895,13 +2183,13 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
      * @example
      * View.extend({
      *     'del&lt;click&gt;':function(e){
-     *         S.one(G_HashKey+e.currentId).remove();
+     *         S.one(HashKey+e.currentId).remove();
      *     },
      *     'addNode&lt;click&gt;':function(e){
      *         let tmpl='&lt;div mx-click="del"&gt;delete&lt;/div&gt;';
      *         //因为tmpl中有mx-click，因此需要下面这行代码进行处理一次
      *         tmpl=this.wrapEvent(tmpl);
-     *         S.one(G_HashKey+e.currentId).append(tmpl);
+     *         S.one(HashKey+e.currentId).append(tmpl);
      *     }
      * });
      */
@@ -2909,46 +2197,28 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
      * 通知当前view即将开始进行html的更新
      * @param {String} [id] 哪块区域需要更新，默认整个view
      */
-    beginUpdate(id, me) {
+    beginUpdate(node, me) {
         me = this;
         if (me['$b'] > 0 && me['$g']) {
-            me.owner.unmountZone(id, 1);
-            /*me.fire('prerender', {
-                id: id
-            });*/
+            me.owner.unmountZone(node);
         }
     },
     /**
      * 通知当前view结束html的更新
      * @param {String} [id] 哪块区域结束更新，默认整个view
      */
-    endUpdate(id, inner, me , o, f ) {
+    endUpdate(node, me, o, f) {
         me = this;
         if (me['$b'] > 0) {
-            id = id || me.id;
-            /*me.fire('rendered', {
-                id
-            });*/
-            if (inner) {
-                f = inner;
-            } else {
-                
-                f = me['$g'];
-                
-                me['$g'] = 1;
-            }
-            
+            f = me['$g'];
+            me['$g'] = 1;
             o = me.owner;
-            o.mountZone(id, inner);
+            o.mountZone(node);
             if (!f) {
-                
                 Timeout(me.wrapAsync(Vframe_RunInvokes), 0, o);
-                
             }
-            
         }
     },
-    
     /**
      * 包装异步回调
      * @param  {Function} fn 异步回调的function
@@ -2975,12 +2245,49 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
             }
         };
     },
-    
-    
-    
-    
-    
-    
+    /**
+     * 监视地址栏中的参数或path，有变动时，才调用当前view的render方法。通常情况下location有变化不会引起当前view的render被调用，所以你需要指定地址栏中哪些参数有变化时才引起render调用，使得view只关注与自已需要刷新有关的参数
+     * @param {Array|String|Object} params  数组字符串
+     * @param {Boolean} [isObservePath] 是否监视path
+     * @beta
+     * @module router
+     * @example
+     * return View.extend({
+     *      init:function(){
+     *          this.observeLocation('page,rows');//关注地址栏中的page rows2个参数的变化，当其中的任意一个改变时，才引起当前view的render被调用
+     *          this.observeLocation(null,true);//关注path的变化
+     *          //也可以写成下面的形式
+     *          //this.observeLocation('page,rows',true);
+     *          //也可以是对象的形式
+     *          this.observeLocation({
+     *              path: true,
+     *              params:['page','rows']
+     *          });
+     *      },
+     *      render:function(){
+     *          let loc=Magix.Router.parse();
+     *          console.log(loc);//获取地址解析出的对象
+     *          let diff=Magix.Router.diff();
+     *          console.log(diff);//获取当前地址与上一个地址差异对象
+     *      }
+     * });
+     */
+    observeLocation(params, isObservePath) {
+        let me = this,
+            loc;
+        loc = me['$l'];
+        loc.f = 1;
+        if (IsObject(params)) {
+            isObservePath = params[Path];
+            params = params[Params];
+        }
+        //if (isObservePath) {
+        loc.p = isObservePath;
+        //}
+        if (params) {
+            loc.k = (params + Empty).split(Comma);
+        }
+    },
     /**
      * 让view帮你管理资源，强烈建议对组件等进行托管
      * @param {String} key 资源标识key
@@ -3012,7 +2319,7 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
                 x: destroyWhenCallRender
             };
             //service托管检查
-            if (DEBUG && res && (res.id + G_EMPTY).indexOf('\x1es') === 0) {
+            if (DEBUG && res && (res.id + Empty).indexOf('\x1es') === 0) {
                 res['$a'] = 1;
                 if (!destroyWhenCallRender) {
                     console.warn('beware! May be you should set destroyWhenCallRender = true');
@@ -3035,8 +2342,59 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
     release(key, destroy) {
         return View_DestroyResource(this['$r'], key, destroy);
     },
-    
-    
+    /**
+     * 离开提示
+     * @param  {String} msg 提示消息
+     * @param  {Function} fn 是否提示的回调
+     * @beta
+     * @module tipRouter
+     * @example
+     * let Magix = require('magix');
+     * module.exports = Magix.View.extend({
+     *     init:function(){
+     *         this.leaveTip('页面数据未保存，确认离开吗？',function(){
+     *             return true;//true提示，false，不提示
+     *         });
+     *     }
+     * });
+     */
+    leaveTip(msg, fn) {
+        let me = this;
+        let changeListener = e => {
+            let a = 'a', // a for router change
+                b = 'b'; // b for viewunload change
+            if (e.type != Change) {
+                a = 'b';
+                b = 'a';
+            }
+            if (changeListener[a]) {
+                e.prevent();
+                e.reject();
+            } else if (fn()) {
+                e.prevent();
+                changeListener[b] = 1;
+                me.leaveConfirm(() => {
+                    changeListener[b] = 0;
+                    e.resolve();
+                }, () => {
+                    changeListener[b] = 0;
+                    e.reject();
+                }, msg);
+            }
+        };
+        let unloadListener = e => {
+            if (fn()) {
+                e.msg = msg;
+            }
+        };
+        Router.on(Change, changeListener);
+        Router.on(Page_Unload, unloadListener);
+        me.on('unload', changeListener);
+        me.on('destroy', () => {
+            Router.off(Change, changeListener);
+            Router.off(Page_Unload, unloadListener);
+        });
+    },
     /**
      * 设置view的html内容
      * @param {String} id 更新节点的id
@@ -3053,22 +2411,11 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
         底层api职责更单一，一个api只完成一个功能，灵活，但不方便开发者
         更新界面来讲，updater是一个高层api，但是有些功能却无法完成，如把view当成壳子或容器渲染第三方的组件，组件什么时间加载完成、渲染、更新了dom、如何通知magix等，这些问题在updater中是无解的，而setHTML这个api又不够底层，同样也无法完成一些功能，所以这个api食之无味，故删除
      */
-    /*setHTML(id, html) {
-        let me = this,
-            n, i = me.id;
-        me.beginUpdate(id);
-        if (me['$b'] > 0) {
-            n = G_GetById(id);
-            if (n) G_HTML(n, View_SetEventOwner(html, i), i);
-        }
-        me.endUpdate(id);
-        me.fire('domready');
-    }*/
     /**
      * 渲染view，供最终view开发者覆盖
      * @function
      */
-    render: G_NOOP,
+    render: Noop,
     /**
      * 获取放入的数据
      * @param  {String} [key] key
@@ -3123,7 +2470,7 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
      */
     set(obj, unchanged) {
         let me = this;
-        me['$j'] = G_Set(obj, me['$d'], me['$i'], unchanged) || me['$j'];
+        me['$i'] = UpdateData(obj, me['$d'], me['$h'], unchanged) || me['$i'];
         return me;
     },
     /**
@@ -3138,8 +2485,7 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
      */
     digest(data, unchanged, resolve) {
         let me = this.set(data, unchanged),
-            digesting = me['$e']
-            ;
+            digesting = me['$e'];
         /*
             view:
             <div>
@@ -3155,7 +2501,6 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
 
             如果在digest的过程中，多次调用自身的digest，则后续的进行排队。前面的执行完成后，排队中的一次执行完毕
         */
-        
         if (resolve) {
             digesting.push(resolve);
         }
@@ -3164,34 +2509,77 @@ G_Assign(View[G_PROTOTYPE] , MEvent, {
         } else if (DEBUG) {
             console.warn('Avoid redigest while updater is digesting');
         }
-        
+    },
+    /**
+     * 获取当前数据状态的快照，配合altered方法可获得数据是否有变化
+     * @return {Updater} 返回updater
+     * @example
+     * render: function() {
+     *     this.updater.set({
+     *         a: 20,
+     *         b: 30
+     *     }).digest().snapshot(); //更新完界面后保存快照
+     * },
+     * 'save&lt;click&gt;': function() {
+     *     //save to server
+     *     console.log(this.updater.altered()); //false
+     *     this.updater.set({
+     *         a: 20,
+     *         b: 40
+     *     });
+     *     console.log(this.updater.altered()); //true
+     *     this.updater.snapshot(); //再保存一次快照
+     *     console.log(this.updater.altered()); //false
+     * }
+     */
+    snapshot() {
+        let me = this;
+        me['$o'] = JSON_Stringify(me['$d']);
+        return me;
+    },
+    /**
+     * 检测数据是否有变动
+     * @return {Boolean} 是否变动
+     * @example
+     * render: function() {
+     *     this.updater.set({
+     *         a: 20,
+     *         b: 30
+     *     }).digest().snapshot(); //更新完界面后保存快照
+     * },
+     * 'save&lt;click&gt;': function() {
+     *     //save to server
+     *     console.log(this.updater.altered()); //false
+     *     this.updater.set({
+     *         a: 20,
+     *         b: 40
+     *     });
+     *     console.log(this.updater.altered()); //true
+     *     this.updater.snapshot(); //再保存一次快照
+     *     console.log(this.updater.altered()); //false
+     * }
+     */
+    altered() {
+        let me = this;
+        if (me['$o']) {
+            return me['$o'] != JSON_Stringify(me['$d']);
+        }
+    },
+    /**
+     * 翻译带@占位符的数据
+     * @param {string} origin 源字符串
+     */
+    translate(data) {
+        return TranslateData(this['$d'], data);
+    },
+    /**
+     * 翻译带@占位符的数据
+     * @param {string} origin 源字符串
+     */
+    parse(origin) {
+        return ParseExpr(origin, this['$a']);
     }
-    /**
-     * 当前view的dom就绪后触发
-     * @name View#domready
-     * @event
-     * @param {Object} e view 完成渲染后触发
-     */
-
-    /**
-     * view销毁时触发
-     * @name View#destroy
-     * @event
-     * @param {Object} e
-     */
-
-    /**
-     * 异步更新ui的方法(render)被调用前触发
-     * @name View#rendercall
-     * @event
-     * @param {Object} e
-     */
 });
-Magix.View = View;
-    
-    let G_Now = Date.now;
-    
-    
     /*
     一个请求send后，应该取消吗？
     参见xmlhttprequest的实现
@@ -3243,10 +2631,10 @@ Magix.View = View;
  */
 
 function Bag() {
-    this.id = G_Id('b');
+    this.id = GUID('b');
     this.$ = {};
 }
-G_Assign(Bag[G_PROTOTYPE], {
+Assign(Bag[Prototype], {
     /**
      * @lends Bag#
      */
@@ -3287,17 +2675,17 @@ G_Assign(Bag[G_PROTOTYPE], {
          */
         let attrs = me.$;
         if (key) {
-            let tks = G_IsArray(key) ? key.slice() : (key + G_EMPTY).split('.'),
+            let tks = IsArray(key) ? key.slice() : (key + Empty).split('.'),
                 tk;
             while ((tk = tks.shift()) && attrs) {
                 attrs = attrs[tk];
             }
             if (tk) {
-                attrs = G_Undefined;
+                attrs = Undefined;
             }
         }
         let type;
-        if (dValue !== G_Undefined && (type = G_Type(dValue)) != G_Type(attrs)) {
+        if (dValue !== Undefined && (type = Type(dValue)) != Type(attrs)) {
             if (DEBUG) {
                 console.warn('type neq:' + key + ' is not a(n) ' + type);
             }
@@ -3314,10 +2702,10 @@ G_Assign(Bag[G_PROTOTYPE], {
      * @param {Object} [val] 属性值
      */
     set(key, val) {
-        if (!G_IsObject(key)) {
+        if (!IsObject(key)) {
             key = { [key]: val };
         }
-        G_Assign(this.$, key);
+        Assign(this.$, key);
     }
 });
 let Service_FetchFlags_ONE = 1;
@@ -3326,12 +2714,12 @@ function Service_CacheDone(cacheKey, err, fns) {
     fns = this[cacheKey]; //取出当前的缓存信息
     if (fns) {
         delete this[cacheKey]; //先删除掉信息
-        G_ToTry(fns, err, fns.e); //执行所有的回调
+        ToTry(fns, err, fns.e); //执行所有的回调
     }
 }
 let Service_Task = (done, host, service, total, flag, bagCache) => {
     let doneArr = [];
-    let errorArgs = G_NULL;
+    let errorArgs = Null;
     let currentDoneCount = 0;
 
     return function (idx, error) {
@@ -3344,17 +2732,17 @@ let Service_Task = (done, host, service, total, flag, bagCache) => {
         if (error) { //出错
             errorArgs = error;
             //errorArgs[idx] = err; //记录相应下标的错误信息
-            //G_Assign(errorArgs, err);
+            //Assign(errorArgs, err);
             newBag = 1; //标记当前是一个新完成的bag,尽管出错了
         } else if (!bagCache.has(cacheKey)) { //如果缓存对象中不存在，则处理。注意在开始请求时，缓存与非缓存的都会调用当前函数，所以需要在该函数内部做判断处理
             if (cacheKey) { //需要缓存
                 bagCache.set(cacheKey, bag); //缓存
             }
             //bag.set(data);
-            mm.t = G_Now(); //记录当前完成的时间
+            mm.t = Date_Now(); //记录当前完成的时间
             temp = mm.a;
             if (temp) { //有after
-                G_ToTry(temp, bag, bag);
+                ToTry(temp, bag, bag);
             }
             temp = mm.x;
             if (temp) { //需要清理
@@ -3368,11 +2756,11 @@ let Service_Task = (done, host, service, total, flag, bagCache) => {
                 service['$e'] = 0;
                 if (flag == Service_FetchFlags_ALL) { //all
                     doneArr[0] = errorArgs;
-                    G_ToTry(done, doneArr, service);
+                    ToTry(done, doneArr, service);
                 }
             }
             if (flag == Service_FetchFlags_ONE) { //如果是其中一个成功，则每次成功回调一次
-                G_ToTry(done, [error || G_NULL, bag, finish, idx], service);
+                ToTry(done, [error || Null, bag, finish, idx], service);
             }
         }
         if (newBag) { //不管当前request或回调是否销毁，均派发end事件，就像前面缓存一样，尽量让请求处理完成，该缓存的缓存，该派发事件派发事件。
@@ -3398,7 +2786,7 @@ let Service_Send = (me, attrs, done, flag, save) => {
         return me.enqueue(Service_Send.bind(me, me, attrs, done, flag, save));
     }
     me['$e'] = 1; //标志繁忙
-    if (!G_IsArray(attrs)) {
+    if (!IsArray(attrs)) {
         attrs = [attrs];
     }
     let host = me.constructor,
@@ -3406,7 +2794,6 @@ let Service_Send = (me, attrs, done, flag, save) => {
     //let bagCache = host['$c']; //存放bag的Cache对象
     let bagCacheKeys = host['$f']; //可缓存的bag key
     let remoteComplete = Service_Task(done, host, me, attrs.length, flag, host['$c']);
-    
     for (let bag of attrs) {
         if (bag) {
             let bagInfo = host.get(bag, save); //获取bag信息
@@ -3426,15 +2813,12 @@ let Service_Send = (me, attrs, done, flag, save) => {
                     bagCacheKeys[cacheKey] = cacheList;
                     complete = Service_CacheDone.bind(bagCacheKeys, cacheKey); //替换回调，详见Service_CacheDone
                 }
-                
                 host['$s'](bagEntity, complete);
-                
             } else { //不需要更新时，直接回调
                 complete();
             }
         }
     }
-    
     return me;
 };
 /**
@@ -3473,9 +2857,9 @@ let Service_Send = (me, attrs, done, flag, save) => {
  */
 function Service() {
     let me = this;
-    me.id = G_Id('s');
+    me.id = GUID('s');
     if (DEBUG) {
-        me.id = G_Id('\x1es');
+        me.id = GUID('\x1es');
         setTimeout(() => {
             if (!me['$a']) {
                 console.warn('beware! You should use view.capture to connect Service and View');
@@ -3485,7 +2869,7 @@ function Service() {
     me['$g'] = [];
 }
 
-G_Assign(Service[G_PROTOTYPE], {
+Assign(Service[Prototype], {
     /**
      * @lends Service#
      */
@@ -3603,10 +2987,10 @@ G_Assign(Service[G_PROTOTYPE], {
                 if (!me['$d']) { //不清除setTimeout,但在回调中识别是否调用了destroy方法
                     one = me['$g'].shift();
                     if (one) {
-                        G_ToTry(one, me['$h'] = a);
+                        ToTry(one, me['$h'] = a);
                     }
                 }
-            },0);
+            }, 0);
         }
     },
     /**
@@ -3658,8 +3042,8 @@ G_Assign(Service[G_PROTOTYPE], {
 });
 
 let Manager_DefaultCacheKey = (meta, attrs, arr) => {
-    arr = [JSONStringify(attrs), JSONStringify(meta)];
-    return arr.join(G_SPLITER);
+    arr = [JSON_Stringify(attrs), JSON_Stringify(meta)];
+    return arr.join(Spliter);
 };
 let Manager_ClearCache = (v, ns, cache, mm) => {
     mm = v && v['$b'];
@@ -3667,7 +3051,7 @@ let Manager_ClearCache = (v, ns, cache, mm) => {
         cache.del(mm.k);
     }
 };
-let Service_Manager = {
+let Service_Manager = Assign({
     /**
      * @lends Service
      */
@@ -3679,7 +3063,7 @@ let Service_Manager = {
         let me = this;
         let metas = me['$b'],
             bag;
-        if (!G_IsArray(attrs)) {
+        if (!IsArray(attrs)) {
             attrs = [attrs];
         }
         for (bag of attrs) {
@@ -3708,12 +3092,12 @@ let Service_Manager = {
             k: cache && Manager_DefaultCacheKey(meta, attrs)
         };
 
-        if (G_IsObject(attrs)) {
+        if (IsObject(attrs)) {
             entity.set(attrs);
         }
         let before = meta.before;
         if (before) {
-            G_ToTry(before, entity, entity);
+            ToTry(before, entity, entity);
         }
         me.fire('begin', {
             bag: entity
@@ -3786,7 +3170,7 @@ let Service_Manager = {
      * s.all('test');//fetch from server
      */
     clear(names) {
-        this['$c'].each(Manager_ClearCache, G_ToMap((names + G_EMPTY).split(G_COMMA)));
+        this['$c'].each(Manager_ClearCache, ToMap((names + Empty).split(Comma)));
     },
     /**
      * 从缓存中获取bag对象
@@ -3824,17 +3208,15 @@ let Service_Manager = {
                 entity = info.e;
             } else { //缓存
                 entity = bagCache.get(cacheKey);
-                if (entity && G_Now() - entity['$b'].t > cache) {
+                if (entity && Date_Now() - entity['$b'].t > cache) {
                     bagCache.del(cacheKey);
                     entity = 0;
                 }
             }
         }
         return entity;
-    },
-    ...MEvent
-    
-};
+    }
+}, MxEvent);
 /**
  * 继承
  * @lends Service
@@ -3861,15 +3243,326 @@ Service.extend = (sync, cacheMax, cacheBuffer) => {
         Service.call(this);
     }
     NService['$s'] = sync;
-    NService['$c'] = new G_Cache(cacheMax, cacheBuffer);
+    NService['$c'] = new Cache(cacheMax, cacheBuffer);
     NService['$f'] = {};
     NService['$b'] = {};
-    return G_Extend(NService, Service, G_NULL, Service_Manager);
+    return Extend(NService, Service, Null, Service_Manager);
 };
-Magix.Service = Service;
+    Assign(Noop[Prototype], MxEvent);
+Noop.extend = function extend(props, statics) {
+    let me = this;
+    let ctor = props && props.ctor;
+    function X(...a) {
+        let t = this;
+        me.apply(t, a);
+        if (ctor) ctor.apply(t, a);
+    }
+    X.extend = extend;
+    return Extend(X, me, props, statics);
+};
+    let Magix_Booted = 0;
+/**
+ * Magix对象，提供常用方法
+ * @name Magix
+ * @namespace
+ */
+let Magix = {
+    /**
+     * @lends Magix
+     */
+    /**
+     * 设置或获取配置信息
+     * @param  {Object} cfg 初始化配置参数对象
+     * @param {String} cfg.defaultView 默认加载的view
+     * @param {String} cfg.defaultPath 当无法从地址栏取到path时的默认值。比如使用hash保存路由信息，而初始进入时并没有hash,此时defaultPath会起作用
+     * @param {Object} cfg.routes path与view映射关系表
+     * @param {String} cfg.unmatchView 在routes里找不到匹配时使用的view，比如显示404
+     * @param {String} cfg.rootId 根view的id
+     * @param {Array} cfg.exts 需要加载的扩展
+     * @param {Function} cfg.error 发布版以try catch执行一些用户重写的核心流程，当出错时，允许开发者通过该配置项进行捕获。注意：您不应该在该方法内再次抛出任何错误！
+     * @example
+     * Magix.config({
+     *      rootId:'J_app_main',
+     *      defaultView:'app/views/layouts/default',//默认加载的view
+     *      defaultPath:'/home',
+     *      routes:{
+     *          "/home":"app/views/layouts/default"
+     *      }
+     * });
+     *
+     *
+     * let config = Magix.config();
+     *
+     * console.log(config.rootId);
+     *
+     * // 可以多次调用该方法，除内置的配置项外，您也可以缓存一些数据，如
+     * Magix.config({
+     *     user:'彳刂'
+     * });
+     *
+     * console.log(Magix.config('user'));
+     */
+    config(cfg, r) {
+        r = Mx_Cfg;
+        if (cfg) {
+            if (IsObject(cfg)) {
+                r = Assign(r, cfg);
+            } else {
+                r = r[cfg];
+            }
+        }
+        return r;
+    },
+
+    /**
+     * 应用初始化入口
+     * @function
+     * @param {Object} [cfg] 配置信息对象,更多信息请参考Magix.config方法
+     * @return {Object} 配置信息对象
+     * @example
+     * Magix.boot({
+     *      rootId:'J_app_main'
+     * });
+     *
+     */
+    boot(cfg) {
+        Assign(Mx_Cfg, cfg); //先放到配置信息中，供ini文件中使用
+        Async_Require(Mx_Cfg.exts, () => {
+            
+            Vframe_Root().mountView(Mx_Cfg.defaultView);
+            
+        });
+    },
+    /**
+     * 把列表转化成hash对象
+     * @param  {Array} list 源数组
+     * @param  {String} [key]  以数组中对象的哪个key的value做为hash的key
+     * @return {Object}
+     * @example
+     * let map = Magix.toMap([1,2,3,5,6]);
+     * //=> {1:1,2:1,3:1,4:1,5:1,6:1}
+     *
+     * let map = Magix.toMap([{id:20},{id:30},{id:40}],'id');
+     * //=>{20:{id:20},30:{id:30},40:{id:40}}
+     *
+     * console.log(map['30']);//=> {id:30}
+     * //转成对象后不需要每次都遍历数组查询
+     */
+    toMap: ToMap,
+    /**
+     * 以try cache方式执行方法，忽略掉任何异常
+     * @function
+     * @param  {Array} fns     函数数组
+     * @param  {Array} [args]    参数数组
+     * @param  {Object} [context] 在待执行的方法内部，this的指向
+     * @return {Object} 返回执行的最后一个方法的返回值
+     * @example
+     * let result = Magix.toTry(function(){
+     *     return true
+     * });
+     *
+     * // result == true
+     *
+     * let result = Magix.toTry(function(){
+     *     throw new Error('test');
+     * });
+     *
+     * // result == undefined
+     *
+     * let result = Magix.toTry([function(){
+     *     throw new Error('test');
+     * },function(){
+     *     return true;
+     * }]);
+     *
+     * // result == true
+     *
+     * //异常的方法执行时，可以通过Magix.config中的error来捕获，如
+     *
+     * Magix.config({
+     *     error:function(e){
+     *         console.log(e);//在这里可以进行错误上报
+     *     }
+     * });
+     *
+     * let result = Magix.toTry(function(a1,a2){
+     *     return a1 + a2;
+     * },[1,2]);
+     *
+     * // result == 3
+     * let o={
+     *     title:'test'
+     * };
+     * let result = Magix.toTry(function(){
+     *     return this.title;
+     * },null,o);
+     *
+     * // result == 'test'
+     */
+    toTry: ToTry,
+    /**
+     * 转换成字符串路径
+     * @function
+     * @param  {String} path 路径
+     * @param {Object} params 参数对象
+     * @param {Object} [keo] 保留空白值的对象
+     * @return {String} 字符串路径
+     * @example
+     * let str = Magix.toUrl('/xxx/',{a:'b',c:'d'});
+     * // str == /xxx/?a=b&c=d
+     *
+     * let str = Magix.toUrl('/xxx/',{a:'',c:2});
+     *
+     * // str==/xxx/?a=&c=2
+     *
+     * let str = Magix.toUrl('/xxx/',{a:'',c:2},{c:1});
+     *
+     * // str == /xxx/?c=2
+     * let str = Magix.toUrl('/xxx/',{a:'',c:2},{a:1,c:1});
+     *
+     * // str == /xxx/?a=&c=2
+     */
+    toUrl: ToUri,
+    /**
+     * 把路径字符串转换成对象
+     * @function
+     * @param  {String} path 路径字符串
+     * @return {Object} 解析后的对象
+     * @example
+     * let obj = Magix.parseUrl('/xxx/?a=b&c=d');
+     * // obj = {path:'/xxx/',params:{a:'b',c:'d'}}
+     */
+    parseUrl: ParseUri,
+    /*
+     * 路径
+     * @function
+     * @param  {String} url  参考地址
+     * @param  {String} part 相对参考地址的片断
+     * @return {String}
+     * @example
+     * http://www.a.com/a/b.html?a=b#!/home?e=f   /   => http://www.a.com/
+     * http://www.a.com/a/b.html?a=b#!/home?e=f   ./     =>http://www.a.com/a/
+     * http://www.a.com/a/b.html?a=b#!/home?e=f   ../../    => http://www.a.com/
+     * http://www.a.com/a/b.html?a=b#!/home?e=f   ./../  => http://www.a.com/
+     */
+    /**
+     * 把src对象的值混入到aim对象上
+     * @function
+     * @param  {Object} aim    要mix的目标对象
+     * @param  {Object} src    mix的来源对象
+     * @example
+     * let o1={
+     *     a:10
+     * };
+     * let o2={
+     *     b:20,
+     *     c:30
+     * };
+     *
+     * Magix.mix(o1,o2);//{a:10,b:20,c:30}
+     *
+     *
+     * @return {Object}
+     */
+    mix: Assign,
+    /**
+     * 检测某个对象是否拥有某个属性
+     * @function
+     * @param  {Object}  owner 检测对象
+     * @param  {String}  prop  属性
+     * @example
+     * let obj={
+     *     key1:undefined,
+     *     key2:0
+     * }
+     *
+     * Magix.has(obj,'key1');//true
+     * Magix.has(obj,'key2');//true
+     * Magix.has(obj,'key3');//false
+     *
+     *
+     * @return {Boolean} 是否拥有prop属性
+     */
+    has: Has,
+    /**
+     * 获取对象的keys
+     * @param {Object} object 获取key的对象
+     * @type {Array}
+     * @beta
+     * @module linkage|router
+     * @example
+     * let o = {
+     *     a:1,
+     *     b:2,
+     *     test:3
+     * };
+     * let keys = Magix.keys(o);
+     *
+     * // keys == ['a','b','test']
+     * @return {Array}
+     */
+    keys: Keys,
+    /**
+     * 判断一个节点是否在另外一个节点内，如果比较的2个节点是同一个节点，也返回true
+     * @function
+     * @param {String|HTMLElement} node节点或节点id
+     * @param {String|HTMLElement} container 容器
+     * @example
+     * let root = $('html');
+     * let body = $('body');
+     *
+     * let r = Magix.inside(body[0],root[0]);
+     *
+     * // r == true
+     *
+     * let r = Magix.inside(root[0],body[0]);
+     *
+     * // r == false
+     *
+     * let r = Magix.inside(root[0],root[0]);
+     *
+     * // r == true
+     *
+     * @return {Boolean}
+     */
+    inside: NodeIn,
+    /**
+     * 应用样式
+     * @beta
+     * @module style
+     * @param {String} prefix 样式的名称前缀
+     * @param {String} css 样式字符串
+     * @example
+     * // 该方法配合magix-combine工具使用
+     * // 更多信息可参考magix-combine工具：https://github.com/thx/magix-combine
+     * // 样式问题可查阅这里：https://github.com/thx/magix-combine/issues/6
+     *
+     */
+    applyStyle: ApplyStyle,
+    /**
+     * 返回全局唯一ID
+     * @function
+     * @param {String} [prefix] 前缀
+     * @return {String}
+     * @example
+     *
+     * let id = Magix.guid('mx-');
+     * // id maybe mx-7
+     */
+    guid: GUID,
+    Cache,
+    use: Async_Require,
+    dispatch: DispatchEvent,
+    match: TargetMatchSelector,
+    type: Type,
+    View,
+    Vframe,
+    Service,
+    State,
     
-    
-    
+    guard: Safeguard,
+    node: id => Doc_Document.getElementById(id)
+};
     Magix.default = Magix;
     return Magix;
 });

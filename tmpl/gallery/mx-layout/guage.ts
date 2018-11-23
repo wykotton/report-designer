@@ -8,13 +8,14 @@ export default Magix.View.extend({
         this.assign(data);
     },
     assign(data) {
-        let { guage } = data;
+        let { guage, disabled } = data;
         let gs = guage.split(' ');
         let gts = [];
         for (let g of gs) {
             gts.push(parseInt(g, 10));
         }
         this.set({
+            disabled,
             guage: gts
         });
         return true;
@@ -30,7 +31,7 @@ export default Magix.View.extend({
         let guage = this.get('guage');
         let { index } = e.params;
         guage[index] = e.value;
-        Magix.dispatch(this.id, 'change', {
+        Magix.dispatch(this.root, 'change', {
             value: guage.join('px ') + 'px'
         });
     }

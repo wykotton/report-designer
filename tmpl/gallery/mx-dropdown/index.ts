@@ -65,7 +65,7 @@ export default Magix.View.extend({
         this.digest();
     },
     '@{inside}'(node) {
-        return Magix.inside(node, this.id);
+        return Magix.inside(node, this.root);
     },
     '@{show}'() {
         let me = this;
@@ -127,8 +127,7 @@ export default Magix.View.extend({
                 selected,
                 selectedText
             });
-            let node = Magix.node(me.id);
-            Magix.dispatch(node, 'change', {
+            Magix.dispatch(me.root, 'change', {
                 item,
                 value: valueKey ? item[valueKey] : item,
                 text: textKey ? item[textKey] : item

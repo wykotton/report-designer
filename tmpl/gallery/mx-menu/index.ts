@@ -39,7 +39,7 @@ export default Magix.View.extend({
         });
     },
     '@{inside}'(node) {
-        return Magix.inside(node, this.id);
+        return Magix.inside(node, this.root);
     },
     '@{show}'(e) {
         let me = this;
@@ -95,14 +95,15 @@ export default Magix.View.extend({
 }, {
         show(view, e, ops) {
             let id = 'ctx_' + view.id;
-            let vf = Magix.Vframe.get(id);
+            let n = node(id);
+            let vf = n && Magix.Vframe.get(n);
             if (vf) {
                 vf.invoke('assign', [ops]);
                 vf.invoke('render');
                 vf.invoke('@{show}', [e]);
             } else {
                 document.body.insertAdjacentHTML("beforeend", `<div id="${id}"></div>`);
-                vf = view.owner.mountVframe(id, '@moduleId', ops);
+                vf = view.owner.mountVframe(node(id), '@moduleId', ops);
                 vf.invoke('@{show}', [e]);
             }
         }

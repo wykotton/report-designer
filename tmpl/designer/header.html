@@ -7,12 +7,12 @@
     {{if e.subs}}
     <div class="header-item pr">
         <i class="iconfont" x-html="{{=e.icon}}"></i>
-        <b class="header-item-text">{{=e.title}}</b>
+        <b class="header-item-text">{{=i18n(e.title)}}</b>
         <div class="header-item-more">
             {{each e.subs as es}}
             <div class="sub-item" mx-mousedown="@{add.element}({ctrl:{{@es}}})">
                 <i class="iconfont" x-html="{{=es.icon}}"></i>
-                <b class="header-item-text">{{=es.title}}</b>
+                <b class="header-item-text">{{=i18n(es.title)}}</b>
             </div>
             {{/each}}
         </div>
@@ -20,7 +20,7 @@
     {{else}}
     <div class="header-item pr" mx-mousedown="@{add.element}({ctrl:{{@e}}})">
         <i class="iconfont" x-html="{{=e.icon}}"></i>
-        <b class="header-item-text">{{=e.title}}</b>
+        <b class="header-item-text">{{=i18n(e.title)}}</b>
     </div>
     {{/if}}
     {{/each}}

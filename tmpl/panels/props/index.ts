@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State, Vframe } from 'magix';
+import Magix, { State, Vframe, node } from 'magix';
 import Props from '../../designer/props';
 import DHistory from '../../designer/history';
 Magix.applyStyle('@index.less');
@@ -21,20 +21,19 @@ export default Magix.View.extend({
         });
     },
     '@{update.prop}<input,change>'(e) {
-        let { key, use, element, refresh, bool } = e.params;
-        if (use || bool) {
+        let { key, use, element, refresh, ta, bool } = e.params;
+        if (use || bool || ta) {
             let props = element.props;
             let target = e.eventTarget;
-            let v = bool ? target.checked : e[use];
-            console.log(v);
+            let v = ta ? target.value : (bool ? target.checked : e[use]);
             props[key] = v;
         }
         if (refresh) {
             this.render();
             State.fire('@{event#stage.select.element.props.update}');
         }
-        let vfId = document.querySelector(`[eid=${element.id}]`).id;
-        let vf = Vframe.get(vfId);
+        let n = node(element.id);
+        let vf = Vframe.get(n);
         if (vf) {
             vf.invoke('@{update}', [element]);
         }

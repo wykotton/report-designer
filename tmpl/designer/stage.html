@@ -2,7 +2,7 @@
     <div class="stage-workaround">
         <div class="stage-canvas" style="min-width:{{=page.width*scale}}px;min-height:{{=page.height*scale}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth*scale}}px {{=page.backgroundHeight*scale}}px;{{/if}}{{/if}}" id="stage_canvas">
             {{each layouts as layout}}
-                <mx-vframe class="pr" src="@../elements/{{=layout.ctrl.role}}/designer" *element="{{@layout}}" mx-mousedown="@{element.start.drag}({element:{{@layout}}})" #role="layout" #eid="{{=layout.id}}"/>
+                <mx-vframe class="pr" id="{{=layout.id}}" src="@../elements/{{=layout.ctrl.role}}/designer" *element="{{@layout}}" mx-mousedown="@{element.start.drag}({element:{{@layout}}})" #role="layout" #eid="{{=layout.id}}"/>
             {{/each}}
         </div>
     </div>

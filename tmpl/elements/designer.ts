@@ -5,21 +5,24 @@ import Magix, { State, Vframe, has as Has } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 Magix.applyStyle('@designer.less');
 let WatchSelectElements = {};
-State.on('@{event#stage.select.elements.change}', () => {
+let CheckStatus = () => {
     for (let p in WatchSelectElements) {
-        let vf = Vframe.get(p);
+        let n = WatchSelectElements[p];
+        let vf = Vframe.get(n);
         if (vf) {
             vf.invoke('@{check.status}');
             vf.invoke('render');
         }
     }
-});
+};
+State.on('@{event#history.shift}', CheckStatus);
+State.on('@{event#stage.select.elements.change}', CheckStatus);
 export default Magix.View.extend({
     tmpl: '@designer.html',
     mixins: [Dragdrop],
     ctor(data) {
         this.assign(data);
-        WatchSelectElements[this.id] = 1;
+        WatchSelectElements[this.id] = this.root;
         this.on('destroy', () => {
             delete WatchSelectElements[this.id];
         });

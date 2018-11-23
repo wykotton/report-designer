@@ -1,0 +1,8 @@
+<ul class="unselectable group{{if disabled}} notallowed{{/if}}">
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.left}')}}" class="fl group-item iconfont{{if value.h=='flex-start'}} active{{/if}}" mx-click="@{set}({type:'h',v:'flex-start'})">&#xe687;</li>
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.center}')}}" class="fl group-item iconfont{{if value.h=='center'}} active{{/if}}" mx-click="@{set}({type:'h',v:'center'})">&#xe68a;</li>
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.right}')}}" class="fl group-item iconfont{{if value.h=='flex-end'}} active{{/if}}" mx-click="@{set}({type:'h',v:'flex-end'})">&#xe686;</li>
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.top}')}}" class="fl group-item iconfont{{if value.v=='flex-start'}} active{{/if}}" mx-click="@{set}({type:'v',v:'flex-start'})">&#xe614;</li>
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.middle}')}}" class="fl group-item iconfont{{if value.v=='center'}} active{{/if}}" mx-click="@{set}({type:'v',v:'center'})">&#xe613;</li>
+    <li title="{{=i18n('@{lang#mx-gallery.font.align.bottom}')}}" class="fl group-item iconfont{{if value.v=='flex-end'}} active{{/if}}" mx-click="@{set}({type:'v',v:'flex-end'})">&#xe612;</li>
+</ul>

@@ -21,7 +21,7 @@ export default Magix.View.extend({
     init(extra) {
         let me = this;
         let app = Magix.node('app');
-        let root = Magix.node(me.id);
+        let root = me.root;
         me.on('destroy', () => {
             RemoveCache(me);
             DialogZIndex -= 2;
@@ -48,10 +48,10 @@ export default Magix.View.extend({
         }, null, () => {
             let data = me.get();
             setTimeout(me.wrapAsync(() => {
-                Magix.node(me.id).style.display = 'block';
+                me.root.style.display = 'block';
                 Magix.node('focus_' + me.id).focus();
             }), 30);
-            me.owner.mountVframe('cnt_' + me.id, data.view, data);
+            me.owner.mountVframe(Magix.node('cnt_' + me.id), data.view, data);
             setTimeout(me.wrapAsync(() => {
                 me.digest({
                     removeClass: true
@@ -60,17 +60,25 @@ export default Magix.View.extend({
         });
     },
     '@{notify.main.view.unload}'(e) {
-        let vf = Magix.Vframe.get('cnt_' + this.id);
+        let n = Magix.node('cnt_' + this.id);
+        let vf = Magix.Vframe.get(n);
         vf.invoke('fire', ['unload', e]);
     },
+    '@{close.anim}'() {
+        let id = this.id, node;
+        node = Magix.node('body_' + id);
+        node.classList.add('@index.less:anim-body-out');
+        node = Magix.node('mask_' + id);
+        node.classList.add('@index.less:anim-mask-out');
+    },
     '@{close}<click>'() {
-        Magix.dispatch(this.id, 'dlg_close');
+        Magix.dispatch(this.root, 'dlg_close');
     },
     '$doc<keyup>'(e) {
         if (e.keyCode == 27) { //esc
             let dlg = CacheList[CacheList.length - 1];
             if (dlg == this && dlg.get('closable')) {
-                Magix.dispatch(this.id, 'dlg_close');
+                Magix.dispatch(this.root, 'dlg_close');
             }
         }
     }
@@ -78,21 +86,16 @@ export default Magix.View.extend({
         '@{dialog.show}'(view, options) {
             let id = Magix.guid('dlg_');
             document.body.insertAdjacentHTML('beforeend', '<div id="' + id + '" style="display:none" />');
-            let vf = view.owner.mountVframe(id, '@moduleId', options);
             let node = Magix.node(id);
+            let vf = view.owner.mountVframe(node, '@moduleId', options);
             let suspend;
             let whenClose = () => {
                 if (!node['@{is.closing}'] && !suspend) {
                     let resume = () => {
                         node['@{is.closing}'] = 1;
-                        node = Magix.node('body_' + id);
-                        node.classList.add('@index.less:anim-body-out');
-                        node = Magix.node('mask_' + id);
-                        node.classList.add('@index.less:anim-mask-out');
+                        vf.invoke('@{close.anim}');
                         setTimeout(() => {
-                            if (view.owner) {
-                                view.owner.unmountVframe(id);
-                            }
+                            vf.unmountVframe();
                         }, 200);
                     };
                     let e = {

@@ -7,13 +7,11 @@ export default Magix.View.extend({
     tmpl: '@index.html',
     init(extra) {
         let me = this;
-        me['@{owner.node}'] = node(me.id);
         me.assign(extra);
     },
     assign(ops) {
         let me = this;
         let v = ops.value;
-        let root = me['@{owner.node}'];
         if (v === undefined) v = '';
         if (v !== '') {
             v = +v;
@@ -24,7 +22,7 @@ export default Magix.View.extend({
         me['@{step}'] = +ops.step || 1;
         me['@{support.empty}'] = (ops.empty + '') == 'true';
         me['@{format.value}'] = (ops.format + '') == 'true';
-        me['@{disabled}'] = root.hasAttribute('disabled');
+        me['@{disabled}'] = me.root.hasAttribute('disabled');
         me['@{max}'] = Magix.has(ops, 'max') ? +ops.max : Number.MAX_VALUE;
         me['@{min}'] = Magix.has(ops, 'min') ? +ops.min : -Number.MAX_VALUE;
         me['@{ratio}'] = +ops.ratio || 10;
@@ -71,7 +69,7 @@ export default Magix.View.extend({
     '@{set.value}'(v, ignoreFill) {
         let me = this;
         if (v === '' && me['@{support.empty}']) {
-            Magix.dispatch(me['@{owner.node}'], 'input', {
+            Magix.dispatch(me.root, 'input', {
                 value: me['@{value}'] = v
             });
             return;
@@ -81,7 +79,7 @@ export default Magix.View.extend({
             if (!ignoreFill) {
                 me['@{ctrl.input}'].value = v;
             }
-            Magix.dispatch(me['@{owner.node}'], 'input', {
+            Magix.dispatch(me.root, 'input', {
                 value: me['@{value}'] = v
             });
         }
@@ -112,7 +110,7 @@ export default Magix.View.extend({
     },
     '@{simulator.active}'() {
         let me = this;
-        me['@{owner.node}'].classList.add('@scoped.style:input-focus');
+        me.root.classList.add('@scoped.style:input-focus');
         if (!Magix.has(me, '@{last.value}')) {
             me['@{last.value}'] = me['@{value}'];
         }
@@ -126,10 +124,10 @@ export default Magix.View.extend({
     '@{deactive}<focusout>'(e) {
         let me = this;
         if (!me['@{ui.keep.active}']) {
-            me['@{owner.node}'].classList.remove('@scoped.style:input-focus');
+            me.root.classList.remove('@scoped.style:input-focus');
             me['@{fix.value}']();
             if (me['@{last.value}'] != me['@{value}']) {
-                Magix.dispatch(me['@{owner.node}'], 'change', {
+                Magix.dispatch(me.root, 'change', {
                     value: me['@{value}']
                 });
             }

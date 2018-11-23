@@ -1,5 +1,9 @@
 <ul class="props">
     <li class="props-item">
+        <span class="props-item-title">{{=i18n('@{lang#props.type}')}}</span>
+        <span>页面</span>
+    </li>
+    <li class="props-item">
         <span class="props-item-title">{{=i18n(page.mode=='auto'?'@{lang#props.page.width}':'@{lang#props.page.min.width}')}}</span>
         <mx-number class="ipt" min="0" value="{{@page.width}}" mx-input="@{change.page}({use:'width'})"/>
     </li>

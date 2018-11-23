@@ -1,4 +1,4 @@
 {{set props=element.props}}
 {{set ctrl=element.ctrl}}
-<mx-vframe class="element {{if ctrl.role=='layout'}}container{{else}}through{{/if}}" src="{{=view}}" id="entity_{{=id}}" *element="{{@element}}" *props="{{@props}}" />
+<mx-vframe class="element{{if props.locked}} locked{{/if}}{{if ctrl.role=='layout'}} container{{else}} through{{/if}}" src="{{=view}}" id="entity_{{=id}}" *element="{{@element}}" *props="{{@props}}" />
 <div class="mask{{if ctrl.role=='layout'}} through{{/if}}{{if selected}}{{if props.locked}} locked-line{{else}} focus-line{{/if}}{{/if}}"></div>

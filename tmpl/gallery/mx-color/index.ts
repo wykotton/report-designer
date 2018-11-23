@@ -273,7 +273,7 @@ export default Magix.View.extend({
                 color: c,
                 current: c
             });
-            Magix.dispatch(me.id, 'input', {
+            Magix.dispatch(me.root, 'input', {
                 color: me['@{color}'] = c
             });
         }
@@ -283,7 +283,7 @@ export default Magix.View.extend({
         e.eventTarget.classList.add('@index.less:selected');
     },
     '@{inside}'(node) {
-        return Magix.inside(node, this.id);
+        return Magix.inside(node, this.root);
     },
     '@{show}'() {
         let n = node('bd_' + this.id);
@@ -332,7 +332,7 @@ export default Magix.View.extend({
                 current: cr
             });
         }
-        Magix.dispatch(me.id, 'input', {
+        Magix.dispatch(me.root, 'input', {
             color: me['@{color}'] = c
         });
     }

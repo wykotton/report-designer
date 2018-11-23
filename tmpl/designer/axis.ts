@@ -159,7 +159,7 @@ export default Magix.View.extend({
                 setTimeout(test, 30);
             }
         };
-        test();
+        setTimeout(test, 30);
     },
     '@{show.x.line}<mousemove>'(e) {
         let xNode = this['@{x.axis}'];
@@ -178,7 +178,7 @@ export default Magix.View.extend({
         }
     },
     '@{show.y.line}<mousemove>'(e) {
-        let sTop = node(this.id).getBoundingClientRect();
+        let sTop = this.root.getBoundingClientRect();
         let v = e.pageY - sTop.top;
         let start = this.get('yStart');
         let yNode = this['@{y.axis}'];
@@ -210,7 +210,7 @@ export default Magix.View.extend({
         DHistory["@{save}"]();
     },
     '@{add.y.help.line}<click>'(e) {
-        let offset = node(this.id).getBoundingClientRect();
+        let offset = this.root.getBoundingClientRect();
         let v = e.pageY - offset.top;
         let start = this.get('yStart');
         let yNode = this['@{y.axis}'];

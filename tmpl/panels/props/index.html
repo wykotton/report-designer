@@ -3,7 +3,7 @@
 <ul class="props">
     <li class="props-item">
         <span class="props-item-title">{{=i18n('@{lang#props.type}')}}</span>
-        <span>{{=e.ctrl.title}}</span>
+        <span>{{=i18n(e.ctrl.title)}}</span>
     </li>
     {{each e.ctrl.props as p}}
         {{if p.type==props['@{spliter}']}}
@@ -16,7 +16,7 @@
                 {{=i18n(p.tip)}}
             </span>
             {{if p.type==props['@{number}']}}
-            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @step="{{=p.step}}" @fixed="{{=p.fixed}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
             {{else if p.type==props['@{color}']}}
             <mx-color clear="{{=p.clear}}" class="ipt" color="{{@data}}" *align="right" *disabled="{{=e.props.locked}}" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
             {{else if p.type==props['@{boolean}']}}
@@ -25,9 +25,14 @@
                 <i class="switch-button"></i>
             </label>
             {{else if p.type==props['@{column}']}}
-            <mx-layout.column *columns="{{@data}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',element:{{@e}}})"/>
+            <mx-layout.column *columns="{{@data}}" *disabled="{{@e.props.locked}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',element:{{@e}}})"/>
             {{else if p.type==props['@{guage}']}}
-            <mx-layout.guage *guage="{{@data}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            <mx-layout.guage *guage="{{@data}}" *disabled="{{@e.props.locked}}" class="ipt" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            {{else if p.type==props['@{text.area}']}}
+            <textarea class="textarea ipt ta" @#disabled="{{@e.props.locked}}" mx-input="@{update.prop}({key:'{{=p.key}}',ta:1,element:{{@e}}})">{{=data}}</textarea>
+            {{else if p.type==props['@{font.style}']}}
+            <mx-font.style class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>{{else if p.type==props['@{font.align}']}}
+            <mx-font.align class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
             {{/if}}
         </li>
         {{/if}}
