@@ -535,34 +535,29 @@ let MxEvent = {
      * @param {String} name 事件名称
      * @param {Object} data 事件对象
      * @param {Boolean} [remove] 事件触发完成后是否移除这个事件的所有监听
-     * @param {Boolean} [lastToFirst] 是否从后向前触发事件的监听列表
      */
-    fire(name, data, remove, lastToFirst) {
+    fire(name, data) {
         let key = Spliter + name,
             me = this,
             list = me[key],
-            end, len, idx, t;
+            idx = 0, len, t;
         if (!data) data = {};
         data.type = name;
         if (list) {
-            end = list.length;
-            len = end - 1;
-            while (end--) {
-                idx = lastToFirst ? end : len - end;
+            for (len = list.length; idx < len; idx++) {
                 t = list[idx];
                 if (t.f) {
                     t.x = 1;
                     ToTry(t.f, data, me);
                     t.x = Empty;
                 } else if (!t.x) {
-                    list.splice(idx, 1);
+                    list.splice(idx--, 1);
                     len--;
                 }
             }
         }
         list = me[`on${name}`];
         if (list) ToTry(list, data, me);
-        if (remove) me.off(name);
         return me;
     },
     /**
@@ -745,12 +740,15 @@ Assign(Vframe, {
     all() {
         return Vframe_Vframes;
     },
+    byId(id) {
+        return Vframe_Vframes[id];
+    },
     /**
      * 根据vframe的id获取vframe对象
      * @param {String} id vframe的id
      * @return {Vframe|undefined} vframe对象
      */
-    get(node) {
+    byNode(node) {
         return Vframe_Vframes[node['b']];
     }
 }, MxEvent);
@@ -845,7 +843,8 @@ Assign(Vframe[Prototype], {
                 v['d'] = 0;
                 delete Body_RangeEvents[id];
                 delete Body_RangeVframes[id]
-                v.fire('destroy', 0, 1, 1);
+                v.fire('destroy');
+                v.off('destroy');
                 View_DestroyAllResources(v, 1);
                 View_DelegateEvents(v, 1);
                 v.owner = v.root = Null;
@@ -1464,7 +1463,7 @@ let Q_Create = (tag, props, children, unary) => {
             } else if (prop == Tag_View_Params_Key) {
                 hasMxv = 1;
             }
-            if (prop == Value && tag == V_TEXTAREA) {
+            if (prop == Value && tag == 'textarea') {
                 innerHTML = value;
             }
             props[prop] = value;
@@ -1496,13 +1495,12 @@ let Q_Create = (tag, props, children, unary) => {
     }
     return token;
 };
-    let V_TEXTAREA = 'textarea';
-let V_SPECIAL_PROPS = {
+    let V_SPECIAL_PROPS = {
     input: {
         [Value]: 1,
         checked: 1
     },
-    [V_TEXTAREA]: {
+    textarea: {
         [Value]: 1
     },
     option: {
@@ -1575,9 +1573,7 @@ let V_CreateNode = (vnode, owner, ref) => {
     } else {
         c = Doc_Document.createElementNS(V_NSMap[tag] || owner.namespaceURI, tag);
         V_SetAttributes(c, 0, vnode, ref, 1);
-        if (vnode['c']) {
-            c.innerHTML = vnode['c'];
-        }
+        c.innerHTML = vnode['c'];
     }
     return c;
 };

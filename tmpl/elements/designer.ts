@@ -7,8 +7,7 @@ Magix.applyStyle('@designer.less');
 let WatchSelectElements = {};
 let CheckStatus = () => {
     for (let p in WatchSelectElements) {
-        let n = WatchSelectElements[p];
-        let vf = Vframe.get(n);
+        let vf = Vframe.byId(p);
         if (vf) {
             vf.invoke('@{check.status}');
             vf.invoke('render');
@@ -22,7 +21,7 @@ export default Magix.View.extend({
     mixins: [Dragdrop],
     ctor(data) {
         this.assign(data);
-        WatchSelectElements[this.id] = this.root;
+        WatchSelectElements[this.id] = 1;
         this.on('destroy', () => {
             delete WatchSelectElements[this.id];
         });

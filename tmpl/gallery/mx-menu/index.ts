@@ -96,7 +96,7 @@ export default Magix.View.extend({
         show(view, e, ops) {
             let id = 'ctx_' + view.id;
             let n = node(id);
-            let vf = n && Magix.Vframe.get(n);
+            let vf = n && Magix.Vframe.byNode(n);
             if (vf) {
                 vf.invoke('assign', [ops]);
                 vf.invoke('render');

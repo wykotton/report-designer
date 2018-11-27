@@ -33,7 +33,7 @@ export default Magix.View.extend({
             State.fire('@{event#stage.select.element.props.update}');
         }
         let n = node(element.id);
-        let vf = Vframe.get(n);
+        let vf = Vframe.byNode(n);
         if (vf) {
             vf.invoke('@{update}', [element]);
         }

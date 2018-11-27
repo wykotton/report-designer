@@ -61,7 +61,7 @@ export default Magix.View.extend({
     },
     '@{notify.main.view.unload}'(e) {
         let n = Magix.node('cnt_' + this.id);
-        let vf = Magix.Vframe.get(n);
+        let vf = Magix.Vframe.byNode(n);
         vf.invoke('fire', ['unload', e]);
     },
     '@{close.anim}'() {

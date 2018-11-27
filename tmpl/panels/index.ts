@@ -39,7 +39,7 @@ export default {
                 info.eId = Magix.guid('panel_');
                 let app = node(Magix.config('rootId'));
                 app.insertAdjacentHTML('beforeend', `<div id="${info.eId}"></div>`);
-                let root = Vframe.get(app);
+                let root = Vframe.byNode(app);
                 info.close = () => {
                     this['@{close.panel}'](info.id);
                 };
@@ -49,7 +49,7 @@ export default {
             }
             if (!prevent) {
                 State.fire('@{event#panel.change}');
-                let vf = Vframe.get(node(info.eId));
+                let vf = Vframe.byNode(node(info.eId));
                 vf.invoke('@{show}');
             }
         }
@@ -61,7 +61,7 @@ export default {
             let n = node(info.eId);
             n.style.display = 'none';
             State.fire('@{event#panel.change}');
-            let vf = Vframe.get(n);
+            let vf = Vframe.byNode(n);
             vf.invoke('@{hide}');
         }
     },
