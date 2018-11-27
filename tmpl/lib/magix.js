@@ -20,10 +20,8 @@ let Null = null;
 let Doc_Window = window;
 let Undefined = void Counter;
 let Doc_Document = document;
-let Timeout = Doc_Window.setTimeout;
-let Changed = 'changed';
-let Change = 'change';
-let Page_Unload = 'pageunload';
+let Timeout = setTimeout;
+let Encode = encodeURIComponent;
 let Value = 'value';
 let Tag_Static_Key = 'mxs';
 let Tag_View_Params_Key = 'mxv';
@@ -41,11 +39,12 @@ let Prototype = 'prototype';
 let Params = 'params';
 let Path = 'path';
 let MX_View = 'mx-view';
-let Str_Object = 'object';
-let Type = o => Object[Prototype].toString.call(o).slice(8, -1);
+let ToString = Object[Prototype].toString;
+let Type = o => ToString.call(o).slice(8, -1);
 let IsObject = o => Type(o) == 'Object';
 let IsArray = Array.isArray;
 let GUID = prefix => (prefix || 'mx_') + Counter++;
+let GetById = id => Doc_Document.getElementById(id);
 let MxGlobalView = GUID();
 let Mx_Cfg = {
     rootId: GUID(),
@@ -54,7 +53,7 @@ let Mx_Cfg = {
         throw e;
     }
 };
-let IsPrimitive = args => !args || typeof args != Str_Object;
+let IsPrimitive = args => !args || typeof args != 'object';
 let UpdateData = (newData, oldData, keys, unchanged) => {
     let changed = 0,
         now, old, p;
@@ -141,7 +140,7 @@ let TranslateData = (data, params) => {
     }
     return params;
 };
-    let CacheSort = (a, b) => b.f - a.f || b.t - a.t;
+    let CacheSort = (a, b) => b['a'] - a['a'] || b['b'] - a['b'];
 /**
  * Magix.Cache 类
  * @name Cache
@@ -159,10 +158,10 @@ let TranslateData = (data, params) => {
  */
 function Cache(max, buffer, remove, me) {
     me = this;
-    me.c = [];
-    me.b = buffer || 5; //buffer先取整，如果为0则再默认5
-    me.x = me.b + (max || 20);
-    me.r = remove;
+    me['a'] = [];
+    me['b'] = buffer || 5; //buffer先取整，如果为0则再默认5
+    me['c'] = me['b'] + (max || 20);
+    me['d'] = remove;
 }
 
 Assign(Cache[Prototype], {
@@ -176,28 +175,14 @@ Assign(Cache[Prototype], {
      */
     get(key) {
         let me = this;
-        let c = me.c;
+        let c = me['a'];
         let r = c[Spliter + key];
         if (r) {
-            r.f++;
-            r.t = Counter++;
-            r = r.v;
+            r['a']++;
+            r['b'] = Counter++;
+            r = r['c'];
         }
         return r;
-    },
-    /**
-     * 循环缓存
-     * @param  {Function} cb 回调
-     * @param  {Object} [ops] 回调时传递的额外参数
-     * @beta
-     * @module ceach|service
-     */
-    each(cb, ops, me, c, i) {
-        me = this;
-        c = me.c;
-        for (i of c) {
-            cb(i.v, ops, me);
-        }
     },
     /**
      * 设置缓存
@@ -206,29 +191,29 @@ Assign(Cache[Prototype], {
      */
     set(okey, value) {
         let me = this;
-        let c = me.c;
+        let c = me['a'];
         let key = Spliter + okey;
         let r = c[key];
-        let t = me.b;
+        let t = me['b'];
         if (!r) {
-            if (c.length >= me.x) {
+            if (c.length >= me['c']) {
                 c.sort(CacheSort);
                 while (t--) {
                     r = c.pop();
-                    //为什么要判断r.f>0,考虑这样的情况：用户设置a,b，主动删除了a,重新设置a,数组中的a原来指向的对象残留在列表里，当排序删除时，如果不判断则会把新设置的删除，因为key都是a
+                    //为什么要判断r['a']>0,考虑这样的情况：用户设置a,b，主动删除了a,重新设置a,数组中的a原来指向的对象残留在列表里，当排序删除时，如果不判断则会把新设置的删除，因为key都是a
                     //
-                    if (r.f > 0) me.del(r.o); //如果没有引用，则删除
+                    if (r['a'] > 0) me.del(r.o); //如果没有引用，则删除
                 }
             }
             r = {
-                o: okey
+                'd': okey
             };
             c.push(r);
             c[key] = r;
         }
-        r.v = value;
-        r.f = 1;
-        r.t = Counter++;
+        r['c'] = value;
+        r['a'] = 1;
+        r['b'] = Counter++;
     },
     /**
      * 删除缓存
@@ -236,15 +221,15 @@ Assign(Cache[Prototype], {
      */
     del(k) {
         k = Spliter + k;
-        let c = this.c;
+        let c = this['a'];
         let r = c[k],
-            m = this.r;
+            m = this['d'];
         if (r) {
-            r.f = -1;
-            r.v = Empty;
+            r['a'] = -1;
+            r['c'] = Empty;
             delete c[k];
             if (m) {
-                ToTry(m, r.o);
+                ToTry(m, r['d']);
             }
         }
     },
@@ -254,7 +239,7 @@ Assign(Cache[Prototype], {
      * @return {Boolean}
      */
     has(k) {
-        return Has(this.c, Spliter + k);
+        return Has(this['a'], Spliter + k);
     }
 });
     let DispatchEvent = (element, type, data) => {
@@ -266,12 +251,11 @@ Assign(Cache[Prototype], {
     element.dispatchEvent(e);
 };
 let TargetMatchSelector = (element, selector) => {
-    if (!selector || !element || element.nodeType !== 1) return 0;
-    let matchesSelector = element.matchesSelector || element.webkitMatchesSelector || element.mozMatchesSelector || element.oMatchesSelector;
-    return matchesSelector.call(element, selector);
+    if (selector && element && element.nodeType == 1) {
+        return element.matches(selector);
+    }
 };
-let AttachMxId = e => e._mx || (e._mx = GUID('e'));
-let AttachEventHandlers = {};
+let AttachEventHandlers = [];
 let ReturnTrue = () => true,
     ReturnFalse = () => false,
     EventMethods = {
@@ -290,52 +274,44 @@ let EventCompatible = e => {
             };
             e[value] = ReturnFalse;
         }
-        if (e.defaultPrevented !== undefined ? e.defaultPrevented :
+        if (e.defaultPrevented !== Undefined ? e.defaultPrevented :
             'returnValue' in e ? e.returnValue === false :
                 e.getPreventDefault && e.getPreventDefault())
             e.isDefaultPrevented = ReturnTrue;
     }
     return e;
 };
-let AddEventListener = (element, type, fn, data) => {
-    let id = AttachMxId(element);
-    let collections = AttachEventHandlers[id] || (AttachEventHandlers[id] = []);
+let AddEventListener = (element, type, fn, viewId, eventOptions, view) => {
     let h = {
-        'a': data && data.i,
+        'a': viewId,
         'b': fn,
         'c': type,
-        'd'(e) {
+        'd': element,
+        'e'(e) {
             e = EventCompatible(e);
-            fn.call(element, e, data);
-        }
-    };
-    collections.push(h);
-    element.addEventListener(type, h['d'], data && data.m);
-};
-let RemoveEventListener = (element, type, cb, data) => {
-    let id = AttachMxId(element);
-    let collections = AttachEventHandlers[id];
-    if (collections) {
-        let found;
-        for (let c, i = collections.length; i--;) {
-            c = collections[i];
-            if (c['c'] == type && c['b'] === cb) {
-                let cd = c['a'];
-                if (!data || (data && data.i == cd)) {
-                    found = c;
-                    collections.splice(i, 1);
-                    break;
-                }
+            if (viewId) {
+                e.eventTarget = element;
+                ToTry(fn, e, view);
+            } else {
+                fn(e);
             }
         }
-        if (found) {
-            element.removeEventListener(type, found['d'], data && data.m);
+    };
+    AttachEventHandlers.push(h);
+    element.addEventListener(type, h['e'], eventOptions);
+};
+let RemoveEventListener = (element, type, cb, viewId, eventOptions) => {
+    for (let c, i = AttachEventHandlers.length; i--;) {
+        c = AttachEventHandlers[i];
+        if (c['c'] == type &&
+            c['a'] == viewId &&
+            c['d'] == element &&
+            c['b'] === cb) {
+            AttachEventHandlers.splice(i, 1);
+            element.removeEventListener(type, c['e'], eventOptions);
+            break;
         }
     }
-};
-let GlobalDomEventProcessor = (e, d) => {
-    e.eventTarget = d.e;
-    ToTry(d.f, e, d.v);
 };
     
 let Path_Trim_Params_Reg = /[#?].*$/;
@@ -419,7 +395,7 @@ let ToUri = (path, params, keo) => {
     for (p in params) {
         v = params[p] + Empty;
         if (!keo || v || Has(keo, p)) {
-            v = encodeURIComponent(v);
+            v = Encode(v);
             arr.push(f = p + '=' + v);
         }
     }
@@ -464,21 +440,21 @@ let ParseExpr = (expr, data, result) => {
                     MxDefaultViewEntity = View.extend();
                 }
                 fn(MxDefaultViewEntity);
-            } else if (Doc_Window.seajs) {
+            } else /*if (Doc_Window.seajs)*/ {
                 seajs.use(name, (...g) => {
                     for (let m of g) {
                         a.push(m && m.__esModule && m.default || m);
                     }
                     if (fn) fn(...a);
                 });
-            } else {
+            } /*else {
                 if (!IsArray(name)) name = [name];
                 for (n of name) {
                     n = require(n);
                     a.push(n && n.__esModule && n.default || n);
                 }
                 if (fn) fn(...a);
-            }
+            }*/
         } else {
             fn();
         }
@@ -679,8 +655,8 @@ let State = Assign({
 let Vframe_Vframes = {};
 let Vframe_TranslateQuery = (pId, src, params, pVf) => {
     pVf = Vframe_Vframes[pId];
-    pVf = pVf && pVf['$v'];
-    pVf = pVf ? pVf['$a'] : {};
+    pVf = pVf && pVf['a'];
+    pVf = pVf ? pVf['a'] : {};
     if (src.indexOf(Spliter) > 0) {
         TranslateData(pVf, params);
     }
@@ -693,7 +669,7 @@ let Vframe_TranslateQuery = (pId, src, params, pVf) => {
 let Vframe_Root = (rootId, e) => {
     if (!Vframe_RootVframe) {
         rootId = Mx_Cfg.rootId;
-        e = Doc_Document.getElementById(rootId);
+        e = GetById(rootId);
         if (!e) {
             e = Doc_Body;
         }
@@ -715,11 +691,11 @@ let Vframe_RemoveVframe = (id, vframe) => {
     vframe = Vframe_Vframes[id];
     if (vframe) {
         delete Vframe_Vframes[id];
-        vframe.root['$a'] = 0;
+        vframe.root['a'] = 0;
         Vframe.fire('remove', {
             vframe
         });
-        vframe.id = vframe.root = vframe.pId = vframe['$c'] = Null; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
+        vframe.id = vframe.root = vframe.pId = vframe['b'] = Null; //清除引用,防止被移除的view内部通过setTimeout之类的异步操作有关的界面，影响真正渲染的view
         if (DEBUG) {
             let nodes = Doc_Document.querySelectorAll('#' + id);
             if (nodes.length > 1) {
@@ -730,7 +706,7 @@ let Vframe_RemoveVframe = (id, vframe) => {
 };
 
 let Vframe_RunInvokes = (vf, list, o) => {
-    list = vf['$a']; //invokeList
+    list = vf['c']; //invokeList
     while (list.length) {
         o = list.shift();
         if (!o.r) { //remove
@@ -740,7 +716,7 @@ let Vframe_RunInvokes = (vf, list, o) => {
     }
 };
 
-let Vframe_GetVfId = node => node['$b'] || (node['$b'] = GUID());
+let Vframe_GetVfId = node => node['b'] || (node['b'] = GUID());
 /**
  * Vframe类
  * @name Vframe
@@ -753,9 +729,9 @@ function Vframe(root, pId) {
     me.id = vfId;
     me.root = root;
     me.pId = pId;
-    me['$c'] = {}; //childrenMap
-    me['$b'] = 1; //signature
-    me['$a'] = []; //invokeList
+    me['b'] = {}; //childrenMap
+    me['d'] = 1; //signature
+    me['c'] = []; //invokeList
     Vframe_AddVframe(vfId, me);
 }
 Assign(Vframe, {
@@ -775,7 +751,7 @@ Assign(Vframe, {
      * @return {Vframe|undefined} vframe对象
      */
     get(node) {
-        return Vframe_Vframes[node['$b']];
+        return Vframe_Vframes[node['b']];
     }
 }, MxEvent);
 
@@ -792,9 +768,9 @@ Assign(Vframe[Prototype], {
         let me = this;
         let { id, root, pId } = me;
         let po, sign, view, params, ctors;
-        if (!me['$d'] && root) { //alter
-            me['$d'] = 1;
-            me['$e'] = root.innerHTML;
+        if (!me['e'] && root) { //alter
+            me['e'] = 1;
+            me['f'] = root.innerHTML;
         }
         me.unmountView();
         po = ParseUri(viewPath || Empty);
@@ -803,13 +779,13 @@ Assign(Vframe[Prototype], {
             me[Path] = viewPath;
             params = po[Params];
             Vframe_TranslateQuery(pId, viewPath, params);
-            me['$f'] = view;
+            me['g'] = view;
             Assign(params, viewInitParams);
-            sign = me['$b'];
+            sign = me['d'];
             Async_Require(view, TView => {
-                if (sign == me['$b']) { //有可能在view载入后，vframe已经卸载了
+                if (sign == me['d']) { //有可能在view载入后，vframe已经卸载了
                     if (!TView) {
-                        return Mx_Cfg.error(Error(`id:${id} cannot load:${view}`));
+                        return Mx_Cfg.error(Error(`${id} cannot load:${view}`));
                     }
                     ctors = View_Prepare(TView);
                     view = new TView(id, root, me, params, ctors);
@@ -819,12 +795,12 @@ Assign(Vframe[Prototype], {
                         let importantProps = {
                             id: 1,
                             owner: 1,
-                            '$l': 1,
-                            '$r': 1,
-                            '$b': 1,
-                            '$d': 1,
-                            '$a': 1,
-                            '$e': 1
+                            'b': 1,
+                            'c': 1,
+                            'd': 1,
+                            'e': 1,
+                            'a': 1,
+                            'f': 1
                         };
                         for (let p in view) {
                             if (Has(view, p) && viewProto[p]) {
@@ -834,20 +810,20 @@ Assign(Vframe[Prototype], {
                         view = Safeguard(view, null, (key, value) => {
                             if (Has(viewProto, key) ||
                                 (Has(importantProps, key) &&
-                                    (key != '$b' || !isFinite(value)) &&
+                                    (key != 'd' || !isFinite(value)) &&
                                     ((key != 'owner' && key != 'root') || value !== Null))) {
                                 throw new Error(`avoid write ${key} at file ${viewPath}!`);
                             }
                         }, true);
                     }
-                    me['$v'] = view;
+                    me['a'] = view;
                     
                     View_DelegateEvents(view);
                     ToTry(view.init, params, view);
-                    view['$f']();
+                    view['g']();
                     if (!view.tmpl) { //无模板
-                        me['$d'] = 0; //不会修改节点，因此销毁时不还原
-                        if (!view['$g']) {
+                        me['e'] = 0; //不会修改节点，因此销毁时不还原
+                        if (!view['h']) {
                             view.endUpdate();
                         }
                     }
@@ -860,13 +836,13 @@ Assign(Vframe[Prototype], {
      */
     unmountView() {
         let me = this;
-        let { '$v': v, id, root } = me;
-        me['$a'] = [];
+        let { 'a': v, id, root } = me;
+        me['c'] = [];
         if (v) {
             me.unmountZone();
-            me['$v'] = 0; //unmountView时，尽可能早的删除vframe上的$v对象，防止$v销毁时，再调用该 vfrmae的类似unmountZone方法引起的多次created
-            if (v['$b'] > 0) {
-                v['$b'] = 0;
+            me['a'] = 0; //unmountView时，尽可能早的删除vframe上的$v对象，防止$v销毁时，再调用该 vfrmae的类似unmountZone方法引起的多次created
+            if (v['d'] > 0) {
+                v['d'] = 0;
                 delete Body_RangeEvents[id];
                 delete Body_RangeVframes[id]
                 v.fire('destroy', 0, 1, 1);
@@ -874,12 +850,12 @@ Assign(Vframe[Prototype], {
                 View_DelegateEvents(v, 1);
                 v.owner = v.root = Null;
             }
-            v['$b']--;
-            if (root && me['$d'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
-                root.innerHTML = me['$e'];
+            v['d']--;
+            if (root && me['e'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
+                root.innerHTML = me['f'];
             }
         }
-        me['$b']++; //增加signature，阻止相应的回调，见mountView
+        me['d']++; //增加signature，阻止相应的回调，见mountView
     },
     /**
      * 加载vframe
@@ -898,12 +874,12 @@ Assign(Vframe[Prototype], {
      */
     mountVframe(node, viewPath, viewInitParams) {
         let me = this,
-            vf, id = me.id, c = me['$c'];
+            vf, id = me.id, c = me['b'];
         let vfId = Vframe_GetVfId(node);
         vf = Vframe_Vframes[vfId];
         if (!vf) {
             if (!Has(c, vfId)) { //childrenMap,当前子vframe不包含这个id
-                me['$g'] = 0; //childrenList 清空缓存的子列表
+                me['h'] = 0; //childrenList 清空缓存的子列表
             }
             c[vfId] = vfId; //map
             vf = new Vframe(node, id);
@@ -941,16 +917,16 @@ Assign(Vframe[Prototype], {
             不过就展现来讲，一般是不会出现嵌套的情况，出现的话，把里面有层级的vframe都挂到body上也未尝不可，比如brix2.0
          */
 
-        me['$h'] = 1; //hold fire creted
+        //me['i'] = 1; //hold fire creted
         //me.unmountZone(zoneId, 1); 不去清理，详情见：https://github.com/thx/magix/issues/27
 
         for (it of vframes) {
-            if (!it['$a']) { //防止嵌套的情况下深层的view被反复实例化
-                it['$a'] = 1;
+            if (!it['a']) { //防止嵌套的情况下深层的view被反复实例化
+                it['a'] = 1;
                 me.mountVframe(it, GetAttribute(it, MX_View));
             }
         }
-        me['$h'] = 0;
+        //me['i'] = 0;
     },
     /**
      * 销毁vframe
@@ -959,16 +935,16 @@ Assign(Vframe[Prototype], {
     unmountVframe(node, isVframeId) { //inner 标识是否是由内部调用，外部不应该传递该参数
         let me = this,
             vf, pId;
-        node = node ? me['$c'][isVframeId ? node : node['$b']] : me.id;
+        node = node ? me['b'][isVframeId ? node : node['b']] : me.id;
         vf = Vframe_Vframes[node];
         if (vf) {
             vf.unmountView();
             pId = vf.pId;
             Vframe_RemoveVframe(node);
             vf = Vframe_Vframes[pId];
-            if (vf && Has(vf['$c'], node)) { //childrenMap
-                delete vf['$c'][node]; //childrenMap
-                vf['$g'] = 0;
+            if (vf && Has(vf['b'], node)) { //childrenMap
+                delete vf['b'][node]; //childrenMap
+                vf['h'] = 0;
             }
         }
     },
@@ -979,7 +955,7 @@ Assign(Vframe[Prototype], {
     unmountZone(root) {
         let me = this;
         let p, vf, unmount;
-        for (p in me['$c']) {
+        for (p in me['b']) {
             if (root) {
                 vf = Vframe_Vframes[p];
                 unmount = vf && NodeIn(vf.root, root);
@@ -1017,7 +993,7 @@ Assign(Vframe[Prototype], {
      */
     children(me) {
         me = this;
-        return me['$g'] || (me['$g'] = Keys(me['$c']));
+        return me['h'] || (me['h'] = Keys(me['b']));
     },
     /**
      * 调用view的方法
@@ -1035,9 +1011,9 @@ Assign(Vframe[Prototype], {
     invoke(name, args) {
         let result;
         let vf = this,
-            view, fn, o, list = vf['$a'],
+            view, fn, o, list = vf['c'],
             key;
-        if ((view = vf['$v']) && view['$g']) { //view rendered
+        if ((view = vf['a']) && view['h']) { //view rendered
             result = (fn = view[name]) && ToTry(fn, args, view);
         } else {
             o = list[key = Spliter + name];
@@ -1129,17 +1105,17 @@ let Body_FindVframeInfo = (current, eventType) => {
     }
     //如果有匹配但没有处理的vframe或者事件在要搜索的选择器事件里
     if ((match && !match.v) || Body_SearchSelectorEvents[eventType]) {
-        if ((selectorObject = Body_RangeVframes[tempId = begin['$d']])
-            && selectorObject[begin['$e']] == 1) {
+        if ((selectorObject = Body_RangeVframes[tempId = begin['c']])
+            && selectorObject[begin['d']] == 1) {
             view = 1;
             selectorVfId = tempId;//如果节点有缓存，则使用缓存
         }
         if (!view) { //先找最近的vframe
             vfs.push(begin);
             while (begin != Doc_Body && (begin = begin.parentNode)) { //找最近的vframe,且节点上没有mx-autonomy属性
-                if (Vframe_Vframes[tempId = begin['$b']] ||
-                    ((selectorObject = Body_RangeVframes[tempId = begin['$d']]) &&
-                        selectorObject[begin['$e']] == 1)) {
+                if (Vframe_Vframes[tempId = begin['b']] ||
+                    ((selectorObject = Body_RangeVframes[tempId = begin['c']]) &&
+                        selectorObject[begin['d']] == 1)) {
                     selectorVfId = tempId;
                     break;
                 }
@@ -1149,14 +1125,14 @@ let Body_FindVframeInfo = (current, eventType) => {
                 if (!(tempId = Body_RangeVframes[selectorVfId])) {
                     tempId = Body_RangeVframes[selectorVfId] = {};
                 }
-                selectorObject = info['$e'] || (info['$e'] = ++Body_Guid);
+                selectorObject = info['d'] || (info['d'] = ++Body_Guid);
                 tempId[selectorObject] = 1;
-                info['$d'] = selectorVfId;
+                info['c'] = selectorVfId;
             }
         }
         //if (selectorVfId != Hash_Key) { //从最近的vframe向上查找带有选择器事件的view
         //主要兼容服务端输出，不带id的情况
-        begin = current['$b'];
+        begin = current['b'];
         if (Vframe_Vframes[begin]) {
             /*
                 如果当前节点是vframe的根节点，则把当前的vf置为该vframe
@@ -1175,8 +1151,8 @@ let Body_FindVframeInfo = (current, eventType) => {
         }
         do {
             vf = Vframe_Vframes[selectorVfId];
-            if (vf && (view = vf['$v'])) {
-                selectorObject = view['$so'];
+            if (vf && (view = vf['a'])) {
+                selectorObject = view['i'];
                 eventSelector = selectorObject[eventType];
                 if (eventSelector) {
                     for (begin = eventSelector.length; begin--;) {
@@ -1237,14 +1213,14 @@ let Body_DOMEventProcessor = domEvent => {
                     lastVfId = v;
                 }
                 vframe = Vframe_Vframes[v];
-                view = vframe && vframe['$v'];
+                view = vframe && vframe['a'];
                 if (view) {
-                    if (view['$g']) {
+                    if (view['h']) {
                         eventName = n + Spliter + type;
                         fn = view[eventName];
                         if (fn) {
                             domEvent.eventTarget = target;
-                            params = i ? ParseExpr(i, view['$a']) : {};
+                            params = i ? ParseExpr(i, view['a']) : {};
                             domEvent[Params] = params;
                             ToTry(fn, domEvent, view);
                         }
@@ -1269,8 +1245,8 @@ let Body_DOMEventProcessor = domEvent => {
             }
         }
         /*|| e.mxStop */
-        if (((ignore = Body_RangeEvents[fn = target['$d']]) &&
-            (ignore = ignore[target['$e']]) &&
+        if (((ignore = Body_RangeEvents[fn = target['c']]) &&
+            (ignore = ignore[target['d']]) &&
             ignore[type]) ||
             domEvent.isPropagationStopped()) { //避免使用停止事件冒泡，比如别处有一个下拉框，弹开，点击到阻止冒泡的元素上，弹出框不隐藏
             //如果从某个节点开始忽略某个事件的处理，则如果缓存中有待处理的节点，把这些节点owner.vframe处理成当前节点的owner.vframe
@@ -1281,7 +1257,7 @@ let Body_DOMEventProcessor = domEvent => {
         } else {
             //如果某个节点是view临界节点
             //先追加id，后续节点的owner.vframe则是该节点
-            lastVfId = target['$b'];
+            lastVfId = target['b'];
             if (Vframe_Vframes[lastVfId]) {
                 arr.push(lastVfId);
             }
@@ -1298,10 +1274,10 @@ let Body_DOMEventProcessor = domEvent => {
                 if (!(eventInfos = Body_RangeEvents[ignore])) {
                     eventInfos = Body_RangeEvents[ignore] = {};
                 }
-                lastVfId = view['$e'] || (view['$e'] = ++Body_Guid);
+                lastVfId = view['d'] || (view['d'] = ++Body_Guid);
                 if (!(params = eventInfos[lastVfId])) {
                     params = eventInfos[lastVfId] = {};
-                    //view['$d'] = ignore;
+                    //view['c'] = ignore;
                 }
                 params[type] = 1;
             } else {
@@ -1361,7 +1337,7 @@ let Updater_UM = {
 };
 let Updater_URIReplacer = m => Updater_UM[m];
 let Updater_URIReg = /[!')(*]/g;
-let Updater_EncodeURI = v => encodeURIComponent(Updater_Safeguard(v)).replace(Updater_URIReg, Updater_URIReplacer);
+let Updater_EncodeURI = v => Encode(Updater_Safeguard(v)).replace(Updater_URIReg, Updater_URIReplacer);
 
 let Updater_QR = /[\\'"]/g;
 let Updater_EncodeQ = v => Updater_Safeguard(v).replace(Updater_QR, '\\$&');
@@ -1373,29 +1349,29 @@ let Updater_Ref = ($$, v, k, f) => {
     return k;
 };
 let Updater_Digest = (view, digesting) => {
-    let keys = view['$h'],
-        changed = view['$i'],
+    let keys = view['j'],
+        changed = view['k'],
         vf = view.owner,
         viewId = view.id,
-        ref = { v: [] },
-        tmpl, vdom, data = view['$d'],
-        refData = view['$a'],
+        ref = { 'a': [] },
+        tmpl, vdom, data = view['e'],
+        refData = view['a'],
         redigest = trigger => {
-            if (digesting.i < digesting.length) {
+            if (digesting['a'] < digesting.length) {
                 Updater_Digest(view, digesting);
             } else {
                 ref = digesting.slice();
-                digesting.i = digesting.length = 0;
+                digesting['a'] = digesting.length = 0;
                 if (trigger) {
                     view.fire('domready');
                 }
                 ToTry(ref);
             }
         };
-    digesting.i = digesting.length;
-    view['$i'] = 0;
-    view['$h'] = {};
-    if (changed && view['$b'] > 0 && (tmpl = view.tmpl)) {
+    digesting['a'] = digesting.length;
+    view['k'] = 0;
+    view['j'] = {};
+    if (changed && view['d'] > 0 && (tmpl = view.tmpl)) {
         view.fire('dompatch');
         delete Body_RangeEvents[viewId];
         delete Body_RangeVframes[viewId];
@@ -1403,8 +1379,8 @@ let Updater_Digest = (view, digesting) => {
         if (DEBUG) {
             Updater_CheckInput(view, vdom['a']);
         }
-        V_SetChildNodes(view.root, view['$j'], vdom, ref, vf, keys);
-        view['$j'] = vdom;
+        V_SetChildNodes(view.root, view['l'], vdom, ref, vf, keys);
+        view['l'] = vdom;
         /*
             在dom diff patch时，如果已渲染的vframe有变化，则会在vom tree上先派发created事件，同时传递inner标志，vom tree处理alter事件派发状态，未进入created事件派发状态
 
@@ -1412,9 +1388,9 @@ let Updater_Digest = (view, digesting) => {
 
             有可能不需要endUpdate，所以hold fire要视情况而定
         */
-        vf['$h'] = tmpl = ref.c || !view['$g'];
-        for (vdom of ref.v) {
-            vdom['$f']();
+        //vf['i'] = tmpl = ref['b'] || !view['h'];
+        for (vdom of ref['a']) {
+            vdom['g']();
         }
         if (tmpl) {
             view.endUpdate();
@@ -1425,7 +1401,7 @@ let Updater_Digest = (view, digesting) => {
     }
 };
     
-let Q_Create = (tag, children, props, unary) => {
+let Q_Create = (tag, props, children, unary) => {
     //html=tag+to_array(attrs)+children.html
     let token;
     if (tag) {
@@ -1443,10 +1419,7 @@ let Q_Create = (tag, children, props, unary) => {
             for (c of children) {
                 value = c['a'];
                 if (c['b'] == V_TEXT_NODE) {
-                    if (!value) {
-                        value = ' ';
-                    }
-                    value = Updater_Encode(value);
+                    value = value ? Updater_Encode(value) : ' ';//无值的文本节点我们用一个空格占位，这样在innerHTML的时候才会有文本节点
                 }
                 innerHTML += value;
                 //merge text node
@@ -1483,8 +1456,11 @@ let Q_Create = (tag, children, props, unary) => {
             } else if (prop == MX_View && value && !compareKey) {
                 //否则如果是组件,则使用组件的路径做为key
                 compareKey = ParseUri(value)[Path];
-            } else if (prop == Tag_Static_Key && !compareKey) {
-                compareKey = value;
+            } else if (prop == Tag_Static_Key) {
+                if (!compareKey) {
+                    compareKey = value;
+                }
+                newChildren = Empty_Array;
             } else if (prop == Tag_View_Params_Key) {
                 hasMxv = 1;
             }
@@ -1553,9 +1529,10 @@ let V_TEXT_NODE = Counter;
 if (DEBUG) {
     V_TEXT_NODE = '#text';
 }
+let V_W3C = 'http://www.w3.org/';
 let V_NSMap = {
-    svg: 'http://www.w3.org/2000/svg',
-    math: 'http://www.w3.org/1998/Math/MathML'
+    svg: `${V_W3C}2000/svg`,
+    math: `${V_W3C}1998/Math/MathML`
 };
 let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
     let key, value,
@@ -1566,7 +1543,7 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
         if (lastVDOM) {
             for (key in oMap) {
                 if (!Has(specials, key) && !Has(nMap, key)) {//如果旧有新木有
-                    ref.c = 1;
+                    ref['b'] = 1;
                     oldNode.removeAttribute(key);
                 }
             }
@@ -1576,7 +1553,7 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
                 value = nMap[key];
                 //旧值与新值不相等
                 if (!lastVDOM || oMap[key] !== value) {
-                    ref.c = 1;
+                    ref['b'] = 1;
                     oldNode.setAttribute(key, value);
                 }
             }
@@ -1585,7 +1562,7 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
     for (key in specials) {
         value = Has(nMap, key) ? key != Value || nMap[key] : key == Value && Empty;
         if (oldNode[key] != value) {
-            ref.c = 1;
+            ref['b'] = 1;
             oldNode[key] = value;
         }
     }
@@ -1649,7 +1626,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     if (keyedNodes[oc['d']] &&
                         reused[oc['d']]) {
                         oldCount++;
-                        ref.c = 1;
+                        ref['b'] = 1;
                         realNode.insertBefore(V_CreateNode(nc, realNode, ref), nodes[i]);
                         oldVIndex--;
                     } else {
@@ -1657,7 +1634,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     }
                 } else {//添加新的节点
                     realNode.appendChild(V_CreateNode(nc, realNode, ref));
-                    ref.c = 1;
+                    ref['b'] = 1;
                 }
                 oldVIndex++;
             }
@@ -1675,7 +1652,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
             }
         }
     } else {
-        ref.c = 1;
+        ref['b'] = 1;
         realNode.innerHTML = newVDOM['c'];
     }
 };
@@ -1702,10 +1679,10 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
         lastVDOM['a'] != newVDOM['a']) {
         if (lastNodeTag == newVDOM['b']) {
             if (lastNodeTag == V_TEXT_NODE) {
-                ref.c = 1;
+                ref['b'] = 1;
                 realNode.nodeValue = newVDOM['a'];
             } else if (lastNodeTag == Spliter) {
-                ref.c = 1;
+                ref['b'] = 1;
                 oldParent.innerHTML = newVDOM['a'];
             } else if (!lastAMap[Tag_Static_Key] ||
                 lastAMap[Tag_Static_Key] != newAMap[Tag_Static_Key]) {
@@ -1714,7 +1691,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                     commonAttrs = lastVDOM['f'] != newVDOM['f'],
                     updateAttribute = Has(V_SPECIAL_PROPS, lastNodeTag) || commonAttrs,
                     updateChildren, unmountOld,
-                    oldVf = Vframe_Vframes[realNode['$b']],
+                    oldVf = Vframe_Vframes[realNode['b']],
                     assign,
                     view,
                     uri = newMxView && ParseUri(newMxView),
@@ -1737,8 +1714,8 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 }
                 //旧节点有view,新节点有view,且是同类型的view
                 if (newMxView && oldVf &&
-                    oldVf['$f'] == uri[Path] &&
-                    (view = oldVf['$v'])) {
+                    oldVf['g'] == uri[Path] &&
+                    (view = oldVf['a'])) {
                     htmlChanged = newHTML != lastVDOM['c'];
                     paramsChanged = newMxView != oldVf[Path];
                     assign = lastAMap[Tag_View_Params_Key];
@@ -1752,7 +1729,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                         }
                     }
                     if (paramsChanged || htmlChanged || updateAttribute) {
-                        assign = view['$g'] && view['$n'];
+                        assign = view['h'] && view['m'];
                         //如果有assign方法,且有参数或html变化
                         if (assign) {
                             params = uri[Params];
@@ -1760,23 +1737,23 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                             Vframe_TranslateQuery(oldVf.pId, newMxView, params);
                             oldVf[Path] = newMxView;//update ref
                             //如果需要更新，则进行更新的操作
-                            uri = {
-                                //node: newVDOM,//['h'],
-                                //html: newHTML,
-                                //mxv: hasMXV,
-                                node: realNode,
-                                attr: updateAttribute,
-                                deep: !view.tmpl,
-                                inner: htmlChanged,
-                                query: paramsChanged
-                            };
+                            // uri = {
+                            //     //node: newVDOM,//['h'],
+                            //     //html: newHTML,
+                            //     //mxv: hasMXV,
+                            //     node: realNode,
+                            //     attr: updateAttribute,
+                            //     deep: !view.tmpl,
+                            //     inner: htmlChanged,
+                            //     query: paramsChanged
+                            // };
                             //updateAttribute = 1;
-                            if (ToTry(assign, [params, uri], view)) {
-                                ref.v.push(view);
+                            if (ToTry(assign, params,/*[params, uri],*/ view)) {
+                                ref['a'].push(view);
                             }
                             //默认当一个组件有assign方法时，由该方法及该view上的render方法完成当前区域内的节点更新
                             //而对于不渲染界面的控制类型的组件来讲，它本身更新后，有可能需要继续由magix更新内部的子节点，此时通过deep参数控制
-                            updateChildren = uri.deep;
+                            updateChildren = !view.tmpl;//uri.deep;
                         } else {
                             unmountOld = 1;
                             updateChildren = 1;
@@ -1789,7 +1766,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                     unmountOld = oldVf;
                 }
                 if (unmountOld) {
-                    ref.c = 1;
+                    ref['b'] = 1;
                     oldVf.unmountVframe(0, 1);
                 }
                 // Update all children (and subchildren).
@@ -1801,20 +1778,17 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
             }
         } else {
             if (lastVDOM['b'] == Spliter) {
-                oldParent.innerHTML = ' ';//use text node;
-                realNode = oldParent.firstChild;
-            }
-            vframe.unmountZone(realNode);
-            if (newVDOM['b'] == Spliter) {
                 oldParent.innerHTML = newVDOM['a'];
             } else {
+                vframe.unmountZone(realNode);
                 oldParent.replaceChild(V_CreateNode(newVDOM, oldParent, ref), realNode);
             }
-            ref.c = 1;
+            ref['b'] = 1;
         }
     }
 };
-    let View_EvtMethodReg = /^(\$?)([^<]*)<([^>]+)>(?:&(.+))?$/;
+    //like 'login<click>' or '$<click>' or '$win<scroll>' or '$win<scroll>&passive,capture'
+let View_EvtMethodReg = /^(\$?)([^<]*)<([^>]+)>(?:&(.+))?$/;
 let processMixinsSameEvent = (exist, additional, temp) => {
     if (exist['a']) {
         temp = exist;
@@ -1829,11 +1803,11 @@ let processMixinsSameEvent = (exist, additional, temp) => {
     return temp;
 };
 let View_DestroyAllResources = (me, lastly) => {
-    let cache = me['$r'], //reources
+    let cache = me['c'], //reources
         p, c;
     for (p in cache) {
         c = cache[p];
-        if (lastly || c.x) { //destroy
+        if (lastly || c['a']) { //destroy
             View_DestroyResource(cache, p, 1);
         }
     }
@@ -1843,7 +1817,7 @@ let View_DestroyResource = (cache, key, callDestroy, old) => {
         fn, res;
     if (o && o != old) {
         //let processed=false;
-        res = o.e; //entity
+        res = o['b']; //entity
         fn = res.destroy;
         if (fn && callDestroy) {
             ToTry(fn, Empty_Array, res);
@@ -1856,8 +1830,8 @@ let View_WrapMethod = (prop, fName, short, fn, me) => {
     fn = prop[fName];
     prop[fName] = prop[short] = function (...args) {
         me = this;
-        if (me['$b'] > 0) { //signature
-            me['$b']++;
+        if (me['d'] > 0) { //signature
+            me['d']++;
             me.fire('rendercall');
             View_DestroyAllResources(me);
             ToTry(fn, args, me);
@@ -1865,22 +1839,16 @@ let View_WrapMethod = (prop, fName, short, fn, me) => {
     };
 };
 let View_DelegateEvents = (me, destroy) => {
-    let e, { '$eo': eventsObject,
-        '$so': selectorObject,
-        '$el': eventsList, id } = me; //eventsObject
+    let e, { 'n': eventsObject,
+        'i': selectorObject,
+        'o': eventsList, id } = me; //eventsObject
     for (e in eventsObject) {
         Body_DOMEventBind(e, selectorObject[
             e], destroy);
     }
     eventsObject = destroy ? RemoveEventListener : AddEventListener;
     for (e of eventsList) {
-        eventsObject(e.e, e.n, GlobalDomEventProcessor, {
-            i: id,
-            v: me,
-            f: e.f,
-            m: e.m,
-            e: e.e
-        });
+        eventsObject(e['a'], e['b'], e['c'], id, e['d'], me);
     }
 };
 let View_Globals = {
@@ -1915,7 +1883,7 @@ let View_MergeMixins = (mixins, proto, ctors) => {
     }
 };
 function merge(...args) {
-    let me = this, _ = me._ || (me._ = []);
+    let me = this, _ = me['a'] || (me['a'] = []);
     View_MergeMixins(args, me[Prototype], _);
     return me;
 }
@@ -1928,7 +1896,7 @@ function extend(props, statics) {
     if (ctor) ctors.push(ctor);
     function NView(viewId, rootNode, ownerVf, initParams, mixinCtors, cs, z, concatCtors) {
         me.call(z = this, viewId, rootNode, ownerVf, initParams, mixinCtors);
-        cs = NView._;
+        cs = NView['a'];
 
         if (cs) ToTry(cs, initParams, z);
         concatCtors = ctors.concat(mixinCtors);
@@ -1977,10 +1945,10 @@ let View_Prepare = oView => {
                     if (isSelector) {
                         if (node) {
                             eventsList.push({
-                                f: currentFn,
-                                e: node,
-                                n: item,
-                                m: mod
+                                'c': currentFn,
+                                'a': node,
+                                'b': item,
+                                'd': mod
                             });
                             continue;
                         }
@@ -2011,30 +1979,13 @@ let View_Prepare = oView => {
             }
         }
         //console.log(prop);
-        View_WrapMethod(prop, 'render', '$f');
-        prop['$eo'] = eventsObject;
-        prop['$el'] = eventsList;
-        prop['$so'] = selectorObject;
-        prop['$n'] = prop.assign;
+        View_WrapMethod(prop, 'render', 'g');
+        prop['n'] = eventsObject;
+        prop['o'] = eventsList;
+        prop['i'] = selectorObject;
+        prop['m'] = prop.assign;
     }
     return oView[Spliter];
-};
-let View_IsObserveChanged = view => {
-    let loc = view['$l'];
-    let res, i, params;
-    if (loc.f) {
-        if (loc.p) {
-            res = Router_LastChanged[Path];
-        }
-        if (!res && loc.k) {
-            params = Router_LastChanged[Params];
-            for (i of loc.k) {
-                res = Has(params, i);
-                if (res) break;
-            }
-        }
-    }
-    return res;
 };
 
 /**
@@ -2080,21 +2031,19 @@ function View(id, root, owner, ops, me) {
     me.root = root;
     me.owner = owner;
     me.id = id;
-    me['$l'] = {
-        k: []
-    };
-    me['$r'] = {};
-    me['$b'] = 1; //标识view是否刷新过，对于托管的函数资源，在回调这个函数时，不但要确保view没有销毁，而且要确保view没有刷新过，如果刷新过则不回调
-    me['$i'] = 1;
-    me['$d'] = {
+    
+    me['c'] = {};
+    me['d'] = 1; //标识view是否刷新过，对于托管的函数资源，在回调这个函数时，不但要确保view没有销毁，而且要确保view没有刷新过，如果刷新过则不回调
+    me['k'] = 1;
+    me['e'] = {
         id
     };
-    me['$a'] = {
+    me['a'] = {
         [Spliter]: 1
     };
-    me['$e'] = [];
-    me['$h'] = {};
-    id = View._;
+    me['f'] = [];
+    me['j'] = {};
+    id = View['a'];
     if (id) ToTry(id, ops, me);
 }
 Assign(View, {
@@ -2174,6 +2123,11 @@ Assign(View[Prototype], MxEvent, {
      * @param {Object} extra 外部传递的数据对象
      */
     init: Noop,
+    /**
+     * 渲染view，供最终view开发者覆盖
+     * @function
+     */
+    render: Noop,
     /*
      * 包装mx-event事件，比如把mx-click="test<prevent>({key:'field'})" 包装成 mx-click="magix_vf_root^test<prevent>({key:'field})"，以方便识别交由哪个view处理
      * @function
@@ -2199,7 +2153,7 @@ Assign(View[Prototype], MxEvent, {
      */
     beginUpdate(node, me) {
         me = this;
-        if (me['$b'] > 0 && me['$g']) {
+        if (me['d'] > 0 && me['h']) {
             me.owner.unmountZone(node);
         }
     },
@@ -2209,9 +2163,9 @@ Assign(View[Prototype], MxEvent, {
      */
     endUpdate(node, me, o, f) {
         me = this;
-        if (me['$b'] > 0) {
-            f = me['$g'];
-            me['$g'] = 1;
+        if (me['d'] > 0) {
+            f = me['h'];
+            me['h'] = 1;
             o = me.owner;
             o.mountZone(node);
             if (!f) {
@@ -2238,55 +2192,12 @@ Assign(View[Prototype], MxEvent, {
      */
     wrapAsync(fn, context) {
         let me = this;
-        let sign = me['$b'];
+        let sign = me['d'];
         return (...a) => {
-            if (sign > 0 && sign == me['$b']) {
+            if (sign > 0 && sign == me['d']) {
                 return fn.apply(context || me, a);
             }
         };
-    },
-    /**
-     * 监视地址栏中的参数或path，有变动时，才调用当前view的render方法。通常情况下location有变化不会引起当前view的render被调用，所以你需要指定地址栏中哪些参数有变化时才引起render调用，使得view只关注与自已需要刷新有关的参数
-     * @param {Array|String|Object} params  数组字符串
-     * @param {Boolean} [isObservePath] 是否监视path
-     * @beta
-     * @module router
-     * @example
-     * return View.extend({
-     *      init:function(){
-     *          this.observeLocation('page,rows');//关注地址栏中的page rows2个参数的变化，当其中的任意一个改变时，才引起当前view的render被调用
-     *          this.observeLocation(null,true);//关注path的变化
-     *          //也可以写成下面的形式
-     *          //this.observeLocation('page,rows',true);
-     *          //也可以是对象的形式
-     *          this.observeLocation({
-     *              path: true,
-     *              params:['page','rows']
-     *          });
-     *      },
-     *      render:function(){
-     *          let loc=Magix.Router.parse();
-     *          console.log(loc);//获取地址解析出的对象
-     *          let diff=Magix.Router.diff();
-     *          console.log(diff);//获取当前地址与上一个地址差异对象
-     *      }
-     * });
-     */
-    observeLocation(params, isObservePath) {
-        let me = this,
-            loc;
-        loc = me['$l'];
-        loc.f = 1;
-        if (IsObject(params)) {
-            isObservePath = params[Path];
-            params = params[Params];
-        }
-        //if (isObservePath) {
-        loc.p = isObservePath;
-        //}
-        if (params) {
-            loc.k = (params + Empty).split(Comma);
-        }
     },
     /**
      * 让view帮你管理资源，强烈建议对组件等进行托管
@@ -2311,23 +2222,23 @@ Assign(View[Prototype], MxEvent, {
      * });
      */
     capture(key, res, destroyWhenCallRender, cache) {
-        cache = this['$r'];
+        cache = this['c'];
         if (res) {
             View_DestroyResource(cache, key, 1, res);
             cache[key] = {
-                e: res,
-                x: destroyWhenCallRender
+                'b': res,
+                'a': destroyWhenCallRender
             };
             //service托管检查
             if (DEBUG && res && (res.id + Empty).indexOf('\x1es') === 0) {
-                res['$a'] = 1;
+                res.__captured = 1;
                 if (!destroyWhenCallRender) {
                     console.warn('beware! May be you should set destroyWhenCallRender = true');
                 }
             }
         } else {
             cache = cache[key];
-            res = cache && cache.e;
+            res = cache && cache['b'];
         }
         return res;
     },
@@ -2340,61 +2251,9 @@ Assign(View[Prototype], MxEvent, {
      * @module resource
      */
     release(key, destroy) {
-        return View_DestroyResource(this['$r'], key, destroy);
+        return View_DestroyResource(this['c'], key, destroy);
     },
-    /**
-     * 离开提示
-     * @param  {String} msg 提示消息
-     * @param  {Function} fn 是否提示的回调
-     * @beta
-     * @module tipRouter
-     * @example
-     * let Magix = require('magix');
-     * module.exports = Magix.View.extend({
-     *     init:function(){
-     *         this.leaveTip('页面数据未保存，确认离开吗？',function(){
-     *             return true;//true提示，false，不提示
-     *         });
-     *     }
-     * });
-     */
-    leaveTip(msg, fn) {
-        let me = this;
-        let changeListener = e => {
-            let a = 'a', // a for router change
-                b = 'b'; // b for viewunload change
-            if (e.type != Change) {
-                a = 'b';
-                b = 'a';
-            }
-            if (changeListener[a]) {
-                e.prevent();
-                e.reject();
-            } else if (fn()) {
-                e.prevent();
-                changeListener[b] = 1;
-                me.leaveConfirm(() => {
-                    changeListener[b] = 0;
-                    e.resolve();
-                }, () => {
-                    changeListener[b] = 0;
-                    e.reject();
-                }, msg);
-            }
-        };
-        let unloadListener = e => {
-            if (fn()) {
-                e.msg = msg;
-            }
-        };
-        Router.on(Change, changeListener);
-        Router.on(Page_Unload, unloadListener);
-        me.on('unload', changeListener);
-        me.on('destroy', () => {
-            Router.off(Change, changeListener);
-            Router.off(Page_Unload, unloadListener);
-        });
-    },
+    
     /**
      * 设置view的html内容
      * @param {String} id 更新节点的id
@@ -2412,11 +2271,6 @@ Assign(View[Prototype], MxEvent, {
         更新界面来讲，updater是一个高层api，但是有些功能却无法完成，如把view当成壳子或容器渲染第三方的组件，组件什么时间加载完成、渲染、更新了dom、如何通知magix等，这些问题在updater中是无解的，而setHTML这个api又不够底层，同样也无法完成一些功能，所以这个api食之无味，故删除
      */
     /**
-     * 渲染view，供最终view开发者覆盖
-     * @function
-     */
-    render: Noop,
-    /**
      * 获取放入的数据
      * @param  {String} [key] key
      * @return {Object} 返回对应的数据，当key未传递时，返回整个数据对象
@@ -2432,7 +2286,7 @@ Assign(View[Prototype], MxEvent, {
      * }
      */
     get(key, result) {
-        result = this['$d'];
+        result = this['e'];
         if (key) {
             result = result[key];
         }
@@ -2470,7 +2324,7 @@ Assign(View[Prototype], MxEvent, {
      */
     set(obj, unchanged) {
         let me = this;
-        me['$i'] = UpdateData(obj, me['$d'], me['$h'], unchanged) || me['$i'];
+        me['k'] = UpdateData(obj, me['e'], me['j'], unchanged) || me['k'];
         return me;
     },
     /**
@@ -2485,7 +2339,7 @@ Assign(View[Prototype], MxEvent, {
      */
     digest(data, unchanged, resolve) {
         let me = this.set(data, unchanged),
-            digesting = me['$e'];
+            digesting = me['f'];
         /*
             view:
             <div>
@@ -2504,7 +2358,7 @@ Assign(View[Prototype], MxEvent, {
         if (resolve) {
             digesting.push(resolve);
         }
-        if (!digesting.i) {
+        if (!digesting['a']) {
             Updater_Digest(me, digesting);
         } else if (DEBUG) {
             console.warn('Avoid redigest while updater is digesting');
@@ -2534,7 +2388,7 @@ Assign(View[Prototype], MxEvent, {
      */
     snapshot() {
         let me = this;
-        me['$o'] = JSON_Stringify(me['$d']);
+        me['p'] = JSON_Stringify(me['e']);
         return me;
     },
     /**
@@ -2561,8 +2415,8 @@ Assign(View[Prototype], MxEvent, {
      */
     altered() {
         let me = this;
-        if (me['$o']) {
-            return me['$o'] != JSON_Stringify(me['$d']);
+        if (me['p']) {
+            return me['p'] != JSON_Stringify(me['e']);
         }
     },
     /**
@@ -2570,14 +2424,14 @@ Assign(View[Prototype], MxEvent, {
      * @param {string} origin 源字符串
      */
     translate(data) {
-        return TranslateData(this['$d'], data);
+        return TranslateData(this['e'], data);
     },
     /**
      * 翻译带@占位符的数据
      * @param {string} origin 源字符串
      */
     parse(origin) {
-        return ParseExpr(origin, this['$a']);
+        return ParseExpr(origin, this['a']);
     }
 });
     /*
@@ -2632,7 +2486,7 @@ Assign(View[Prototype], MxEvent, {
 
 function Bag() {
     this.id = GUID('b');
-    this.$ = {};
+    this['a'] = {};
 }
 Assign(Bag[Prototype], {
     /**
@@ -2673,7 +2527,7 @@ Assign(Bag[Prototype], {
 
             或者key本身就是数组
          */
-        let attrs = me.$;
+        let attrs = me['a'];
         if (key) {
             let tks = IsArray(key) ? key.slice() : (key + Empty).split('.'),
                 tk;
@@ -2691,7 +2545,7 @@ Assign(Bag[Prototype], {
             }
             attrs = dValue;
         }
-        if (DEBUG && me['$b'] && me['$b'].k) { //缓存中的接口不让修改数据
+        if (DEBUG && me['b'] && me['b']['a']) { //缓存中的接口不让修改数据
             attrs = Safeguard(attrs);
         }
         return attrs;
@@ -2705,18 +2559,25 @@ Assign(Bag[Prototype], {
         if (!IsObject(key)) {
             key = { [key]: val };
         }
-        Assign(this.$, key);
+        Assign(this['a'], key);
     }
 });
 let Service_FetchFlags_ONE = 1;
 let Service_FetchFlags_ALL = 2;
-function Service_CacheDone(cacheKey, err, fns) {
-    fns = this[cacheKey]; //取出当前的缓存信息
+let Service_Cache_Done = (bagCacheKeys, cacheKey, fns) => error => {
+    fns = bagCacheKeys[cacheKey];
     if (fns) {
-        delete this[cacheKey]; //先删除掉信息
-        ToTry(fns, err, fns.e); //执行所有的回调
+        delete bagCacheKeys[cacheKey]; //先删除掉信息
+        ToTry(fns, error, fns['a']); //执行所有的回调
     }
-}
+};
+// function Service_CacheDone(cacheKey, err, fns) {
+//     fns = this[cacheKey]; //取出当前的缓存信息
+//     if (fns) {
+//         delete this[cacheKey]; //先删除掉信息
+//         ToTry(fns, err, fns['a']); //执行所有的回调
+//     }
+// }
 let Service_Task = (done, host, service, total, flag, bagCache) => {
     let doneArr = [];
     let errorArgs = Null;
@@ -2724,10 +2585,10 @@ let Service_Task = (done, host, service, total, flag, bagCache) => {
 
     return function (idx, error) {
         currentDoneCount++; //当前完成加1.
-        let bag = this;
         let newBag;
-        let mm = bag['$b'];
-        let cacheKey = mm.k, temp;
+        let bag = this;
+        let mm = bag['b'];
+        let cacheKey = mm['a'], temp;
         doneArr[idx + 1] = bag; //完成的bag
         if (error) { //出错
             errorArgs = error;
@@ -2739,21 +2600,17 @@ let Service_Task = (done, host, service, total, flag, bagCache) => {
                 bagCache.set(cacheKey, bag); //缓存
             }
             //bag.set(data);
-            mm.t = Date_Now(); //记录当前完成的时间
-            temp = mm.a;
+            mm['b'] = Date_Now(); //记录当前完成的时间
+            temp = mm['c'];
             if (temp) { //有after
                 ToTry(temp, bag, bag);
             }
-            temp = mm.x;
-            if (temp) { //需要清理
-                host.clear(temp);
-            }
             newBag = 1;
         }
-        if (!service['$d']) { //service['$d'] 当前请求被销毁
+        if (!service['a']) { //service['a'] 当前请求被销毁
             let finish = currentDoneCount == total;
             if (finish) {
-                service['$e'] = 0;
+                service['b'] = 0;
                 if (flag == Service_FetchFlags_ALL) { //all
                     doneArr[0] = errorArgs;
                     ToTry(done, doneArr, service);
@@ -2781,39 +2638,37 @@ let Service_Task = (done, host, service, total, flag, bagCache) => {
  * @return {Service}
  */
 let Service_Send = (me, attrs, done, flag, save) => {
-    if (me['$d']) return me; //如果已销毁，返回
-    if (me['$e']) { //繁忙，后续请求入队
+    if (me['a']) return me; //如果已销毁，返回
+    if (me['b']) { //繁忙，后续请求入队
         return me.enqueue(Service_Send.bind(me, me, attrs, done, flag, save));
     }
-    me['$e'] = 1; //标志繁忙
+    me['b'] = 1; //标志繁忙
     if (!IsArray(attrs)) {
         attrs = [attrs];
     }
     let host = me.constructor,
         requestCount = 0;
-    //let bagCache = host['$c']; //存放bag的Cache对象
-    let bagCacheKeys = host['$f']; //可缓存的bag key
-    let remoteComplete = Service_Task(done, host, me, attrs.length, flag, host['$c']);
+    //let bagCache = host['c']; //存放bag的Cache对象
+    let bagCacheKeys = host['d']; //可缓存的bag key
+    let removeComplete = Service_Task(done, host, me, attrs.length, flag, host['c']);
     for (let bag of attrs) {
         if (bag) {
-            let bagInfo = host.get(bag, save); //获取bag信息
+            let [bagEntity, update] = host.get(bag, save); //获取bag信息
+            let cacheKey = bagEntity['b']['a']; //从实体上获取缓存key
 
-            let bagEntity = bagInfo.e;
-            let cacheKey = bagEntity['$b'].k; //从实体上获取缓存key
-
-            let complete = remoteComplete.bind(bagEntity, requestCount++); //包装当前的完成回调
+            let complete = removeComplete.bind(bagEntity, requestCount++);
             let cacheList;
 
             if (cacheKey && bagCacheKeys[cacheKey]) { //如果需要缓存，并且请求已发出
                 bagCacheKeys[cacheKey].push(complete); //放到队列中
-            } else if (bagInfo.u) { //需要更新
+            } else if (update) { //需要更新
                 if (cacheKey) { //需要缓存
                     cacheList = [complete];
-                    cacheList.e = bagEntity;
+                    cacheList['a'] = bagEntity;
                     bagCacheKeys[cacheKey] = cacheList;
-                    complete = Service_CacheDone.bind(bagCacheKeys, cacheKey); //替换回调，详见Service_CacheDone
+                    complete = Service_Cache_Done(bagCacheKeys, cacheKey); //替换回调，详见Service_CacheDone
                 }
-                host['$s'](bagEntity, complete);
+                host['e'](bagEntity, complete);
             } else { //不需要更新时，直接回调
                 complete();
             }
@@ -2861,12 +2716,12 @@ function Service() {
     if (DEBUG) {
         me.id = GUID('\x1es');
         setTimeout(() => {
-            if (!me['$a']) {
+            if (!me.__captured) {
                 console.warn('beware! You should use view.capture to connect Service and View');
             }
         }, 1000);
     }
-    me['$g'] = [];
+    me['f'] = [];
 }
 
 Assign(Service[Prototype], {
@@ -2945,9 +2800,9 @@ Assign(Service[Prototype], {
      */
     enqueue(callback) {
         let me = this;
-        if (!me['$d']) {
-            me['$g'].push(callback);
-            me.dequeue(me['$h']);
+        if (!me['a']) {
+            me['f'].push(callback);
+            me.dequeue(me['g']);
         }
         return me;
     },
@@ -2980,14 +2835,14 @@ Assign(Service[Prototype], {
     dequeue(...a) {
         let me = this,
             one;
-        if (!me['$e'] && !me['$d']) {
-            me['$e'] = 1;
+        if (!me['b'] && !me['a']) {
+            me['b'] = 1;
             Timeout(() => { //前面的任务可能从缓存中来，执行很快
-                me['$e'] = 0;
-                if (!me['$d']) { //不清除setTimeout,但在回调中识别是否调用了destroy方法
-                    one = me['$g'].shift();
+                me['b'] = 0;
+                if (!me['a']) { //不清除setTimeout,但在回调中识别是否调用了destroy方法
+                    one = me['f'].shift();
                     if (one) {
-                        ToTry(one, me['$h'] = a);
+                        ToTry(one, me['g'] = a);
                     }
                 }
             }, 0);
@@ -2998,8 +2853,8 @@ Assign(Service[Prototype], {
      */
     destroy(me) {
         me = this;
-        me['$d'] = 1; //只需要标记及清理即可，其它的不需要
-        me['$g'] = 0;
+        me['a'] = 1; //只需要标记及清理即可，其它的不需要
+        me['f'] = 0;
     }
     /**
      * 当Service发送请求前触发
@@ -3045,12 +2900,6 @@ let Manager_DefaultCacheKey = (meta, attrs, arr) => {
     arr = [JSON_Stringify(attrs), JSON_Stringify(meta)];
     return arr.join(Spliter);
 };
-let Manager_ClearCache = (v, ns, cache, mm) => {
-    mm = v && v['$b'];
-    if (mm && ns[mm.n]) {
-        cache.del(mm.k);
-    }
-};
 let Service_Manager = Assign({
     /**
      * @lends Service
@@ -3061,7 +2910,7 @@ let Service_Manager = Assign({
      */
     add(attrs) {
         let me = this;
-        let metas = me['$b'],
+        let metas = me['h'],
             bag;
         if (!IsArray(attrs)) {
             attrs = [attrs];
@@ -3070,6 +2919,9 @@ let Service_Manager = Assign({
             if (bag) {
                 let { name, cache } = bag;
                 bag.cache = cache | 0;
+                if (DEBUG && Has(metas, name)) {
+                    throw new Error('service already exists:' + name);
+                }
                 metas[name] = bag;
             }
         }
@@ -3085,11 +2937,9 @@ let Service_Manager = Assign({
         let cache = (attrs.cache | 0) || meta.cache;
         let entity = new Bag();
         entity.set(meta);
-        entity['$b'] = {
-            n: meta.name,
-            a: meta.after,
-            x: meta.cleans,
-            k: cache && Manager_DefaultCacheKey(meta, attrs)
+        entity['b'] = {
+            'c': meta.after,
+            'a': cache && Manager_DefaultCacheKey(meta, attrs)
         };
 
         if (IsObject(attrs)) {
@@ -3122,7 +2972,7 @@ let Service_Manager = Assign({
      */
     meta(attrs) {
         let me = this;
-        let metas = me['$b'];
+        let metas = me['h'];
         let name = attrs.name || attrs;
         let ma = metas[name];
         return ma || attrs;
@@ -3144,33 +2994,7 @@ let Service_Manager = Assign({
             e = me.create(attrs);
             u = 1;
         }
-        return {
-            e,
-            u
-        };
-    },
-    /**
-     * 根据name清除缓存的attrs
-     * @param  {String|Array} names 字符串或数组
-     * @example
-     * let S = Magix.Service.extend({
-     *     //extend code
-     * });
-     *
-     * S.add({
-     *     name:'test',
-     *     url:'/test',
-     *     cache:1000*60
-     * });
-     *
-     * let s = new Service();
-     * s.all('test');
-     * s.all('test');//from cache
-     * S.clear('test');
-     * s.all('test');//fetch from server
-     */
-    clear(names) {
-        this['$c'].each(Manager_ClearCache, ToMap((names + Empty).split(Comma)));
+        return [e, u];
     },
     /**
      * 从缓存中获取bag对象
@@ -3191,7 +3015,7 @@ let Service_Manager = Assign({
      */
     cached(attrs) {
         let me = this;
-        let bagCache = me['$c'];
+        let bagCache = me['c'];
         let entity;
         let cacheKey;
         let meta = me.meta(attrs);
@@ -3202,13 +3026,13 @@ let Service_Manager = Assign({
         }
 
         if (cacheKey) {
-            let requestCacheKeys = me['$f'];
+            let requestCacheKeys = me['d'];
             let info = requestCacheKeys[cacheKey];
             if (info) { //处于请求队列中的
-                entity = info.e;
+                entity = info['a'];
             } else { //缓存
                 entity = bagCache.get(cacheKey);
-                if (entity && Date_Now() - entity['$b'].t > cache) {
+                if (entity && Date_Now() - entity['b']['b'] > cache) {
                     bagCache.del(cacheKey);
                     entity = 0;
                 }
@@ -3242,10 +3066,10 @@ Service.extend = (sync, cacheMax, cacheBuffer) => {
     function NService() {
         Service.call(this);
     }
-    NService['$s'] = sync;
-    NService['$c'] = new Cache(cacheMax, cacheBuffer);
-    NService['$f'] = {};
-    NService['$b'] = {};
+    NService['e'] = sync;
+    NService['c'] = new Cache(cacheMax, cacheBuffer);
+    NService['d'] = {};
+    NService['h'] = {};
     return Extend(NService, Service, Null, Service_Manager);
 };
     Assign(Noop[Prototype], MxEvent);
@@ -3561,7 +3385,7 @@ let Magix = {
     State,
     
     guard: Safeguard,
-    node: id => Doc_Document.getElementById(id)
+    node: GetById
 };
     Magix.default = Magix;
     return Magix;

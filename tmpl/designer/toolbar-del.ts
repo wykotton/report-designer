@@ -3,7 +3,7 @@
 */
 'ref@./toolbar.less';
 import Magix, { State } from 'magix';
-import { StageElements } from './workspace';
+import StageElements from './stage-elements';
 import DHistory from './history';
 export default Magix.View.extend({
     tmpl: '@toolbar-del.html',

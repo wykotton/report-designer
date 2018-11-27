@@ -1,8 +1,6 @@
 export default {
     '@{history.max.count}': 50,
     '@{stage.scale}': 1,
-    '@{stage.width}': 900,
-    '@{stage.height}': 500,
     '@{dragdrop.column.near.edge}': 5,
     '@{dragdrop.stage.near.hor.edge}': 150,
     '@{dragdrop.stage.near.ver.edge}': 50,

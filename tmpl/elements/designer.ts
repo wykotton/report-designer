@@ -44,9 +44,7 @@ export default Magix.View.extend({
         return true;
     },
     render() {
-        this.digest({
-            page: State.get('@{stage.page}')
-        });
+        this.digest();
     },
     '@{update}'(element) {
         this.digest({

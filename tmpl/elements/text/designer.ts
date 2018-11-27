@@ -41,25 +41,25 @@ export default Designer.extend({
             tip: '@{lang#props.height}',
             key: 'height',
             type: Props["@{number}"],
-            min: '0'
+            min: 0
         }, {
             tip: '@{lang#props.font.size}',
             key: 'fontsize',
             type: Props["@{number}"],
-            min: '0'
+            min: 0
         }, {
             tip: '@{lang#props.alpha}',
             key: 'alpha',
             type: Props["@{number}"],
             step: 0.1,
             fixed: 1,
-            min: '0',
+            min: 0,
             max: 1
         }, {
             tip: '@{lang#props.letter.spacing}',
             key: 'ls',
             type: Props["@{number}"],
-            min: '0'
+            min: 0
         }, {
             tip: '@{lang#props.background}',
             key: 'background',

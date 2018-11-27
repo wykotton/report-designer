@@ -5,7 +5,9 @@ import Magix, { node, State } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import DHistory from './history';
 import Keys from './keys';
-import { StageElements, StageSelectElements, StageDragDrop } from './workspace';
+import StageElements from './stage-elements';
+import StageSelectElements from './stage-select';
+import StageDragDrop from './stage-dragdrop';
 Magix.applyStyle('@stage.less');
 export default Magix.View.extend({
     tmpl: '@stage.html',

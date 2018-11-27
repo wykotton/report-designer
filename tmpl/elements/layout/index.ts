@@ -1,8 +1,8 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State } from 'magix';
-import { StageElements } from '../../designer/workspace';
+import Magix from 'magix';
+import StageElements from '../../designer/stage-elements';
 import DragDrop from '../../gallery/mx-dragdrop/index';
 Magix.applyStyle('@index.less');
 export default Magix.View.extend({

@@ -4,23 +4,7 @@
 'ref@./index.less';
 import Magix, { State } from 'magix';
 import DHistory from '../../designer/history';
-import I18n from '../../i18n/index';
-let BackgroundRepeat = [{
-    text: I18n('@{lang#props.full}'),
-    value: 'full'
-}, {
-    text: I18n('@{lang#props.no.repeat}'),
-    value: 'no-repeat'
-}, {
-    text: I18n('@{lang#props.repeat.x}'),
-    value: 'repeat-x'
-}, {
-    text: I18n('@{lang#props.repeat.y}'),
-    value: 'repeat-y'
-}, {
-    text: I18n('@{lang#props.repeat}'),
-    value: 'repeat'
-}];
+import Props from '../../designer/props';
 export default Magix.View.extend({
     tmpl: '@page.html',
     init() {
@@ -29,22 +13,20 @@ export default Magix.View.extend({
     },
     render() {
         this.digest({
-            repeats: BackgroundRepeat,
+            props: Props,
+            ctrl: State.get('@{stage.page.ctrl}'),
             page: State.get('@{stage.page}')
         });
     },
-    '@{change.page}<input,change>'(e) {
-        let { use, from = 'value', refresh } = e.params;
+    '@{update.prop}<input,change>'(e) {
+        let { key, use, refresh, write } = e.params;
         let page = State.get('@{stage.page}');
-        page[use] = e[from];
-        if (use == 'backgroundImage') {
-            page.backgroundWidth = e.width;
-            page.backgroundHeight = e.height;
+        page[key] = e[use];
+        if (write) {
+            write(page, e);
         }
         DHistory["@{save}"]('@{history#save.page.change}', 500);
-        State.fire('@{event#stage.page.change}', {
-            mode: use == 'mode'
-        });
+        State.fire('@{event#stage.page.change}');
         if (refresh) {
             this.render();
         }

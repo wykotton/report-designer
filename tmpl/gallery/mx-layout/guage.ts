@@ -2,9 +2,17 @@
     author:xinglie.lkf@alibaba-inc.com
 */
 import Magix from 'magix';
+Magix.applyStyle('@guage.less');
+let GuargeTitles = ['@{lang#mx-gallery.layout.guage.top}',
+    '@{lang#mx-gallery.layout.guage.right}',
+    '@{lang#mx-gallery.layout.guage.bottom}',
+    '@{lang#mx-gallery.layout.guage.left}'];
 export default Magix.View.extend({
     tmpl: '@guage.html',
     init(data) {
+        this.set({
+            titles: GuargeTitles
+        });
         this.assign(data);
     },
     assign(data) {

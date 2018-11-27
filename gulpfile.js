@@ -14,7 +14,7 @@ combineTool.config({
     debug: true,
     commonFolder: tmplFolder,
     compiledFolder: srcFolder,
-    cssSelectorPrefix: 'p',
+    cssSelectorPrefix: 'd',
     loaderType: 'cmd_es',
     md5CssSelectorLen: 3,
     //sourceMapCss:true,
@@ -93,6 +93,7 @@ gulp.task('build', ['cleanBuild', 'cleanSrc'], () => {
                 compress: {
                     drop_console: true,
                     drop_debugger: true,
+                    keep_fargs: false,
                     global_defs: {
                         DEBUG: false
                     }
@@ -130,6 +131,7 @@ gulp.task('cdist', () => {
             compress: {
                 drop_console: true,
                 drop_debugger: true,
+                keep_fargs: false,
                 global_defs: {
                     DEBUG: false
                 }

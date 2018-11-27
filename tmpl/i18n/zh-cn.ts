@@ -44,6 +44,7 @@ export default {
     '@{lang#props.height}': '高：',
     '@{lang#elements.layout}': '布局',
     '@{lang#elements.text}': '文本',
+    '@{lang#elements.page}': '页面',
     '@{lang#layout.column.add}': '点击添加列',
     '@{lang#layout.column.remove}': '点击删除列',
     '@{lang#props.alpha}': '透明度：',
@@ -60,4 +61,8 @@ export default {
     '@{lang#mx-gallery.font.align.top}': '垂直居上',
     '@{lang#mx-gallery.font.align.middle}': '垂直居中',
     '@{lang#mx-gallery.font.align.bottom}': '垂直居下',
+    '@{lang#mx-gallery.layout.guage.top}': '上',
+    '@{lang#mx-gallery.layout.guage.right}': '右',
+    '@{lang#mx-gallery.layout.guage.bottom}': '下',
+    '@{lang#mx-gallery.layout.guage.left}': '左'
 };
