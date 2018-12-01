@@ -11,12 +11,18 @@
     background: #fff;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,.3);
 }
+@keyframes bar-stripes{
+    from{background-position:10px 0}
+    to{background-position:0 0}
+}
 .place-bar{
-    height:3px;
-    background: @color-brand;
+    height:2px;
+    background: linear-gradient(45deg,@color-brand 25%,#fff 0 ,#fff 50%,@color-brand 0,#FA742B 75%,#fff 0,#fff);
+    background-size: 10px 10px;
     position: absolute;
     display: none;
     pointer-events: none;
     margin-top: -1px;
     transition: all @duration / 3;
+    animation: reverse bar-stripes 0.40s linear infinite;
 }

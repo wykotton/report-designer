@@ -21,7 +21,6 @@ export default {
             outerBound = null;
             hoverInfo = null;
             lastPosition = null;
-            elementsTree = null;
         };
         let scrollIfNeed = () => {
             let bound = scrollNode.getBoundingClientRect();
@@ -110,6 +109,7 @@ export default {
                 DHistory["@{save}"]();
             }
             clearInfo();
+            elementsTree = null;
         };
         let findPlace = e => {
             moveEvent = e;
@@ -196,10 +196,18 @@ export default {
                 rect
             };
         } else if (info.role == 'layout') {
-            let index = info.index;
+            let index = info.index,
+                toIndex = index;
             if ((rect.top + rect.height / 2) < pageY) {
                 rect.top += rect.height;
                 index++;
+                toIndex++
+            } else {
+                toIndex--;
+            }
+            let to = info.ownerList[toIndex];
+            if (to && moved && to.id == moved.id) {
+                return null;
             }
             return {
                 ctrl: info.ctrl,
@@ -208,14 +216,21 @@ export default {
                 rect
             }
         } else if (info.role == 'column') {
-            let index = info.index;
+            let index = info.index, toIndex = index;
             let nearTop = rect.top + Const["@{dragdrop.column.near.edge}"] >= pageY;
             let nearBottom = rect.top + rect.height - Const["@{dragdrop.column.near.edge}"] <= pageY;
             if (nearBottom) {
                 index++;
+                toIndex++;
                 rect.top += rect.height;
+            } else {
+                toIndex--;
             }
             if (nearTop || nearBottom) {
+                let to = info.ownerList[toIndex];
+                if (to && moved && to.id == moved.id) {
+                    return null;
+                }
                 return {
                     ctrl: info.ctrl,
                     elements: info.ownerList,
@@ -263,10 +278,18 @@ export default {
                 rect
             }
         } else {
-            let index = info.index;
+            let index = info.index,
+                toIndex = index;
             if ((rect.top + rect.height / 2) < pageY) {
                 rect.top += rect.height;
                 index++;
+                toIndex++;
+            } else {
+                toIndex--;
+            }
+            let to = info.ownerList[toIndex];
+            if (to && moved && to.id == moved.id) {
+                return null;
             }
             return {
                 ctrl: info.ctrl,
