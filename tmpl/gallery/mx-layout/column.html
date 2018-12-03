@@ -1,0 +1,9 @@
+{{each columns as col index}}
+    <div class="cnt">
+        <mx-number value="{{@col.width}}" @#disabled="{{@disabled}}" max="1" min="0" fixed="2" step="0.01" mx-input="@{update.columns}({index:{{=index}}})" mx-change="@{stop}()"/>
+        {{if columns.length>1}}
+        <i class="iconfont flex-right{{if disabled}} notallowed{{/if}}" title="{{=i18n('@{lang#layout.column.remove}')}}" mx-click="@{remove.column}({index:{{=index}}})">&#xe600;</i>
+        {{/if}}
+    </div>
+{{/each}}
+    <i class="iconfont add{{if disabled}} notallowed{{/if}}" title="{{=i18n('@{lang#layout.column.add}')}}" mx-click="@{add.column}()">&#xe6c5;</i>

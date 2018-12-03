@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State } from 'magix';
+import Magix from 'magix';
 export default Magix.View.extend({
     tmpl: '@index.html',
     init(data) {
@@ -9,9 +9,6 @@ export default Magix.View.extend({
     },
     assign(data) {
         this.set(data);
-        this.set({
-            scale: State.get('@{stage.scale}')
-        });
         return true;
     },
     render() {

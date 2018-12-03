@@ -1,0 +1,6 @@
+{{for(let i=0;i<4;i++)}}
+<div class="group">
+    <div class="group-title">{{=i18n(titles[i])}}</div>
+    <mx-number max="500" min="0" @#disabled="{{@disabled}}" value="{{@guage[i]}}" mx-input="@{update.columns}({index:{{=i}}})" mx-change="@{stop}()"/>
+</div>
+{{/for}}

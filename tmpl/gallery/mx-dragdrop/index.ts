@@ -8,6 +8,7 @@ let ClearSelection = (t?: () => Selection) => {
     }
 };
 let DragPrevent = (e) => {
+    console.log(e);
     e.preventDefault();
 };
 let DragMoveEvent = ['mousemove', 'touchmove', 'pointermove'];
@@ -85,7 +86,9 @@ export default {
                 document.addEventListener(fn, me['@{dd&stop.proxy}']);
             }
             for (fn of DragPreventEvent) {
-                document.addEventListener(fn, DragPrevent);
+                document.addEventListener(fn, DragPrevent, {
+                    passive: false
+                });
             }
             window.addEventListener('blur', me['@{dd&stop.proxy}']);
         }

@@ -4,7 +4,7 @@
 'ref@./toolbar.less';
 import Magix, { State } from 'magix';
 import DHistory from './history';
-import { StageElements } from './workspace';
+import StageElements from './stage-elements';
 export default Magix.View.extend({
     tmpl: '@toolbar-layer.html',
     init() {

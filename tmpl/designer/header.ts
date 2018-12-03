@@ -16,11 +16,11 @@ export default Magix.View.extend({
         });
     },
     '@{add.element}<mousedown>'(e) {
-        let { ctor } = e.params;
-        Follower["@{update}"](ctor.icon);
+        let { ctrl } = e.params;
+        Follower["@{update}"](ctrl.icon);
         let moved = false, hoverNode = null;
         State.set({
-            '@{memory.cache.element}': ctor
+            '@{memory.cache.element.ctrl}': ctrl
         });
         this['@{drag.drop}'](e, ex => {
             Follower["@{show}"](ex);

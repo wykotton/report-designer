@@ -68,6 +68,11 @@ export default Magix.View.extend({
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.scale.change}', update);
         State.on('@{event#stage.page.change}', update);
+        State.on('@{event#preview}', e => {
+            if (!e.full) {
+                this.render();
+            }
+        });
     },
     '@{rerender}'() {
         if (this['@{can.render}']) {
@@ -161,7 +166,7 @@ export default Magix.View.extend({
                 setTimeout(test, 30);
             }
         };
-        test();
+        setTimeout(test, 0);
     },
     '@{show.x.line}<mousemove>'(e) {
         let xNode = this['@{x.axis}'];

@@ -9,7 +9,6 @@ export default Magix.View.extend({
     mixins: [Dialog],
     init(data) {
         this.assign(data);
-        this['@{root.node}'] = node(this.id);
     },
     assign(data) {
         this.set(data);
@@ -29,7 +28,7 @@ export default Magix.View.extend({
         });
     },
     '@{fire.event}'(pic) {
-        Magix.dispatch(this['@{root.node}'], 'change', pic);
+        Magix.dispatch(this.root, 'change', pic);
     },
     '@{clear.image}<click>'(e: Magix.DOMEvent) {
         e.stopPropagation();

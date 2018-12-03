@@ -7,6 +7,7 @@ import Dialog from '../gallery/mx-dialog/index';
 import Consts from './const';
 import DHistory from './history';
 import Panels from '../panels/index';
+let PageCtrl = Elements["@{get.page}"]();
 Magix.applyStyle('@index.less');
 let ApplyState = json => {
     let page = State.get('@{stage.page}');
@@ -47,20 +48,14 @@ export default Magix.View.extend({
     tmpl: '@index.html',
     mixins: [Dialog],
     init() {
-        State.on('@{event#stage.apply.state}', e => {
+        State.on('@{event#stage.apply.state}', (e: {
+            json: any
+        } & Magix.TriggerEventDescriptor) => {
             ApplyState(e.json);
         });
         State.set({
-            '@{stage.page}': {
-                width: Consts["@{stage.width}"],
-                height: Consts["@{stage.height}"],
-                background: '#ffffff',
-                backgroundImage: '',
-                backgroundRepeat: 'full',
-                backgroundWidth: 0,
-                backgroundHeight: 0,
-                scaleType: 'auto'
-            },
+            '@{stage.page.ctrl}': PageCtrl,
+            '@{stage.page}': PageCtrl.getProps(),
             '@{stage.scale}': Consts["@{stage.scale}"],
             '@{stage.elements}': [],
             '@{stage.select.elements}': [],

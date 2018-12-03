@@ -21,7 +21,7 @@ const BaseIndex = {
 let WatchSelectElements = {};
 State.on('@{event#stage.select.elements.change}', () => {
     for (let p in WatchSelectElements) {
-        let vf = Vframe.get(p);
+        let vf = Vframe.byId(p);
         if (vf) {
             vf.invoke('@{check.status}');
             vf.invoke('render');
@@ -125,7 +125,7 @@ export default Magix.View.extend({
         e.stopPropagation();
         let me = this;
         let element = me.get('element');
-        let { props, ctor } = element;
+        let { props, ctrl } = element;
         State.fire('@{event#stage.lock.scroll}', {
             show: 1
         });
@@ -140,7 +140,7 @@ export default Magix.View.extend({
         let beginY = props.y;
         let minWidth = 0, minHeight = 0,
             maxWidth = Number.MAX_VALUE, maxHeight = Number.MAX_VALUE;
-        for (let p of ctor.props) {
+        for (let p of ctrl.props) {
             if (p.key == 'width') {
                 if (Magix.has(p, 'max')) {
                     maxWidth = p.max;

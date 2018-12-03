@@ -1,8 +1,8 @@
-import Magix, { State, toMap as ToMap, Vframe } from 'magix';
+import Magix, { State, Vframe, toMap, node } from 'magix';
+import StageSelectElements from './stage-select';
 import DHistory from './history';
 import Cursor from '../gallery/mx-pointer/cursor';
 import Transform from '../util/transform';
-
 let IsLineCross = (line1, line2) => {
     let s1 = line1.start,
         e1 = line1.end,
@@ -12,113 +12,19 @@ let IsLineCross = (line1, line2) => {
     let d2 = ((e2.x - s2.x) * (s1.y - s2.y) - (e2.y - s2.y) * (s1.x - s2.x)) * ((e2.x - s2.x) * (e1.y - s2.y) - (e2.y - s2.y) * (e1.x - s2.x));
     return d1 < 0 && d2 < 0;
 };
-export let StageSelectElements = {
-    '@{set}'(element?: any) {
-        let selectElements = State.get('@{stage.select.elements}');
-        let oldCount = selectElements.length;
-        if (oldCount || element) {
-            let first = oldCount > 1 ? null : selectElements[0];
-            selectElements.length = 0;
-            let fireEvent = false;
-            if (element) {
-                selectElements.push(element);
-                fireEvent = element != first;
-            } else if (oldCount) {
-                fireEvent = true;
-            }
-            if (fireEvent) {
-                State.set({
-                    '@{stage.select.elements.map}': ToMap(selectElements, 'id')
-                });
-                State.fire('@{event#stage.select.elements.change}');
-                return true;
-            }
-        }
-    },
-    '@{add}'(element) {
-        let selectElements = State.get('@{stage.select.elements}');
-        let find = false;
-        for (let e of selectElements) {
-            if (e.id === element.id) {
-                find = true;
-                break;
-            }
-        }
-        if (!find) {
-            selectElements.push(element);
-            State.set({
-                '@{stage.select.elements.map}': ToMap(selectElements, 'id')
-            });
-
-            State.fire('@{event#stage.select.elements.change}');
-            return true;
-        }
-    },
-    '@{remove}'(element) {
-        let selectElements = State.get('@{stage.select.elements}');
-        let find = false, index = -1;
-        for (let e of selectElements) {
-            index++;
-            if (e.id === element.id) {
-                find = true;
-                break;
-            }
-        }
-        if (find) {
-            selectElements.splice(index, 1);
-            State.set({
-                '@{stage.select.elements.map}': ToMap(selectElements, 'id')
-            });
-
-            State.fire('@{event#stage.select.elements.change}');
-            return true;
-        }
-    },
-    '@{set.all}'(elements?: any[]) {
-        let selectElements = State.get('@{stage.select.elements}');
-        selectElements.length = 0;
-        if (elements) {
-            selectElements.push.apply(selectElements, elements);
-        }
-        State.set({
-            '@{stage.select.elements.map}': ToMap(selectElements, 'id')
-        });
-        State.fire('@{event#stage.select.elements.change}');
-    },
-    '@{has.changed}'(last) {
-        let now = State.get('@{stage.select.elements.map}');
-        let diff = 0;
-        for (let p in last) {
-            if (!now[p]) {
-                diff = 1;
-                break;
-            }
-        }
-        if (!diff) {
-            for (let p in now) {
-                if (!last[p]) {
-                    diff = 1;
-                    break;
-                }
-            }
-        }
-        return diff;
-    }
-};
-
-export let StageElements = {
+export default {
     '@{add.element}'(e: MouseEvent, focus: boolean) {
-        let element = State.get('@{memory.cache.element}');
-        if (element) {
+        let ctrl = State.get('@{memory.cache.element.ctrl}');
+        if (ctrl) {
             let elements = State.get('@{stage.elements}');
-            let props = element.getProps(e.pageX, e.pageY);
+            let props = ctrl.getProps(e.pageX, e.pageY);
             let scale = State.get('@{stage.scale}');
             props.width *= scale;
             props.height *= scale;
             let em = {
                 id: Magix.guid('e_'),
-                ctor: element,
-                type: element.type,
+                ctrl,
+                type: ctrl.type,
                 props
             };
             elements.push(em);
@@ -177,7 +83,7 @@ export let StageElements = {
             return;
         }
         if (event.shiftKey || event.ctrlKey || event.metaKey) {//多选
-            StageElements["@{multi.select}"](event, element);
+            this["@{multi.select}"](event, element);
         } else {
             Cursor["@{show.by.type}"]('move');
             let startInfos = [],
@@ -217,7 +123,7 @@ export let StageElements = {
                         elementMoved = true;
                         e.props.x = s.x + offsetX;
                         e.props.y = s.y + offsetY;
-                        let vf = Vframe.get(e.id);
+                        let vf = Vframe.byNode(node(e.id));
                         if (vf) {
                             if (vf.invoke('assign', [{ element: e }])) {
                                 vf.invoke('render');
@@ -240,7 +146,7 @@ export let StageElements = {
         let stageElements = State.get('@{stage.elements}');
         let update = false;
         if (selectElements.length) {
-            let map = ToMap(selectElements, 'id');
+            let map = toMap(selectElements, 'id');
             for (let i = stageElements.length; i--;) {
                 if (map[stageElements[i].id]) {
                     update = true;
@@ -471,119 +377,3 @@ export let StageElements = {
         }
     }
 };
-let Clone = a => {
-    if (Array.isArray(a)) {
-        let c = [];
-        for (let b of a) {
-            c.push(Clone(b));
-        }
-        a = c;
-    } else if (Object.prototype.toString.call(a) == '[object Object]') {
-        let c = {};
-        for (let b in a) {
-            c[b] = Clone(a[b]);
-        }
-        a = c;
-    }
-    return a;
-};
-export let Clipboard = {
-    '@{has.elements}'() {
-        let list = this['@{copy.list}'] || [];
-        return list.length;
-    },
-    '@{get.copy.list}'() {
-        let list = this['@{copy.list}'] || [];
-        return list;
-    },
-    '@{copy.elements}'() {
-        let me = this;
-        let list = [];
-        let elements = State.get('@{stage.select.elements}');
-        for (let m of elements) {
-            list.push(m);
-        }
-        me['@{copy.list}'] = list;
-    },
-    '@{cut.elements}'() {
-        //编辑锁定的不能剪切
-        let elements = State.get('@{stage.select.elements}');
-        if (elements.length == 1 && elements[0].props.locked) {
-            return;
-        }
-        this['@{copy.elements}']();
-        this['@{is.cut}'] = true;
-    },
-    '@{paste.elements}'(xy?: { x: number, y: number }) {
-        let me = this;
-        let list = me['@{copy.list}'];
-        let elements = State.get('@{stage.elements}');
-        let update = false;
-        if (list) {
-            update = true;
-            let selected = [];
-            let index = 0, diffX = 0, diffY = 0;
-            let hasSameXY = props => {
-                for (let c of elements) {
-                    if (c.props.x == props.x && c.props.y == props.y) {
-                        return 1;
-                    }
-                }
-                return 0;
-            };
-            let setXY = props => {
-                if (index === 0) {
-                    if (xy) {
-                        diffX = props.x - xy.x;
-                        diffY = props.y - xy.y;
-                        props.x = xy.x;
-                        props.y = xy.y;
-                    } else {
-                        let oldX = props.x;
-                        let oldY = props.y;
-                        while (hasSameXY(props)) {
-                            props.x += 20;
-                            props.y += 20;
-                        }
-                        if ((props.x + props.width) < 0) {
-                            props.x = -props.width / 2;
-                        }
-                        if ((props.y + props.height) < 0) {
-                            props.y = -props.height / 2
-                        }
-                        while (hasSameXY(props)) {
-                            props.x -= 4;
-                            props.y -= 4;
-                        }
-                        diffX = oldX - props.x;
-                        diffY = oldY - props.y;
-                    }
-                } else {
-                    props.x -= diffX;
-                    props.y -= diffY;
-                }
-            };
-            for (let m of list) {
-                let nm = Clone(m);
-                let props = nm.props;
-                setXY(props);
-                props.locked = false;
-                index++;
-                nm.id = Magix.guid('e_');
-                elements.push(nm);
-                selected.push(nm);
-                if (me['@{is.cut}']) {
-                    StageElements["@{delete.element.by.id}"](m.id, true);
-                }
-            }
-
-            if (me['@{is.cut}']) {
-                delete me['@{is.cut}'];
-                delete me['@{copy.list}'];
-            }
-            State.fire('@{event#stage.elements.change}');
-            StageSelectElements['@{set.all}'](selected);
-        }
-        return update;
-    }
-}

@@ -108,7 +108,7 @@ export default Magix.View.extend({
                 }
             }
             if (lChanged) {
-                let vf = Vframe.get(m.id);
+                let vf = Vframe.byNode(node(m.id));
                 if (vf) {
                     if (vf.invoke('assign', [{ element: m }])) {
                         vf.invoke('render');

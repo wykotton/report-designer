@@ -5,7 +5,9 @@ import Magix, { node, State, Vframe } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import DHistory from './history';
 import Keys from './keys';
-import { StageElements, StageSelectElements, Clipboard } from './workspace';
+import StageElements from './stage-elements';
+import StageSelectElements from './stage-select';
+import Clipboard from './stage-clipboard';
 import Converter from '../util/converter';
 import Select from '../gallery/mx-pointer/select';
 import Cursor from '../gallery/mx-pointer/cursor';
@@ -18,7 +20,7 @@ export default Magix.View.extend({
     init() {
         let addElements = e => {
             if (e.node) {
-                if (Magix.inside(e.node, 'stage_canvas')) {
+                if (Magix.inside(e.node, node('stage_canvas'))) {
                     let p = Converter["@{real.to.stage.coord}"]({
                         x: e.pageX,
                         y: e.pageY
@@ -110,7 +112,7 @@ export default Magix.View.extend({
             this.render();
         };
         let togglePole = e => {
-            let o = node(this.id);
+            let o = this.root;
             let p = node('pole_' + this.id);
             let ps = p.style;
             if (e.show) {
@@ -148,7 +150,7 @@ export default Magix.View.extend({
         if (fs) return;
         let target = e.target as HTMLDivElement;
         if (target.id == 'stage_canvas' ||
-            Magix.inside('stage_canvas', target)) {
+            Magix.inside(node('stage_canvas'), target)) {
             let bak = null, count = 0;
             let last = State.get('@{stage.select.elements.map}');
             if (!e.shiftKey) {
@@ -264,7 +266,7 @@ export default Magix.View.extend({
                                 m.props.x += step;
                             }
                             if (propsChanged) {
-                                let vf = Vframe.get(m.id);
+                                let vf = Vframe.byNode(node(m.id));
                                 if (vf) {
                                     if (vf.invoke('assign', [{ element: m }])) {
                                         vf.invoke('render');
@@ -284,7 +286,7 @@ export default Magix.View.extend({
     },
     '@{prevent}<contextmenu>'(e: MouseEvent) {
         e.preventDefault();
-        if (Magix.inside(e.target as HTMLElement, 'stage_canvas')) {
+        if (Magix.inside(e.target as HTMLElement, node('stage_canvas'))) {
             let lang = Magix.config('lang');
             let list = Contextmenu.stage(lang);
             let disabled = {};
@@ -344,9 +346,9 @@ export default Magix.View.extend({
         }
     },
     '@{stage.active}<focusin>'(e: Magix.DOMEvent) {
-        node(this.id).classList.remove('@index.less:stage-deactive');
+        this.root.classList.remove('@index.less:stage-deactive');
     },
     '@{stage.deactive}<focusout>'() {
-        node(this.id).classList.add('@index.less:stage-deactive');
+        this.root.classList.add('@index.less:stage-deactive');
     }
 });

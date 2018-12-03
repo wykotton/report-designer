@@ -1,29 +1,24 @@
 <ul class="props">
     <li class="props-item">
-        <span class="props-item-title">{{=i18n('@{lang#props.page.width}')}}</span>
-        <mx-number class="ipt" min="0" value="{{@page.width}}" mx-input="@{change.page}({use:'width'})"/>
+        <span class="props-item-title">{{=i18n('@{lang#props.type}')}}</span>
+        <span>{{=i18n(ctrl.title)}}</span>
     </li>
-    <li class="props-item">
-        <span class="props-item-title">{{=i18n('@{lang#props.page.height}')}}</span>
-        <mx-number class="ipt" min="0" value="{{@page.height}}" mx-input="@{change.page}({use:'height'})"/>
-    </li>
-    <li class="props-item">
-        <span class="props-item-title">{{=i18n('@{lang#props.page.scale}')}}</span>
-        <mx-dropdown class="ipt" selected="{{=page.scaleType}}" list="{{@scaleTypes}}" text-key="text" value-key="value" mx-change="@{change.page}({use:'scaleType',from:'value'})"/>
-    </li>
-    <li class="props-item-spliter"></li>
-    <li class="props-item">
-        <span class="props-item-title">{{=i18n('@{lang#props.background}')}}</span>
-        <mx-color color="{{@page.background}}" class="ipt" *align="right" mx-input="@{change.page}({use:'background',from:'color'})"/>
-    </li>
-    <li class="props-item dock-top">
-        <span class="props-item-title">{{=i18n('@{lang#props.background.image}')}}</span>
-        <mx-picture class="ipt dock-top-content" src="{{=page.backgroundImage}}" mx-change="@{change.page}({use:'backgroundImage',from:'src',refresh:true})"/>
-    </li>
-    {{if page.backgroundImage}}
-    <li class="props-item">
-        <span class="props-item-title">{{=i18n('@{lang#props.background.repeat}')}}</span>
-        <mx-dropdown class="ipt" selected="{{=page.backgroundRepeat}}" list="{{@repeats}}" text-key="text" value-key="value" mx-change="@{change.page}({use:'backgroundRepeat',from:'value'})"/>
+    {{each ctrl.props as p}}
+    {{if p.type==props['@{spliter}']}}
+        <li class="props-item-spliter"></li>
+    {{else if !p.ifShow||p.ifShow(page)}}
+    <li class="props-item{{if p.dockTop}} dock-top{{/if}}">
+        <span class="props-item-title">{{=i18n(p.tip)}}</span>
+        {{if p.type==props['@{number}']}}
+            <mx-number class="ipt" value="{{@page[p.key]}}" @max="{{=p.max}}" @step="{{=p.step}}" @fixed="{{=p.fixed}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value'})"/>
+        {{else if p.type==props['@{color}']}}
+            <mx-color clear="{{=p.clear}}" class="ipt" color="{{@page[p.key]}}" *align="right" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color'})"/>
+        {{else if p.type==props['@{image}']}}
+            <mx-picture class="ipt" src="{{=page[p.key]}}" mx-change="@{update.prop}({key:'{{=p.key}}',use:'src',refresh:{{@p.refresh}},write:{{@p.write}}})"/>
+        {{else if p.type==props['@{dropdown}']}}
+            <mx-dropdown class="ipt" selected="{{=page[p.key]}}" list="{{@p.items}}" text-key="text" value-key="value" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value'})"/>
+        {{/if}}
     </li>
     {{/if}}
+    {{/each}}
 </ul>

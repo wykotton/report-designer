@@ -4,24 +4,29 @@
 </div>
 <div class="m-center fl ml100 unselectable">
     {{each elements as e}}
+    {{if e.spliter}}
+    <div class="header-item-spliter"></div>
+    {{else}}
     {{if e.subs}}
-    <div class="header-item pr">
-        <i class="iconfont" x-html="{{=e.icon}}"></i>
-        <b class="header-item-text">{{=e.title}}</b>
+    <div class="header-item header-item-has-subs pr">
+        <i class="iconfont header-item-icon" x-html="{{=e.icon}}"></i>
+        <b class="header-item-text">{{=i18n(e.title)}}</b>
+        <i class="header-item-arrow iconfont">&#xe73a;</i>
         <div class="header-item-more">
             {{each e.subs as es}}
-            <div class="sub-item" mx-mousedown="@{add.element}({ctor:{{@es}}})">
-                <i class="iconfont" x-html="{{=es.icon}}"></i>
-                <b class="header-item-text">{{=es.title}}</b>
+            <div class="sub-item" mx-mousedown="@{add.element}({ctrl:{{@es}}})">
+                <i class="iconfont header-item-icon" x-html="{{=es.icon}}"></i>
+                <b class="header-item-text">{{=i18n(es.title)}}</b>
             </div>
             {{/each}}
         </div>
     </div>
     {{else}}
-    <div class="header-item pr" mx-mousedown="@{add.element}({ctor:{{@e}}})">
-        <i class="iconfont" x-html="{{=e.icon}}"></i>
-        <b class="header-item-text">{{=e.title}}</b>
+    <div class="header-item pr" mx-mousedown="@{add.element}({ctrl:{{@e}}})">
+        <i class="iconfont header-item-icon" x-html="{{=e.icon}}"></i>
+        <b class="header-item-text">{{=i18n(e.title)}}</b>
     </div>
+    {{/if}}
     {{/if}}
     {{/each}}
 </div>

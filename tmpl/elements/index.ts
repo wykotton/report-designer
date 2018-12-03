@@ -1,26 +1,37 @@
-import { toMap as ToMap, guid } from 'magix';
-import H from './hw/designer';
-let Elements = [H];
+import { toMap as ToMap } from 'magix';
+import XText from './text/designer';
+import Page from './page/designer';
+let Elements = [XText];
 let ElementsMap = ToMap(Elements, 'type');
-let Groups = [{
-    icon: '&#xe64b;',
-    title: 'groups',
-    subs: [H, H, H, H, H, H]
-}, H];
+let Groups = [XText, { spliter: true }, {
+    icon: '&#xe629;',
+    title: '图表',
+    subs: [XText, XText, XText, XText, XText, XText, XText, XText]
+}];
 export default {
     '@{element.list}'() {
         return Groups;
     },
+    '@{get.page}'() {
+        return Page;
+    },
     '@{by.json}'(elements) {
-        let es = [], map = {};
-        for (let e of elements) {
-            let ctor = ElementsMap[e.type];
-            e.ctor = ctor;
-            es.push(e);
-            map[e.id] = e;
-        }
+        let map = {};
+        let walk = es => {
+            for (let e of es) {
+                let ctrl = ElementsMap[e.type];
+                e.ctrl = ctrl;
+                map[e.id] = e;
+                if (e.role == 'layout') {
+                    for (let c of e.props.columns) {
+                        walk(c.elements);
+                    }
+                }
+            }
+        };
+        walk(elements);
         return {
-            elements: es,
+            elements,
             map
         };
     }

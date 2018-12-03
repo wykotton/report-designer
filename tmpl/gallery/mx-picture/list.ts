@@ -14,7 +14,7 @@ export default Magix.View.extend({
         me['@{done.callback}'] = data.done;
     },
     render() {
-        this.fetch('@{get.background.images}', (err, bag) => {
+        this.fetch(['@{get.background.images}'], (err, bag) => {
             this.digest({
                 error: err,
                 list: bag.get('data', [])

@@ -14,15 +14,9 @@ combineTool.config({
     debug: true,
     commonFolder: tmplFolder,
     compiledFolder: srcFolder,
-    cssSelectorPrefix: 'p',
+    projectName: 'p',
     loaderType: 'cmd_es',
     md5CssSelectorLen: 3,
-    //sourceMapCss:true,
-    //magixVframeHost:true,
-    addTmplViewsToDependencies: true,
-    magixUpdaterIncrement: true,
-    magixUpdaterQuick: true,
-    magixTmplFnInside: false,
     galleries: {
         mxRoot: 'gallery/'
     },
@@ -30,17 +24,6 @@ combineTool.config({
         './tmpl/gallery/mx-style/index.less',
         './tmpl/assets/index.less'
     ],
-    compileTmplCommand(content) {
-        var str = ts.transpileModule(content, {
-            compilerOptions: {
-                lib: ['es7'],
-                target: 'es6',
-                module: ts.ModuleKind.None
-            }
-        });
-        str = str.outputText;
-        return str;
-    },
     compileJSStart(content) {
         var str = ts.transpileModule(content, {
             compilerOptions: {
