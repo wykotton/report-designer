@@ -1,6 +1,5 @@
 //#snippet;
-//#uncheck = jsThis,jsLoop;
-//#exclude = loader,allProcessor;
+//#exclude = all;
 /*!5.0.0 Licensed MIT*/
 /*
 author:kooboy_li@163.com
@@ -1581,14 +1580,17 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
     if (lastVDOM) {//view首次初始化，通过innerHTML快速更新
         if (lastVDOM['e'] ||
             lastVDOM['c'] != newVDOM['c']) {
-            let i, oi = 0,
+            let i, oi,
                 oldChildren = lastVDOM['h'],
                 newChildren = newVDOM['h'], oc, nc,
-                oldCount = oldChildren.length, newCount = newChildren.length,
+                oldCount = oldChildren.length,
+                oldRealCount = oldCount,
+                newCount = newChildren.length,
                 reused = newVDOM['i'],
                 nodes = realNode.childNodes, compareKey,
                 keyedNodes = {},
-                oldVIndex = 0;
+                oldVIndex = 0,
+                removedCount = 0;
             for (i = oldCount; i--;) {
                 oc = oldChildren[i];
                 compareKey = oc['d'];
@@ -1605,14 +1607,21 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 oc = oldChildren[oldVIndex];
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
-                    while (compareKey != nodes[i]) {//如果找到的节点和当前不同，则移动
-                        realNode.appendChild(nodes[i]);
-                        oldChildren.push(oldChildren[oldVIndex]);
-                        oldChildren.splice(oldVIndex, 1);
-                        oc = oldChildren[oldVIndex];
-                        if (DEBUG) {
-                            CheckNodes(nodes, oldChildren);
+                    if (compareKey != nodes[i]) {
+                        for (oi = oldRealCount; oi-- > i;) {
+                            if (nodes[oi + removedCount] == compareKey) {
+                                oc = oldChildren[oi];
+                                oldChildren.splice(oi, 1);
+                                removedCount++;
+                                oldRealCount--;
+                                oldVIndex--;
+                                break;
+                            }
                         }
+                        realNode.insertBefore(compareKey, nodes[i]);
+                        // if (DEBUG && realNode.nodeName != 'TEXTAREA') {
+                        //     CheckNodes(nodes, oldChildren);
+                        // }
                     }
                     if (reused[oc['d']]) {
                         reused[oc['d']]--;
