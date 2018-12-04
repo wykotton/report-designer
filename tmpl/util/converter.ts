@@ -1,4 +1,4 @@
-import { node } from 'magix';
+import { State, node } from 'magix';
 export default {
     '@{real.to.stage.coord}'({ x, y }) {
         let n = node('stage_canvas');
@@ -19,5 +19,13 @@ export default {
             x,
             y
         };
+    },
+    '@{to.show.value}'(x) {
+        let s = State.get('@{stage.scale}');
+        return (x / s) | 0;
+    },
+    '@{to.real.value}'(x) {
+        let s = State.get('@{stage.scale}');
+        return x * s;
     }
 };

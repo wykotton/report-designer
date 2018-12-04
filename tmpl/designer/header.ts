@@ -6,7 +6,11 @@ import Elements from '../elements/index';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import Follower from '../gallery/mx-pointer/follower';
 Magix.applyStyle('@header.less');
-let Fullscreens = ['requestFullscreen', 'webkitRequestFullScreen', 'webkitRequestFullscreen', 'mozRequestFullScreen', 'msRequestFullscreen'];
+let Fullscreens = ['requestFullscreen',
+    'webkitRequestFullScreen',
+    'webkitRequestFullscreen',
+    'mozRequestFullScreen',
+    'msRequestFullscreen'];
 export default Magix.View.extend({
     tmpl: '@header.html',
     mixins: [Dragdrop],

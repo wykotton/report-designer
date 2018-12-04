@@ -3,6 +3,7 @@
 */
 import Designer from '../designer';
 import Props from '../../designer/props';
+import Converter from '../../util/converter';
 export default Designer.extend({
     ctor() {
         this.set({
@@ -42,21 +43,29 @@ export default Designer.extend({
         props: [{
             tip: '@{lang#props.x}',
             type: Props["@{number}"],
-            key: 'x'
+            key: 'x',
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.y}',
             type: Props["@{number}"],
-            key: 'y'
+            key: 'y',
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.width}',
             type: Props["@{number}"],
             key: 'width',
-            min: 0
+            min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.height}',
             key: 'height',
             type: Props["@{number}"],
-            min: 0
+            min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.rotate}',
             type: Props["@{number}"],

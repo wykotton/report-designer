@@ -68,11 +68,6 @@ export default Magix.View.extend({
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.scale.change}', update);
         State.on('@{event#stage.page.change}', update);
-        State.on('@{event#preview}', e => {
-            if (!e.full) {
-                this.render();
-            }
-        });
     },
     '@{rerender}'() {
         if (this['@{can.render}']) {
@@ -185,7 +180,7 @@ export default Magix.View.extend({
         }
     },
     '@{show.y.line}<mousemove>'(e) {
-        let sTop = node(this.id).getBoundingClientRect();
+        let sTop = this.root.getBoundingClientRect();
         let v = e.pageY - sTop.top;
         let start = this.get('yStart');
         let yNode = this['@{y.axis}'];
@@ -217,7 +212,7 @@ export default Magix.View.extend({
         DHistory["@{save}"]();
     },
     '@{add.y.help.line}<click>'(e) {
-        let offset = node(this.id).getBoundingClientRect();
+        let offset = this.root.getBoundingClientRect();
         let v = e.pageY - offset.top;
         let start = this.get('yStart');
         let yNode = this['@{y.axis}'];
@@ -292,6 +287,8 @@ export default Magix.View.extend({
         e.preventDefault();
     },
     '$win<resize>'() {
-        this['@{rerender}']();
+        setTimeout(() => {
+            this['@{rerender}']();
+        }, 0);
     }
 });

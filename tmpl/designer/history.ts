@@ -28,13 +28,6 @@ let UpdateStage = jsonStr => {
     State.fire('@{event#history.shift}', {
         scale: c !== s
     });
-    // if (c !== s) {
-    //     State.fire('@{event#stage.scale.change}');
-    // }
-    // State.fire('@{event#stage.page.change}');
-    // State.fire('@{event#history.status.change}');
-    // State.fire('@{event#stage.elements.change}');
-    // State.fire('@{event#stage.select.elements.change}');
 };
 export default {
     '@{save.default}'() {

@@ -1,4 +1,4 @@
-import { State } from 'magix';
+import Magix, { State } from 'magix';
 import StageElements from './stage-elements';
 import StageSelectElements from './stage-select';
 let Clone = a => {
@@ -8,7 +8,7 @@ let Clone = a => {
             c.push(Clone(b));
         }
         a = c;
-    } else if (Object.prototype.toString.call(a) == '[object Object]') {
+    } else if (Magix.type(a) == 'Object') {
         let c = {};
         for (let b in a) {
             c[b] = Clone(a[b]);

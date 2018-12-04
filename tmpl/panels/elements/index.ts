@@ -3,7 +3,7 @@
 */
 import Magix, { State, node } from 'magix';
 import Convert from '../../util/converter';
-import { StageElements } from '../../designer/workspace';
+import StageElements from '../../designer/stage-elements';
 Magix.applyStyle('@index.less');
 let RId = Magix.guid('rp_');
 let RectPole = {

@@ -1443,15 +1443,18 @@ let Q_Create = (tag, props, children, unary) => {
         for (prop in props) {
             value = props[prop];
             //布尔值
-            if (value === false || value == Null) {
+            if (value === false ||
+                value == Null) {
                 delete props[prop];
                 continue;
             } else if (value === true) {
-                value = Empty;
+                props[prop] = value = Empty;
             }
             if (prop == 'id') {//如果有id优先使用
                 compareKey = value;
-            } else if (prop == MX_View && value && !compareKey) {
+            } else if (prop == MX_View &&
+                value &&
+                !compareKey) {
                 //否则如果是组件,则使用组件的路径做为key
                 compareKey = ParseUri(value)[Path];
             } else if (prop == Tag_Static_Key) {
@@ -1465,8 +1468,9 @@ let Q_Create = (tag, props, children, unary) => {
             if (prop == Value && tag == 'textarea') {
                 innerHTML = value;
             }
-            props[prop] = value;
-            outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
+            if (!Has(V_SKIP_PROPS, prop)) {
+                outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
+            }
         }
         attrs = outerHTML;
         if (unary) {
@@ -1507,6 +1511,11 @@ let Q_Create = (tag, props, children, unary) => {
     }
 };
 
+let V_SKIP_PROPS = {
+    [Tag_Static_Key]: 1,
+    [Tag_View_Params_Key]: 1
+};
+
 if (DEBUG) {
     var CheckNodes = (realNodes, vNodes) => {
         let index = 0;
@@ -1539,14 +1548,16 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
     if (common) {
         if (lastVDOM) {
             for (key in oMap) {
-                if (!Has(specials, key) && !Has(nMap, key)) {//如果旧有新木有
+                if (!Has(specials, key) &&
+                    !Has(nMap, key)) {//如果旧有新木有
                     ref['b'] = 1;
                     oldNode.removeAttribute(key);
                 }
             }
         }
         for (key in nMap) {
-            if (!Has(specials, key)) {
+            if (!Has(specials, key) &&
+                !Has(V_SKIP_PROPS, key)) {
                 value = nMap[key];
                 //旧值与新值不相等
                 if (!lastVDOM || oMap[key] !== value) {

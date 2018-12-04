@@ -47,10 +47,10 @@ let MenuDelete = {
 let Cache = {};
 let TranslateMenu = menus => {
     return (lang) => {
-        if (!menus['@{uid}']) {
-            menus['@{uid}'] = Magix.guid('_m');
+        if (!menus['@{menu@u.id}']) {
+            menus['@{menu@u.id}'] = Magix.guid('_m');
         }
-        let key = lang + menus['@{uid}'];
+        let key = lang + menus['@{menu@u.id}'];
         if (!Cache[key]) {
             let a = [];
             for (let m of menus) {
