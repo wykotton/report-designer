@@ -7,45 +7,9 @@ import Cursor from '../gallery/mx-pointer/cursor';
 import DHistory from './history';
 Magix.applyStyle('@axis.less');
 let ScalesMap = {
-    '0.5': {
-        space: 200,
-        step: 10
-    },
     '1': {
         space: 100,
         step: 10
-    },
-    '1.5': {
-        space: 80,
-        step: 10
-    },
-    '2': {
-        space: 60,
-        step: 10
-    },
-    '2.5': {
-        space: 48,
-        step: 8
-    },
-    '3': {
-        space: 40,
-        step: 8
-    },
-    '3.5': {
-        space: 32,
-        step: 8
-    },
-    '4': {
-        space: 24,
-        step: 8
-    },
-    '4.5': {
-        space: 16,
-        step: 8
-    },
-    '5': {
-        space: 16,
-        step: 8
     }
 };
 export default Magix.View.extend({
