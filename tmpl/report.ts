@@ -5,15 +5,15 @@ if (typeof DEBUG == 'undefined') DEBUG = true;
 let Designer = {
     init(ops) {
         let node = document.getElementById('boot') as HTMLScriptElement;
-        let src = node.src.replace('/report.js', '');
+        let src = node.src.replace(/\/[^\/]+$/, '/');
         seajs.config({
             paths: {
-                designer: src + '/designer',
-                i18n: src + '/i18n',
-                gallery: src + '/gallery',
-                util: src + '/util',
-                panels: src + '/panels',
-                elements: src + '/elements'
+                designer: src + 'designer',
+                i18n: src + 'i18n',
+                gallery: src + 'gallery',
+                util: src + 'util',
+                panels: src + 'panels',
+                elements: src + 'elements'
             }
         });
         seajs.use([
