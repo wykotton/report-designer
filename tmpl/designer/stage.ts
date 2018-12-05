@@ -20,7 +20,7 @@ export default Magix.View.extend({
     init() {
         let addElements = e => {
             if (e.node) {
-                if (Magix.inside(e.node, node('stage_canvas'))) {
+                if (Magix.inside(e.node, node('stage_outer'))) {
                     let p = Converter["@{real.to.stage.coord}"]({
                         x: e.pageX,
                         y: e.pageY
@@ -131,6 +131,19 @@ export default Magix.View.extend({
         State.on('@{event#toolbox.drag.element.drop}', addElements);
         State.on('@{event#stage.elements.change}', updateElements);
         State.on('@{event#stage.lock.scroll}', togglePole);
+        State.on('@{event#toolbox.drag.element.move}', (e: Magix.TriggerEventDescriptor & {
+            node: HTMLElement
+            pageX: number
+            pageY: number
+            width: number
+            height: number
+        }) => {
+            if (Magix.inside(e.node, node('stage_outer'))) {
+                Select["@{update}"](e.pageX, e.pageY, e.width, e.height);
+            } else {
+                Select["@{hide}"]();
+            }
+        });
         updateElements();
     },
     render() {
