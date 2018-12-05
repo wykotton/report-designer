@@ -26,12 +26,11 @@ export default Magix.View.extend({
             }
         };
         let updateStage = this.render.bind(this);
-
         State.on('@{event#history.shift}', updateStage);
         State.on('@{event#stage.page.change}', updateStage);
         State.on('@{event#stage.elements.change}', updateElements);
-        updateElements();
         StageDragDrop["@{start.listen}"](this.root, this.id);
+        updateElements();
     },
     render() {
         let page = State.get('@{stage.page}');

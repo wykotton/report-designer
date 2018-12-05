@@ -148,8 +148,14 @@ export default {
                 barStyle.display = 'none';
             }
         };
+        let clickAddElement = () => {
+            StageElements["@{add.element.to.top}"](State.get('@{memory.cache.element.ctrl}'));
+            State.fire('@{event#stage.elements.change}');
+            DHistory["@{save}"]();
+        };
         State.on('@{event#toolbox.drag.hover.change}', findPlace);
         State.on('@{event#toolbox.drag.element.drop}', addElements);
+        State.on('@{event#toolbox.add.element}', clickAddElement);
     },
     '@{find.over.position}'(info, { pageY }) {
         let isSub = false;

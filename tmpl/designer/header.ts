@@ -15,23 +15,31 @@ export default Magix.View.extend({
         });
     },
     '@{add.element}<mousedown>'(e) {
-        let { ctrl } = e.params;
+        let { ctrl } = e.params,
+            moved = 0;
         Follower["@{update}"](ctrl.icon);
         State.set({
             '@{memory.cache.element.ctrl}': ctrl
         });
         this['@{drag.drop}'](e, ex => {
-            Follower["@{show}"](ex);
-            State.fire('@{event#toolbox.drag.hover.change}', {
-                pageX: ex.pageX,
-                pageY: ex.pageY,
-                clientX: ex.clientX,
-                clientY: ex.clientY
-            });
+            if (moved) {
+                Follower["@{show}"](ex);
+                State.fire('@{event#toolbox.drag.hover.change}', {
+                    pageX: ex.pageX,
+                    pageY: ex.pageY,
+                    clientX: ex.clientX,
+                    clientY: ex.clientY
+                });
+            }
+            moved = 1;
         }, (ex: Magix.DOMEvent) => {
             Follower["@{hide}"]();
-            if (ex) {
-                State.fire('@{event#toolbox.drag.element.drop}');
+            if (moved) {
+                if (ex) {
+                    State.fire('@{event#toolbox.drag.element.drop}');
+                }
+            } else {
+                State.fire('@{event#toolbox.add.element}');
             }
             State.set({
                 '@{memory.cache.element.ctrl}': null

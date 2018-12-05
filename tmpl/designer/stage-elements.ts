@@ -16,6 +16,19 @@ export default {
         e.elements.splice(e.index, 0, em);
         StageSelectElements["@{set}"](em);
     },
+    '@{add.element.to.top}'(ctrl) {
+        let props = ctrl.getProps();
+        let em = {
+            id: Magix.guid('e_'),
+            type: ctrl.type,
+            role: ctrl.role,
+            ctrl,
+            props
+        };
+        let layouts = State.get('@{stage.layouts}');
+        layouts.unshift(em);
+        StageSelectElements["@{set}"](em);
+    },
     '@{move.element}'(e, moved) {
         let ownerList = null;
         let walk = (elements) => {
