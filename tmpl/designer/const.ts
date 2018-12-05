@@ -5,7 +5,7 @@ export default {
     '@{dragdrop.stage.near.hor.edge}': 150,
     '@{dragdrop.stage.near.ver.edge}': 50,
     '@{dragdrop.stage.scroll.oversize}': 20,
-    '@{dragdrop.stage.check.interval}': 30,
-    '@{dragdrop.stage.scroll.step}': 7,
+    '@{dragdrop.stage.check.interval}': 18,
+    '@{dragdrop.stage.scroll.step}': 5,
     '@{dragdrop.scroll.delay.count}': 10
 }

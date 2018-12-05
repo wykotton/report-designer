@@ -85,6 +85,7 @@ export default {
         let startScroll = () => {
             if (!scrollListened) {
                 scrollListened = 1;
+                scrollNode.classList.add('@index.less:stage-disable-smooth');
                 elementsTree = StageElements["@{elements.tree.map}"]();
                 Runner["@{task.add}"](Const["@{dragdrop.stage.check.interval}"], scrollIfNeed);
             }
@@ -93,6 +94,7 @@ export default {
             stageScrolling = 0;
             if (scrollListened) {
                 scrollListened = 0;
+                scrollNode.classList.remove('@index.less:stage-disable-smooth');
                 Runner["@{task.remove}"](scrollIfNeed);
             }
         };

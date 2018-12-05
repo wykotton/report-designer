@@ -1,7 +1,46 @@
-import Magix, { has, State, toMap } from 'magix';
+import Magix, { has, State, toMap, node } from 'magix';
 import Follower from '../gallery/mx-pointer/follower';
 import DHistory from './history';
 import StageSelectElements from './stage-select';
+let RectIntersect = (rect1, rect2) => {
+    let half1Width = rect1.width / 2,
+        half1Height = rect1.height / 2,
+        half2Width = rect2.width / 2,
+        half2Height = rect2.height / 2,
+        cen1 = {
+            x: rect1.x + half1Width,
+            y: rect1.y + half1Height
+        },
+        cen2 = {
+            x: rect2.x + half2Width,
+            y: rect2.y + half2Height
+        };
+
+    return Math.abs(cen2.x - cen1.x) <= half1Width + half2Width &&
+        Math.abs(cen2.y - cen1.y) <= half1Height + half2Height;
+};
+let ScrollIntoView = id => {
+    let scroller = node('stage_outer').parentNode as HTMLDivElement;
+    let n = node(id) as HTMLDivElement;
+    let rect = scroller.getBoundingClientRect();
+    let rect1 = {
+        x: rect.left,
+        y: rect.top,
+        width: rect.width - 20,
+        height: rect.height - 20
+    };
+    rect = n.getBoundingClientRect();
+    let rect2 = {
+        x: rect.left,
+        y: rect.top,
+        width: rect.width,
+        height: rect.height
+    };
+    if (!RectIntersect(rect1, rect2)) {
+        let offset = scroller.clientHeight / 3;
+        scroller.scrollTop = rect2.y + scroller.scrollTop - rect1.y - offset;
+    }
+};
 export default {
     '@{add.element}'(e) {
         let ctrl = e.ctrl;
@@ -192,9 +231,9 @@ export default {
             //多选2个以上的我们取消多选，然后从头选择一个
             let c = selectElements.length;
             let current = selectElements[0];
+            let select = null;
             if (c === 0 || c > 1) {
-                current = stageElements[e.shiftKey ? stageElements.length - 1 : 0];
-                StageSelectElements["@{set}"](current);
+                select = stageElements[e.shiftKey ? stageElements.length - 1 : 0];
             } else {
                 let findCurrent = null,
                     findNext = null,
@@ -224,7 +263,6 @@ export default {
                     }
                 };
                 find(stageElements);
-                let select = null;
                 if (e.shiftKey) {
                     if (!findPrev) {
                         select = stageElements[stageElements.length - 1];
@@ -241,10 +279,11 @@ export default {
                         select = findNext;
                     }
                 }
-                if (select.id != current.id) {
-                    StageSelectElements["@{set}"](select);
-                    DHistory["@{save}"]();
-                }
+            }
+            if (!current || select.id != current.id) {
+                StageSelectElements["@{set}"](select);
+                DHistory["@{save}"]();
+                ScrollIntoView(select.id);
             }
         }
     }

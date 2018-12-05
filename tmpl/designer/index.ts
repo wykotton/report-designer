@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State, mix } from 'magix';
+import Magix, { State } from 'magix';
 import Elements from '../elements/index';
 import Dialog from '../gallery/mx-dialog/index';
 import Consts from './const';
