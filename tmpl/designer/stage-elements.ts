@@ -38,6 +38,7 @@ let ScrollIntoView = id => {
     };
     if (!RectIntersect(rect1, rect2)) {
         let offset = scroller.clientHeight / 3;
+        scroller.classList.add('@index.less:stage-smooth');
         scroller.scrollTop = rect2.y + scroller.scrollTop - rect1.y - offset;
     }
 };
@@ -67,6 +68,7 @@ export default {
         let layouts = State.get('@{stage.layouts}');
         layouts.unshift(em);
         StageSelectElements["@{set}"](em);
+        return em;
     },
     '@{move.element}'(e, moved) {
         let ownerList = null;
@@ -178,7 +180,6 @@ export default {
         let ctrl = entity.ctrl;
         Follower["@{update}"](ctrl.icon);
         view['@{drag.drop}'](event, evt => {
-            event.preventDefault();
             Follower["@{show}"](evt);
             State.fire('@{event#toolbox.drag.hover.change}', {
                 pageX: evt.pageX,
@@ -190,7 +191,13 @@ export default {
         }, (ex) => {
             Follower["@{hide}"]();
             if (ex) {
+                let scroller = node('stage_outer').parentNode as HTMLDivElement;
+                let sTop = scroller.scrollTop;
+                ex.preventDefault();
                 State.fire('@{event#toolbox.drag.element.drop}');
+                if (sTop != scroller.scrollTop) {
+                    scroller.scrollTop = sTop;
+                }
             }
         });
     },
@@ -286,5 +293,6 @@ export default {
                 ScrollIntoView(select.id);
             }
         }
-    }
+    },
+    '@{scroll.into.view}': ScrollIntoView
 };

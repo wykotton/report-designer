@@ -8,7 +8,6 @@ let ClearSelection = (t?: () => Selection) => {
     }
 };
 let DragPrevent = (e) => {
-    console.log(e);
     e.preventDefault();
 };
 let DragMoveEvent = ['mousemove', 'touchmove', 'pointermove'];

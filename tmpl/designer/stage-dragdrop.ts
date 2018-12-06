@@ -36,7 +36,6 @@ export default {
                         stageScrolling++;
                         if (stageScrolling > Const["@{dragdrop.scroll.delay.count}"]) {
                             barStyle.display = 'none';
-                            clearInfo();
                             scrollNode.scrollTop += Const["@{dragdrop.stage.scroll.step}"];
                         }
                     } else {
@@ -48,7 +47,6 @@ export default {
                     } else {
                         stageScrolling++;
                         if (stageScrolling > Const["@{dragdrop.scroll.delay.count}"]) {
-                            clearInfo();
                             scrollNode.scrollTop -= Const["@{dragdrop.stage.scroll.step}"];
                             barStyle.display = 'none';
                         }
@@ -59,7 +57,6 @@ export default {
                     } else {
                         stageScrolling++;
                         if (stageScrolling > Const["@{dragdrop.scroll.delay.count}"]) {
-                            clearInfo();
                             scrollNode.scrollLeft -= Const["@{dragdrop.stage.scroll.step}"];
                             barStyle.display = 'none';
                         }
@@ -69,7 +66,6 @@ export default {
                         stageScrolling++;
                         if (stageScrolling > Const["@{dragdrop.scroll.delay.count}"]) {
                             barStyle.display = 'none';
-                            clearInfo();
                             scrollNode.scrollLeft += Const["@{dragdrop.stage.scroll.step}"];
                         }
                     } else {
@@ -85,7 +81,8 @@ export default {
         let startScroll = () => {
             if (!scrollListened) {
                 scrollListened = 1;
-                scrollNode.classList.add('@index.less:stage-disable-smooth');
+                scrollNode.addEventListener('scroll', clearInfo);
+                scrollNode.classList.remove('@index.less:stage-smooth');
                 elementsTree = StageElements["@{elements.tree.map}"]();
                 Runner["@{task.add}"](Const["@{dragdrop.stage.check.interval}"], scrollIfNeed);
             }
@@ -94,7 +91,7 @@ export default {
             stageScrolling = 0;
             if (scrollListened) {
                 scrollListened = 0;
-                scrollNode.classList.remove('@index.less:stage-disable-smooth');
+                scrollNode.removeEventListener('scroll', clearInfo);
                 Runner["@{task.remove}"](scrollIfNeed);
             }
         };
@@ -151,9 +148,10 @@ export default {
             }
         };
         let clickAddElement = () => {
-            StageElements["@{add.element.to.top}"](State.get('@{memory.cache.element.ctrl}'));
+            let { id } = StageElements["@{add.element.to.top}"](State.get('@{memory.cache.element.ctrl}'));
             State.fire('@{event#stage.elements.change}');
             DHistory["@{save}"]();
+            StageElements["@{scroll.into.view}"](id);
         };
         State.on('@{event#toolbox.drag.hover.change}', findPlace);
         State.on('@{event#toolbox.drag.element.drop}', addElements);

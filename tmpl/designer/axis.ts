@@ -17,7 +17,7 @@ export default Magix.View.extend({
     mixins: [DragDrop],
     init(data) {
         let n = node(data.scroll);
-        n.addEventListener('scroll', () => {
+        n.addEventListener('scroll', (e) => {
             this['@{sync.scroll}']();
         }, {
                 passive: true
