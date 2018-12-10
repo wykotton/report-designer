@@ -14,12 +14,15 @@ let Designer = {
                 util: src + 'util',
                 panels: src + 'panels',
                 elements: src + 'elements'
+            },
+            alias: {
+                magix: 'magix5'
             }
         });
         seajs.use([
             'magix',
             'i18n/index'
-        ], (Magix: Magix, I18n) => {
+        ], (Magix: IMagix5, I18n) => {
             Magix.applyStyle('@scoped.style');
             let lang = 'zh-cn';
             try {

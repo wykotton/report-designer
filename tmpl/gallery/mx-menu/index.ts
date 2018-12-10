@@ -72,7 +72,7 @@ export default Magix.View.extend({
             Monitor['@{remove}'](me);
         }
     },
-    '@{hover}<mouseover,mouseout>'(e: Magix.DOMEvent) {
+    '@{hover}<mouseover,mouseout>'(e: NMagix5.DOMEvent) {
         if (e.params.d) return;
         let target = e.eventTarget;
         let flag = !Magix.inside(e.relatedTarget as HTMLElement, target);
@@ -80,7 +80,7 @@ export default Magix.View.extend({
             target.classList[e.type == 'mouseout' ? 'remove' : 'add']('@index.less:over');
         }
     },
-    '@{select}<click>'(e: Magix.DOMEvent) {
+    '@{select}<click>'(e: NMagix5.DOMEvent) {
         if (e.params.d) return;
         let me = this;
         me['@{hide}']();

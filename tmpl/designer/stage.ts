@@ -30,6 +30,9 @@ export default Magix.View.extend({
                 } else {
                     return;
                 }
+            } else {
+                e.pageX += this.root.scrollLeft;
+                e.pageY += this.root.scrollTop;
             }
             let elements = StageElements["@{add.element}"](e, true);
             if (elements) {

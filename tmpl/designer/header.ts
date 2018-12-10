@@ -21,7 +21,8 @@ export default Magix.View.extend({
         });
     },
     '@{add.element}<mousedown>'(e) {
-        let { ctrl } = e.params;
+        let { ctrl, hide } = e.params;
+        let moreNode = e.eventTarget.parentNode;
         //Follower["@{update}"](ctrl.icon);
         let moved = false, hoverNode = null;
         State.set({
@@ -36,6 +37,11 @@ export default Magix.View.extend({
         Select["@{init}"]();
         Cursor["@{root.show.by.type}"]('move');
         this['@{drag.drop}'](e, ex => {
+            if (!moved) {
+                if (hide) {
+                    moreNode.style.display = 'none';
+                }
+            }
             //Follower["@{show}"](ex);
             State.fire('@{event#toolbox.drag.element.move}', {
                 width,
@@ -47,6 +53,9 @@ export default Magix.View.extend({
             moved = true;
         }, (ex: Magix.DOMEvent) => {
             //Follower["@{hide}"]();
+            if (hide) {
+                moreNode.style.display = '';
+            }
             Select["@{hide}"]();
             Cursor["@{root.hide}"]();
             if (!moved) {

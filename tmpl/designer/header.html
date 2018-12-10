@@ -14,7 +14,7 @@
         <i class="header-item-arrow iconfont">&#xe73a;</i>
         <div class="header-item-more">
             {{each e.subs as es}}
-            <div class="sub-item" mx-mousedown="@{add.element}({ctrl:{{@es}}})">
+            <div class="sub-item" mx-mousedown="@{add.element}({ctrl:{{@es}},hide:true})">
                 <i class="iconfont header-item-icon" x-html="{{=es.icon}}"></i>
                 <b class="header-item-text">{{=i18n(es.title)}}</b>
             </div>

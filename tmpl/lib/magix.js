@@ -8,7 +8,7 @@ enables:
 
 optionals:router
 */
-define('magix', () => {
+define('magix5', () => {
     //VARS
 if (typeof DEBUG == 'undefined') window.DEBUG = true;
 let Counter = 0;
@@ -1373,7 +1373,7 @@ let Updater_Digest = (view, digesting) => {
         view.fire('dompatch');
         delete Body_RangeEvents[viewId];
         delete Body_RangeVframes[viewId];
-        vdom = tmpl(data, Q_Create, viewId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, IsArray, Assign);
+        vdom = tmpl(data, Q_Create, viewId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, IsArray);
         if (DEBUG) {
             Updater_CheckInput(view, vdom['a']);
         }
@@ -1461,7 +1461,7 @@ let Q_Create = (tag, props, children, unary) => {
                 if (!compareKey) {
                     compareKey = value;
                 }
-                newChildren = Empty_Array;
+                //newChildren = Empty_Array;
             } else if (prop == Tag_View_Params_Key) {
                 hasMxv = 1;
             }
