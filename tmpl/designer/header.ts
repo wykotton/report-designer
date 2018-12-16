@@ -32,7 +32,7 @@ export default Magix.View.extend({
                 });
             }
             moved = 1;
-        }, (ex: Magix.DOMEvent) => {
+        }, (ex: Magix5.MagixMouseEvent) => {
             Follower["@{hide}"]();
             if (moved) {
                 if (ex) {

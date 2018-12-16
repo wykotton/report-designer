@@ -8,7 +8,7 @@ enables:
 
 optionals:router
 */
-define('magix', () => {
+define('magix5', () => {
     //VARS
 if (typeof DEBUG == 'undefined') window.DEBUG = true;
 let Counter = 0;
@@ -127,8 +127,8 @@ let TranslateData = (data, params) => {
     let p, val;
     if (IsPrimitive(params)) {
         p = params + Empty;
-        if (p[0] == Spliter && Has(data, p)) {
-            params = data[p];
+        if (p[0] == Spliter && data.has(p)) {
+            params = data.get(p);
         }
     } else {
         for (p in params) {
@@ -241,45 +241,17 @@ Assign(Cache[Prototype], {
         return Has(this['a'], Spliter + k);
     }
 });
-    let DispatchEvent = (element, type, data) => {
-    let e = Doc_Document.createEvent('Events');
-    e.initEvent(type, true, true);
-    for (let p in data) {
-        e[p] = data[p];
-    }
+    let EventDefaultOptions = {
+    bubbles: true,
+    cancelable: true
+};
+//https://www.w3.org/TR/dom/#interface-event
+let DispatchEvent = (element, type, data) => {
+    let e = new Event(type, EventDefaultOptions);
+    Assign(e, data);
     element.dispatchEvent(e);
 };
-let TargetMatchSelector = (element, selector) => {
-    if (selector && element && element.nodeType == 1) {
-        return element.matches(selector);
-    }
-};
 let AttachEventHandlers = [];
-let ReturnTrue = () => true,
-    ReturnFalse = () => false,
-    EventMethods = {
-        preventDefault: 'isDefaultPrevented',
-        stopPropagation: 'isPropagationStopped'
-    };
-
-let EventCompatible = e => {
-    if (!e.isDefaultPrevented) {
-        for (let key in EventMethods) {
-            let value = EventMethods[key];
-            let src = e[key];
-            e[key] = (...a) => {
-                e[value] = ReturnTrue;
-                return src && src.apply(e, a);
-            };
-            e[value] = ReturnFalse;
-        }
-        if (e.defaultPrevented !== Undefined ? e.defaultPrevented :
-            'returnValue' in e ? e.returnValue === false :
-                e.getPreventDefault && e.getPreventDefault())
-            e.isDefaultPrevented = ReturnTrue;
-    }
-    return e;
-};
 let AddEventListener = (element, type, fn, viewId, eventOptions, view) => {
     let h = {
         'a': viewId,
@@ -287,9 +259,7 @@ let AddEventListener = (element, type, fn, viewId, eventOptions, view) => {
         'c': type,
         'd': element,
         'e'(e) {
-            e = EventCompatible(e);
             if (viewId) {
-                e.eventTarget = element;
                 ToTry(fn, e, view);
             } else {
                 fn(e);
@@ -648,11 +618,9 @@ let State = Assign({
     let Vframe_RootVframe;
 let Vframe_Vframes = {};
 let Vframe_TranslateQuery = (pId, src, params, pVf) => {
-    pVf = Vframe_Vframes[pId];
-    pVf = pVf && pVf['a'];
-    pVf = pVf ? pVf['a'] : {};
-    if (src.indexOf(Spliter) > 0) {
-        TranslateData(pVf, params);
+    if (src.indexOf(Spliter) > 0 &&
+        (pVf = Vframe_Vframes[pId])) {
+        TranslateData(pVf['a']['a'], params);
     }
 };
 /**
@@ -770,9 +738,9 @@ Assign(Vframe[Prototype], {
             me['f'] = root.innerHTML;
         }
         me.unmountView();
-        po = ParseUri(viewPath || Empty);
-        view = po[Path];
-        if (root && view) {
+        if (root && viewPath) {
+            po = ParseUri(viewPath);
+            view = po[Path];
             me[Path] = viewPath;
             params = po[Params];
             Vframe_TranslateQuery(pId, viewPath, params);
@@ -840,8 +808,6 @@ Assign(Vframe[Prototype], {
             me['a'] = 0; //unmountView时，尽可能早的删除vframe上的$v对象，防止$v销毁时，再调用该 vfrmae的类似unmountZone方法引起的多次created
             if (v['d'] > 0) {
                 v['d'] = 0;
-                delete Body_RangeEvents[id];
-                delete Body_RangeVframes[id]
                 v.fire('destroy');
                 v.off('destroy');
                 View_DestroyAllResources(v, 1);
@@ -1078,15 +1044,12 @@ let Body_EvtInfoCache = new Cache(30, 10);
 let Body_EvtInfoReg = /(?:([\w\-]+)\x1e)?([^(]+)\(([\s\S]*)?\)/;
 let Body_RootEvents = {};
 let Body_SearchSelectorEvents = {};
-let Body_RangeEvents = {};
-let Body_RangeVframes = {};
-let Body_Guid = 0;
 let Body_FindVframeInfo = (current, eventType) => {
     let vf, tempId, selectorObject, eventSelector, eventInfos = [],
         begin = current,
         info = GetAttribute(current, `mx-${eventType}`),
-        match, view, vfs = [],
-        selectorVfId = Hash_Key,
+        match, view, vfs,
+        selectorVfId,
         backtrace = 0;
     if (info) {
         match = Body_EvtInfoCache.get(info);
@@ -1103,85 +1066,76 @@ let Body_FindVframeInfo = (current, eventType) => {
     }
     //如果有匹配但没有处理的vframe或者事件在要搜索的选择器事件里
     if ((match && !match.v) || Body_SearchSelectorEvents[eventType]) {
-        if ((selectorObject = Body_RangeVframes[tempId = begin['c']])
-            && selectorObject[begin['d']] == 1) {
-            view = 1;
-            selectorVfId = tempId;//如果节点有缓存，则使用缓存
-        }
-        if (!view) { //先找最近的vframe
-            vfs.push(begin);
-            while (begin != Doc_Body && (begin = begin.parentNode)) { //找最近的vframe,且节点上没有mx-autonomy属性
+        selectorVfId = begin['c'];
+        if (!selectorVfId) { //先找最近的vframe
+            vfs = [begin];
+            while (begin != Doc_Body && (begin = begin.parentNode)) {
                 if (Vframe_Vframes[tempId = begin['b']] ||
-                    ((selectorObject = Body_RangeVframes[tempId = begin['c']]) &&
-                        selectorObject[begin['d']] == 1)) {
+                    (tempId = begin['c'])) {
                     selectorVfId = tempId;
                     break;
                 }
                 vfs.push(begin);
             }
-            for (info of vfs) {
-                if (!(tempId = Body_RangeVframes[selectorVfId])) {
-                    tempId = Body_RangeVframes[selectorVfId] = {};
+            if (selectorVfId) {
+                for (info of vfs) {
+                    info['c'] = selectorVfId;
                 }
-                selectorObject = info['d'] || (info['d'] = ++Body_Guid);
-                tempId[selectorObject] = 1;
-                info['c'] = selectorVfId;
             }
         }
-        //if (selectorVfId != Hash_Key) { //从最近的vframe向上查找带有选择器事件的view
-        //主要兼容服务端输出，不带id的情况
-        begin = current['b'];
-        if (Vframe_Vframes[begin]) {
-            /*
-                如果当前节点是vframe的根节点，则把当前的vf置为该vframe
-                该处主要处理这样的边界情况
-                <mx-vrame src="./test" mx-click="parent()"/>
-                //.test.js
-                export default Magix.View.extend({
-                    '$<click>'(){
-                        console.log('test clicked');
-                    }
-                });
-
-                当click事件发生在mx-vframe节点上时，要先派发内部通过选择器绑定在根节点上的事件，然后再派发外部的事件
-            */
-            backtrace = selectorVfId = begin;
-        }
-        do {
-            vf = Vframe_Vframes[selectorVfId];
-            if (vf && (view = vf['a'])) {
-                selectorObject = view['i'];
-                eventSelector = selectorObject[eventType];
-                if (eventSelector) {
-                    for (begin = eventSelector.length; begin--;) {
-                        tempId = eventSelector[begin];
-                        selectorObject = {
-                            r: tempId,
-                            v: selectorVfId,
-                            n: tempId
-                        };
-                        if (tempId) {
-                            /*
-                                事件发生时，做为临界的根节点只能触发`$`绑定的事件，其它事件不能触发
-                            */
-                            if (!backtrace &&
-                                TargetMatchSelector(current, tempId)) {
-                                eventInfos.push(selectorObject);
+        if (selectorVfId) { //从最近的vframe向上查找带有选择器事件的view
+            begin = current['b'];
+            if (Vframe_Vframes[begin]) {
+                /*
+                    如果当前节点是vframe的根节点，则把当前的vf置为该vframe
+                    该处主要处理这样的边界情况
+                    <mx-vrame src="./test" mx-click="parent()"/>
+                    //.test.js
+                    export default Magix.View.extend({
+                        '$<click>'(){
+                            console.log('test clicked');
+                        }
+                    });
+    
+                    当click事件发生在mx-vframe节点上时，要先派发内部通过选择器绑定在根节点上的事件，然后再派发外部的事件
+                */
+                backtrace = selectorVfId = begin;
+            }
+            do {
+                vf = Vframe_Vframes[selectorVfId];
+                if (vf && (view = vf['a'])) {
+                    selectorObject = view['i'];
+                    eventSelector = selectorObject[eventType];
+                    if (eventSelector) {
+                        for (begin = eventSelector.length; begin--;) {
+                            tempId = eventSelector[begin];
+                            selectorObject = {
+                                r: tempId,
+                                v: selectorVfId,
+                                n: tempId
+                            };
+                            if (tempId) {
+                                /*
+                                    事件发生时，做为临界的根节点只能触发`$`绑定的事件，其它事件不能触发
+                                */
+                                if (!backtrace &&
+                                    current.matches(tempId)) {
+                                    eventInfos.push(selectorObject);
+                                }
+                            } else if (backtrace) {
+                                eventInfos.unshift(selectorObject);
                             }
-                        } else if (backtrace) {
-                            eventInfos.unshift(selectorObject);
                         }
                     }
+                    //防止跨view选中，到带模板的view时就中止或未指定
+                    if (view.tmpl && !backtrace) {
+                        break; //带界面的中止
+                    }
+                    backtrace = 0;
                 }
-                //防止跨view选中，到带模板的view时就中止或未指定
-                if (view.tmpl && !backtrace) {
-                    break; //带界面的中止
-                }
-                backtrace = 0;
             }
+            while (vf && (selectorVfId = vf.pId));
         }
-        while (vf && (selectorVfId = vf.pId));
-        //}
     }
     if (match) {
         eventInfos.push(match);
@@ -1197,6 +1151,10 @@ let Body_DOMEventProcessor = domEvent => {
     let lastVfId;
     let params, arr = [];
     while (target != Doc_Body) {
+        if ((ignore = target['d']) && ignore[type]) {
+            break;
+        }
+        arr.push(target);
         eventInfos = Body_FindVframeInfo(target, type);
         if (eventInfos.length) {
             arr = [];
@@ -1205,7 +1163,7 @@ let Body_DOMEventProcessor = domEvent => {
                     return Mx_Cfg.error(Error(`bad ${type}:${r}`));
                 }
                 if (lastVfId != v) {
-                    if (lastVfId && domEvent.isPropagationStopped()) {
+                    if (lastVfId && domEvent.cancelBubble) {
                         break;
                     }
                     lastVfId = v;
@@ -1242,46 +1200,14 @@ let Body_DOMEventProcessor = domEvent => {
                 }
             }
         }
-        /*|| e.mxStop */
-        if (((ignore = Body_RangeEvents[fn = target['c']]) &&
-            (ignore = ignore[target['d']]) &&
-            ignore[type]) ||
-            domEvent.isPropagationStopped()) { //避免使用停止事件冒泡，比如别处有一个下拉框，弹开，点击到阻止冒泡的元素上，弹出框不隐藏
-            //如果从某个节点开始忽略某个事件的处理，则如果缓存中有待处理的节点，把这些节点owner.vframe处理成当前节点的owner.vframe
-            if (arr.length) {
-                arr.push(fn);
-            }
+        if (domEvent.cancelBubble) { //避免使用停止事件冒泡，比如别处有一个下拉框，弹开，点击到阻止冒泡的元素上，弹出框不隐藏
             break;
-        } else {
-            //如果某个节点是view临界节点
-            //先追加id，后续节点的owner.vframe则是该节点
-            lastVfId = target['b'];
-            if (Vframe_Vframes[lastVfId]) {
-                arr.push(lastVfId);
-            }
-            //缓存
-            arr.push(target);
         }
         target = target.parentNode || Doc_Body;
     }
-    if ((fn = arr.length)) {
-        ignore = Hash_Key;
-        for (; fn--;) {
-            view = arr[fn];
-            if (view.nodeType) {
-                if (!(eventInfos = Body_RangeEvents[ignore])) {
-                    eventInfos = Body_RangeEvents[ignore] = {};
-                }
-                lastVfId = view['d'] || (view['d'] = ++Body_Guid);
-                if (!(params = eventInfos[lastVfId])) {
-                    params = eventInfos[lastVfId] = {};
-                    //view['c'] = ignore;
-                }
-                params[type] = 1;
-            } else {
-                ignore = view;
-            }
-        }
+    for (lastVfId of arr) {
+        ignore = lastVfId['d'] || (lastVfId['d'] = {});
+        ignore[type] = 1;
     }
 };
 let Body_DOMEventBind = (type, searchSelector, remove) => {
@@ -1322,7 +1248,7 @@ let Updater_EM = {
     '\`': '#96'
 };
 let Updater_ER = /[&<>"'\`]/g;
-let Updater_Safeguard = v => '' + (v == Null ? '' : v);
+let Updater_Safeguard = v => Empty + (v == Null ? Empty : v);
 let Updater_EncodeReplacer = m => `&${Updater_EM[m]};`;
 let Updater_Encode = v => Updater_Safeguard(v).replace(Updater_ER, Updater_EncodeReplacer);
 
@@ -1340,11 +1266,13 @@ let Updater_EncodeURI = v => Encode(Updater_Safeguard(v)).replace(Updater_URIReg
 let Updater_QR = /[\\'"]/g;
 let Updater_EncodeQ = v => Updater_Safeguard(v).replace(Updater_QR, '\\$&');
 
-let Updater_Ref = ($$, v, k, f) => {
-    for (f = $$[Spliter]; --f;)
-        if ($$[k = Spliter + f] === v) return k;
-    $$[k = Spliter + $$[Spliter]++] = v;
-    return k;
+let Updater_Ref = ($$, v, k) => {
+    if (!$$.has(v)) {
+        k = Spliter + $$.size;
+        $$.set(v, k);
+        $$.set(k, v);
+    }
+    return $$.get(v);
 };
 let Updater_Digest = (view, digesting) => {
     let keys = view['j'],
@@ -1371,9 +1299,7 @@ let Updater_Digest = (view, digesting) => {
     view['j'] = {};
     if (changed && view['d'] > 0 && (tmpl = view.tmpl)) {
         view.fire('dompatch');
-        delete Body_RangeEvents[viewId];
-        delete Body_RangeVframes[viewId];
-        vdom = tmpl(data, Q_Create, viewId, refData, Updater_Safeguard, Updater_EncodeURI, Updater_Ref, Updater_EncodeQ, IsArray, Assign);
+        vdom = tmpl(data, Q_Create, viewId, Updater_Safeguard, Updater_EncodeURI, refData, Updater_Ref, Updater_EncodeQ, IsArray);
         if (DEBUG) {
             Updater_CheckInput(view, vdom['a']);
         }
@@ -1398,7 +1324,7 @@ let Updater_Digest = (view, digesting) => {
         redigest();
     }
 };
-    
+    let Q_TEXTAREA = 'textarea';
 let Q_Create = (tag, props, children, unary) => {
     //html=tag+to_array(attrs)+children.html
     let token;
@@ -1461,11 +1387,12 @@ let Q_Create = (tag, props, children, unary) => {
                 if (!compareKey) {
                     compareKey = value;
                 }
-                newChildren = Empty_Array;
+                //newChildren = Empty_Array;
             } else if (prop == Tag_View_Params_Key) {
                 hasMxv = 1;
             }
-            if (prop == Value && tag == 'textarea') {
+            if (prop == Value &&
+                tag == Q_TEXTAREA) {
                 innerHTML = value;
             }
             if (!Has(V_SKIP_PROPS, prop)) {
@@ -1473,11 +1400,7 @@ let Q_Create = (tag, props, children, unary) => {
             }
         }
         attrs = outerHTML;
-        if (unary) {
-            outerHTML += '/>';
-        } else {
-            outerHTML += `>${innerHTML}</${tag}>`;
-        }
+        outerHTML += unary ? '/>' : `>${innerHTML}</${tag}>`;
         token = {
             'a': outerHTML,
             'c': innerHTML,
@@ -1503,7 +1426,7 @@ let Q_Create = (tag, props, children, unary) => {
         [Value]: 1,
         checked: 1
     },
-    textarea: {
+    [Q_TEXTAREA]: {
         [Value]: 1
     },
     option: {
@@ -1522,7 +1445,7 @@ if (DEBUG) {
         if (vNodes.length != 1 ||
             vNodes[0]['b'] != Spliter) {
             for (let e of realNodes) {
-                if (e.nodeName.toLowerCase() != vNodes[index]['b']) {
+                if (e.nodeName.toLowerCase() != vNodes[index]['b'].toLowerCase()) {
                     console.error('real not match virtual!');
                 }
                 index++;
@@ -1540,8 +1463,9 @@ let V_NSMap = {
     svg: `${V_W3C}2000/svg`,
     math: `${V_W3C}1998/Math/MathML`
 };
-let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
+let V_SetAttributes = (oldNode, lastVDOM, newVDOM, common) => {
     let key, value,
+        changed = 0,
         specials = V_SPECIAL_PROPS[lastVDOM['b']],
         nMap = newVDOM['g'],
         oMap = lastVDOM['g'];
@@ -1550,7 +1474,7 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
             for (key in oMap) {
                 if (!Has(specials, key) &&
                     !Has(nMap, key)) {//如果旧有新木有
-                    ref['b'] = 1;
+                    changed = 1;
                     oldNode.removeAttribute(key);
                 }
             }
@@ -1561,7 +1485,7 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
                 value = nMap[key];
                 //旧值与新值不相等
                 if (!lastVDOM || oMap[key] !== value) {
-                    ref['b'] = 1;
+                    changed = 1;
                     oldNode.setAttribute(key, value);
                 }
             }
@@ -1570,10 +1494,14 @@ let V_SetAttributes = (oldNode, lastVDOM, newVDOM, ref, common) => {
     for (key in specials) {
         value = Has(nMap, key) ? key != Value || nMap[key] : key == Value && Empty;
         if (oldNode[key] != value) {
-            ref['b'] = 1;
+            changed = 1;
             oldNode[key] = value;
         }
     }
+    if (changed) {
+        delete oldNode['d'];
+    }
+    return changed;
 };
 
 let V_CreateNode = (vnode, owner, ref) => {
@@ -1582,7 +1510,9 @@ let V_CreateNode = (vnode, owner, ref) => {
         c = Doc_Document.createTextNode(vnode['a']);
     } else {
         c = Doc_Document.createElementNS(V_NSMap[tag] || owner.namespaceURI, tag);
-        V_SetAttributes(c, 0, vnode, ref, 1);
+        if (V_SetAttributes(c, 0, vnode, 1)) {
+            ref['b'] = 1;
+        }
         c.innerHTML = vnode['c'];
     }
     return c;
@@ -1679,7 +1609,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 (realNode.nodeName == '#text' &&
                     lastVDOM['b'] != '#text') ||
                 (realNode.nodeName != '#text' &&
-                    realNode.nodeName.toLowerCase() != lastVDOM['b'])) {
+                    realNode.nodeName.toLowerCase() != lastVDOM['b'].toLowerCase())) {
                 console.error('Your code is not match the DOM tree generated by the browser. near:' + lastVDOM['c'] + '. Is that you lost some tags or modified the DOM tree?');
             }
         }
@@ -1722,7 +1652,10 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                     当传递第一份数据时，input显示值xl，这时候用户修改了input的值且使用第二份数据重新渲染这个view，问input该如何显示？
                 */
                 if (updateAttribute) {
-                    V_SetAttributes(realNode, lastVDOM, newVDOM, ref, commonAttrs);
+                    updateAttribute = V_SetAttributes(realNode, lastVDOM, newVDOM, commonAttrs);
+                    if (updateAttribute) {
+                        updateAttribute = ref['b'] = 1;
+                    }
                 }
                 //旧节点有view,新节点有view,且是同类型的view
                 if (newMxView && oldVf &&
@@ -2050,9 +1983,7 @@ function View(id, root, owner, ops, me) {
     me['e'] = {
         id
     };
-    me['a'] = {
-        [Spliter]: 1
-    };
+    me['a'] = new Map();
     me['f'] = [];
     me['j'] = {};
     id = View['a'];
@@ -2433,7 +2364,7 @@ Assign(View[Prototype], MxEvent, {
     },
     /**
      * 翻译带@占位符的数据
-     * @param {string} origin 源字符串
+     * @param {string} data 源对象
      */
     translate(data) {
         return TranslateData(this['e'], data);
@@ -3389,7 +3320,6 @@ let Magix = {
     Cache,
     use: Async_Require,
     dispatch: DispatchEvent,
-    match: TargetMatchSelector,
     type: Type,
     View,
     Vframe,

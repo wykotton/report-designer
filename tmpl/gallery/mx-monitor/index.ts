@@ -25,8 +25,10 @@ let Remove = view => {
     delete Instances[view.id];
 };
 export default {
-    '@{add}'(view) {
+    '@{add}'(view: Magix5.View) {
         Remove(view);
+        let a=[];
+        a.concat
         let info = {
             '@{view}': view
         };

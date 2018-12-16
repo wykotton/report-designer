@@ -9,7 +9,7 @@ import DHistory from './history';
 import Panels from '../panels/index';
 let PageCtrl = Elements["@{get.page}"]();
 Magix.applyStyle('@index.less');
-let ApplyState = json => {
+let ApplyState = (json: Report.StageState) => {
     let page = State.get('@{stage.page}');
     let layouts = State.get('@{stage.layouts}');
     let select = State.get('@{stage.select.elements}');
@@ -48,9 +48,7 @@ export default Magix.View.extend({
     tmpl: '@index.html',
     mixins: [Dialog],
     init() {
-        State.on('@{event#stage.apply.state}', (e: {
-            json: any
-        } & Magix.TriggerEventDescriptor) => {
+        State.on('@{event#stage.apply.state}', (e: Report.StageApplyStateEvent) => {
             ApplyState(e.json);
         });
         State.set({

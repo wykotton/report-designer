@@ -21,7 +21,7 @@ export default {
             me['@{dd&drag.end}']();
         });
     },
-    '@{dd&drag.end}'(e) {
+    '@{dd&drag.end}'(e?: Event) {
         let me = this;
         let info = me['@{dd&drag.object}'];
         if (info) {
@@ -50,7 +50,7 @@ export default {
             }
         }
     },
-    '@{drag.drop}'(e, moveCallback, endCallback) {
+    '@{drag.drop}'(e: Event, moveCallback?: (e: Event) => void, endCallback?: (e: Event) => void) {
         let me = this;
         me['@{dd&drag.end}']();
         if (e) {
@@ -92,7 +92,7 @@ export default {
             window.addEventListener('blur', me['@{dd&stop.proxy}']);
         }
     },
-    '@{from.point}'(x, y) {
+    '@{from.point}'(x: number, y: number) {
         let node = null;
         if (document.elementFromPoint) {
             if (!DragPrevent['@{dd&fixed}'] && IsW3C) {

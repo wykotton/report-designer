@@ -44,7 +44,7 @@ export default Magix.View.extend({
             StageElements["@{select.or.move.elements}"](e, this);
         }
     },
-    '@{stage.start.drag}<mousedown>'(e: Magix.DOMEvent) {
+    '@{stage.start.drag}<mousedown>'(e: Magix5.MagixMouseEvent) {
         let target = e.target as HTMLDivElement;
         if (Magix.inside(node('stage_canvas'), target)) {
             if (!(e.shiftKey || e.metaKey || e.ctrlKey)) {
@@ -54,7 +54,7 @@ export default Magix.View.extend({
             }
         }
     },
-    '@{stage.keydown}<keydown>'(e: Magix.DOMEvent) {
+    '@{stage.keydown}<keydown>'(e: Magix5.MagixKeyboardEvent) {
         if (e.metaKey || e.ctrlKey) {
             if (e.keyCode == Keys.Z) {
                 e.preventDefault();
@@ -83,7 +83,7 @@ export default Magix.View.extend({
     '@{prevent}<contextmenu>'(e: MouseEvent) {
         e.preventDefault();
     },
-    '@{stage.active}<focusin>'(e: Magix.DOMEvent) {
+    '@{stage.active}<focusin>'() {
         this.root.classList.remove('@index.less:stage-deactive');
     },
     '@{stage.deactive}<focusout>'() {

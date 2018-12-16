@@ -238,7 +238,7 @@ export default Magix.View.extend({
             }, true);
         });
     },
-    '@{alpha.drag}<mousedown>'(e: Magix.DOMEvent) {
+    '@{alpha.drag}<mousedown>'(e: Magix5.MagixMouseEvent) {
         let current = e.eventTarget;
         let me = this;
         let indicator = node('ai_' + me.id);

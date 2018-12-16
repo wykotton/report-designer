@@ -20,11 +20,11 @@ export default Magix.View.extend({
             elements: State.get('@{stage.select.elements}')
         });
     },
-    '@{update.prop}<input,change>'(e) {
+    '@{update.prop}<input,change>'(e: Magix5.MagixMouseEvent) {
         let { key, use, element, refresh, ta, bool } = e.params;
         if (use || bool || ta) {
             let props = element.props;
-            let target = e.eventTarget;
+            let target = e.eventTarget as HTMLInputElement;
             let v = ta ? target.value : (bool ? target.checked : e[use]);
             props[key] = v;
         }

@@ -68,8 +68,8 @@ export default {
             if (BuferStage) {
                 UndoList.push(BuferStage);
                 BuferStage = null;
-                LastType = type;
             }
+            LastType = type;
         }
         RedoList.length = 0;
         let pushUndo = status => {
