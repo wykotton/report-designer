@@ -19,12 +19,12 @@
                 {{=i18n(p.tip)}}
             </span>
             {{if p.type==props['@{number}']}}
-            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" @max="{{=p.max}}" @step="{{=p.step}}" @fixed="{{=p.fixed}}" @min="{{=p.min}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}},write:{{@p.write}}})"/>
+            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" max="{{=p.max}}??" step="{{=p.step}}??" fixed="{{=p.fixed}}??" min="{{=p.min}}??" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}},write:{{@p.write}}})"/>
             {{else if p.type==props['@{color}']}}
             <mx-color clear="{{=p.clear}}" class="ipt" color="{{@data}}" *align="right" *disabled="{{=e.props.locked}}" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
             {{else if p.type==props['@{boolean}']}}
             <label class="switch">
-                <input class="switch-input" type="checkbox" @checked="{{@e.props[p.key]}}" mx-change="@{update.prop}({key:'{{=p.key}}',native:'checked',element:{{@e}},refresh:{{@p.refresh}}})"/>
+                <input class="switch-input" type="checkbox" checked="{{@e.props[p.key]}}??" mx-change="@{update.prop}({key:'{{=p.key}}',native:'checked',element:{{@e}},refresh:{{@p.refresh}}})"/>
                 <i class="switch-button"></i>
             </label>
             {{else if p.type==props['@{text.area}']}}
