@@ -4286,7 +4286,7 @@ let Designer = {
                         i18n
                     });
                 },
-                '__cL'(fn, timespan) {
+                '__cK'(fn, timespan) {
                     timespan = timespan || 150;
                     let last = Date.now();
                     let timer;
@@ -4339,10 +4339,10 @@ let $_quick_static_node_10;
 let $_quick_static_node_11;
 let $_quick_static_node_12;
 let $_quick_static_node_13;
-let $_quick_vnode_attr_static_0={'class': 'daL',};
+let $_quick_vnode_attr_static_0={'class': 'daK',};
 let $_quick_vnode_attr_static_1={'xmlns': 'http://www.w3.org/2000/svg', 'version': '1.1', 'width': '100%', 'height': '100%',};
-let $_quick_vnode_attr_static_14={'class': 'daD dh',};
-let $_quick_vnode_attr_static_15={'class': 'daQ',};
+let $_quick_vnode_attr_static_14={'class': 'daC dh',};
+let $_quick_vnode_attr_static_15={'class': 'daP',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -4351,7 +4351,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 const index_1 = require("../mx-dragdrop/index");
 const index_2 = require("../mx-monitor/index");
-magix_1.default.applyStyle("dh",".daC{position:relative;height:22px;border:1px solid #e6e6e6;border-radius:2px;display:flex;align-items:center;cursor:pointer;padding:1px;transition:border-color .25s}.daC:hover{border-color:#ccc}.daD,.daE{background:#fff;background-image:linear-gradient(45deg,#eee 25%,transparent 0,transparent 75%,#eee 0),linear-gradient(45deg,#eee 25%,transparent 0,transparent 75%,#eee 0);background-position:0 0,6px 6px;background-size:12px 12px}.daE{min-width:18px;height:18px;text-indent:-100000em;border:1px solid #ccc;position:relative}.daF{padding:3px 4px}.daE:after{content:\" \";display:block;right:0;bottom:0;position:absolute;border-color:transparent #ccc;border-style:solid;border-width:6px 6px 0 0}.daG{position:absolute;border-radius:2px;z-index:300;border:1px solid #e6e6e6;background-color:#fff;display:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:2px}.daH-bottom{top:100%;margin-top:4px}.daH-top{bottom:100%;margin-bottom:4px}.daI{width:176px}.daJ{border:1px solid #000;float:left;width:12px;height:12px;margin:-1px 0 0 -1px;position:relative}.daK:before{content:\" \";position:absolute;left:2px;top:2px;border:1px inset #e8e8e8;width:6px;height:6px}.daL{margin:5px 0;height:150px}.daM{position:relative;float:left;width:148px;height:148px}.daN{position:absolute;width:8px;height:8px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);border-radius:50%;left:-4px;top:-4px}.daO{width:18px;height:148px;position:relative;float:left;margin-left:10px}.daP{position:absolute;left:2px;top:-2px;height:4px;width:14px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);background:#fff}.daQ{height:25px}.daR{width:80px}.daS,.daR{margin-right:5px;vertical-align:middle}.daS{width:30px;border-radius:2px;height:22px;display:inline-block;border:1px solid #ddd}.daT{position:absolute;right:5px;top:4px;font-size:12px;opacity:.2}.daT:hover{opacity:.5}.daD{width:174px;height:12px;margin-bottom:5px}.daU{height:100%}.daV{position:absolute;left:-2px;top:2px;height:8px;width:4px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);background:#fff}.daW{cursor:not-allowed;background-color:#fbfbfb}.daW:hover{border-color:#e6e6e6}.daW:hover .daT{opacity:.1}.daW .daE{opacity:.4}.daW .daT{opacity:.1}");
+magix_1.default.applyStyle("dh",".daB{position:relative;height:22px;border:1px solid #e6e6e6;border-radius:2px;display:flex;align-items:center;cursor:pointer;padding:1px;transition:border-color .25s}.daB:hover{border-color:#ccc}.daC,.daD{background:#fff;background-image:linear-gradient(45deg,#eee 25%,transparent 0,transparent 75%,#eee 0),linear-gradient(45deg,#eee 25%,transparent 0,transparent 75%,#eee 0);background-position:0 0,6px 6px;background-size:12px 12px}.daD{min-width:18px;height:18px;text-indent:-100000em;border:1px solid #ccc;position:relative}.daE{padding:3px 4px}.daD:after{content:\" \";display:block;right:0;bottom:0;position:absolute;border-color:transparent #ccc;border-style:solid;border-width:6px 6px 0 0}.daF{position:absolute;border-radius:2px;z-index:300;border:1px solid #e6e6e6;background-color:#fff;display:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:2px}.daG-bottom{top:100%;margin-top:4px}.daG-top{bottom:100%;margin-bottom:4px}.daH{width:176px}.daI{border:1px solid #000;float:left;width:12px;height:12px;margin:-1px 0 0 -1px;position:relative}.daJ:before{content:\" \";position:absolute;left:2px;top:2px;border:1px inset #e8e8e8;width:6px;height:6px}.daK{margin:5px 0;height:150px}.daL{position:relative;float:left;width:148px;height:148px}.daM{position:absolute;width:8px;height:8px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);border-radius:50%;left:-4px;top:-4px}.daN{width:18px;height:148px;position:relative;float:left;margin-left:10px}.daO{position:absolute;left:2px;top:-2px;height:4px;width:14px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);background:#fff}.daP{height:25px}.daQ{width:80px}.daR,.daQ{margin-right:5px;vertical-align:middle}.daR{width:30px;border-radius:2px;height:22px;display:inline-block;border:1px solid #ddd}.daS{position:absolute;right:5px;top:4px;font-size:12px;opacity:.2}.daS:hover{opacity:.5}.daC{width:174px;height:12px;margin-bottom:5px}.daT{height:100%}.daU{position:absolute;left:-2px;top:2px;height:8px;width:4px;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1px rgba(0,0,0,.3),0 0 1px 2px rgba(0,0,0,.4);background:#fff}.daV{cursor:not-allowed;background-color:#fbfbfb}.daV:hover{border-color:#e6e6e6}.daV:hover .daS{opacity:.1}.daV .daD{opacity:.4}.daV .daS{opacity:.1}");
 let ShortCuts = ['d81e06', 'f4ea2a', '1afa29', '1296db', '13227a', 'd4237a', 'ffffff', 'e6e6e6', 'dbdbdb', 'cdcdcd', 'bfbfbf', '8a8a8a', '707070', '515151', '2c2c2c', '000000', 'ea986c', 'eeb174', 'f3ca7e', 'f9f28b', 'c8db8c', 'aad08f', '87c38f', '83c6c2', '7dc5eb', '87a7d6', '8992c8', 'a686ba', 'bd8cbb', 'be8dbd', 'e89abe', 'e8989a', 'e16632', 'e98f36', 'efb336', 'f6ef37', 'afcd51', '7cba59', '36ab60', '1baba8', '17ace3', '3f81c1', '4f68b0', '594d9c', '82529d', 'a4579d', 'db649b', 'dd6572', 'd84e06', 'e0620d', 'ea9518', 'f4ea2a', '8cbb1a', '2ba515', '0e932e', '0c9890', '1295db', '0061b2', '0061b0', '004198', '122179', '88147f', 'd3227b', 'd6204b'];
 let HSV2RGB = (h, s, v) => {
     let R, G, B, X, C;
@@ -4417,11 +4417,11 @@ $vnode_5,
 $vnode_6,
 $vnode_7,
 $vnode_8; 
- $vnode_1=[]; if(text){  $vnode_3=[$_create(0,0,(text))];;$$_style='';if(textWidth){;$$_style+='width:'+$n(textWidth)+'px';};$vnode_2=[$_create('div',{'class': 'daF dk', 'mx-click': $_viewId+'__bf()', 'style': $$_style,},$vnode_3 )]; $vnode_1.push(...$vnode_2); } $vnode_2=[$_create(0,0,'picker')];;$$_style='';if(color){;$$_style+='background:'+$n(color)+';';};if(!text){;$$_style+='width:100%';};$vnode_1.push($_create('div',{'class': 'daE dk', 'mx-click': $_viewId+'__bf()', 'style': $$_style,},$vnode_2 )); if(clear&&color){  $vnode_3=[$_create(0,0,'')];;$vnode_2=[$_create('i',{'class': 'd_ daT', 'mx-click': $_viewId+'__bg()', 'title': $n(i18n('_K')),},$vnode_3 )]; $vnode_1.push(...$vnode_2); } $vnode_2=[]; if(renderUI){ $vnode_3=[];  $vnode_4=[]; for(let $q_key_webhsjvg=0,$q_a_rqfjnzcpn=shortcuts,$q_c_cberphj=$q_a_rqfjnzcpn.length;$q_key_webhsjvg<$q_c_cberphj;$q_key_webhsjvg++){let sc=$q_a_rqfjnzcpn[$q_key_webhsjvg];  ;$vnode_5=[$_create('li',{'class': 'daJ', 'id': 'sc_'+$n(sc)+'_'+$n(id), 'style': 'background:#'+$n(sc), 'mx-click': $_viewId+'__bb({color:\'#'+($eq(sc))+'\'})',})]; $vnode_4.push(...$vnode_5); };$vnode_3.push($_create('ul',{'class': 'daI dj', 'id': 'scs_'+$n(id),},$vnode_4 ));       if ($_quick_static_node_2) {
+ $vnode_1=[]; if(text){  $vnode_3=[$_create(0,0,(text))];;$$_style='';if(textWidth){;$$_style+='width:'+$n(textWidth)+'px';};$vnode_2=[$_create('div',{'class': 'daE dk', 'mx-click': $_viewId+'__bd()', 'style': $$_style,},$vnode_3 )]; $vnode_1.push(...$vnode_2); } $vnode_2=[$_create(0,0,'picker')];;$$_style='';if(color){;$$_style+='background:'+$n(color)+';';};if(!text){;$$_style+='width:100%';};$vnode_1.push($_create('div',{'class': 'daD dk', 'mx-click': $_viewId+'__bd()', 'style': $$_style,},$vnode_2 )); if(clear&&color){  $vnode_3=[$_create(0,0,'')];;$vnode_2=[$_create('i',{'class': 'd_ daS', 'mx-click': $_viewId+'__be()', 'title': $n(i18n('_G')),},$vnode_3 )]; $vnode_1.push(...$vnode_2); } $vnode_2=[]; if(renderUI){ $vnode_3=[];  $vnode_4=[]; for(let $q_key_takfjriteg=0,$q_a_znpkctcl=shortcuts,$q_c_zjwhvtda=$q_a_znpkctcl.length;$q_key_takfjriteg<$q_c_zjwhvtda;$q_key_takfjriteg++){let sc=$q_a_znpkctcl[$q_key_takfjriteg];  ;$vnode_5=[$_create('li',{'class': 'daI', 'id': 'sc_'+$n(sc)+'_'+$n(id), 'style': 'background:#'+$n(sc), 'mx-click': $_viewId+'__b_({color:\'#'+($eq(sc))+'\'})',})]; $vnode_4.push(...$vnode_5); };$vnode_3.push($_create('ul',{'class': 'daH dj', 'id': 'scs_'+$n(id),},$vnode_4 ));       if ($_quick_static_node_2) {
                                 $vnode_8=[$_quick_static_node_2]; }else{;$vnode_8=[$_quick_static_node_2=$_create('stop',{'mxs': 'dk:_', 'offset': '0%', 'stop-color': '#000000', 'stop-opacity': '1',})]; } if ($_quick_static_node_3) {
                                 $vnode_8.push($_quick_static_node_3); }else{;$vnode_8.push($_quick_static_node_3=$_create('stop',{'mxs': 'dk:a', 'offset': '100%', 'stop-color': '#CC9A81', 'stop-opacity': '0',})); };$vnode_7=[$_create('lineargradient',{'id': 'gb_'+$n(id), 'x1': '0%', 'y1': '100%', 'x2': '0%', 'y2': '0%',},$vnode_8 )];   if ($_quick_static_node_4) {
                                 $vnode_8=[$_quick_static_node_4]; }else{;$vnode_8=[$_quick_static_node_4=$_create('stop',{'mxs': 'dk:b', 'offset': '0%', 'stop-color': '#FFFFFF', 'stop-opacity': '1',})]; } if ($_quick_static_node_3) {
-                                $vnode_8.push($_quick_static_node_3); }else{;$vnode_8.push($_quick_static_node_3=$_create('stop',{'mxs': 'dk:a', 'offset': '100%', 'stop-color': '#CC9A81', 'stop-opacity': '0',})); };$vnode_7.push($_create('lineargradient',{'id': 'gw_'+$n(id), 'x1': '0%', 'y1': '100%', 'x2': '100%', 'y2': '100%',},$vnode_8 )); ;$vnode_6=[$_create('defs',0,$vnode_7 )];  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#gw_'+$n(id)+')',}));  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#gb_'+$n(id)+')',})); ;$vnode_5=[$_create('svg',$_quick_vnode_attr_static_1,$vnode_6 )];  ;$vnode_5.push($_create('div',{'class': 'daN', 'id': 'ci_'+$n(id),})); ;$vnode_4=[$_create('div',{'class': 'daM', 'id': 'cz_'+$n(id), 'mx-mousedown': $_viewId+'__aY()',},$vnode_5 )];      if ($_quick_static_node_5) {
+                                $vnode_8.push($_quick_static_node_3); }else{;$vnode_8.push($_quick_static_node_3=$_create('stop',{'mxs': 'dk:a', 'offset': '100%', 'stop-color': '#CC9A81', 'stop-opacity': '0',})); };$vnode_7.push($_create('lineargradient',{'id': 'gw_'+$n(id), 'x1': '0%', 'y1': '100%', 'x2': '100%', 'y2': '100%',},$vnode_8 )); ;$vnode_6=[$_create('defs',0,$vnode_7 )];  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#gw_'+$n(id)+')',}));  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#gb_'+$n(id)+')',})); ;$vnode_5=[$_create('svg',$_quick_vnode_attr_static_1,$vnode_6 )];  ;$vnode_5.push($_create('div',{'class': 'daM', 'id': 'ci_'+$n(id),})); ;$vnode_4=[$_create('div',{'class': 'daL', 'id': 'cz_'+$n(id), 'mx-mousedown': $_viewId+'__aW()',},$vnode_5 )];      if ($_quick_static_node_5) {
                                 $vnode_8=[$_quick_static_node_5]; }else{;$vnode_8=[$_quick_static_node_5=$_create('stop',{'mxs': 'dk:c', 'offset': '0%', 'stop-color': '#FF0000', 'stop-opacity': '1',})]; } if ($_quick_static_node_6) {
                                 $vnode_8.push($_quick_static_node_6); }else{;$vnode_8.push($_quick_static_node_6=$_create('stop',{'mxs': 'dk:d', 'offset': '13%', 'stop-color': '#FF00FF', 'stop-opacity': '1',})); } if ($_quick_static_node_7) {
                                 $vnode_8.push($_quick_static_node_7); }else{;$vnode_8.push($_quick_static_node_7=$_create('stop',{'mxs': 'dk:e', 'offset': '25%', 'stop-color': '#8000FF', 'stop-opacity': '1',})); } if ($_quick_static_node_8) {
@@ -4430,25 +4430,25 @@ $vnode_8;
                                 $vnode_8.push($_quick_static_node_10); }else{;$vnode_8.push($_quick_static_node_10=$_create('stop',{'mxs': 'dk:h', 'offset': '63%', 'stop-color': '#00FF40', 'stop-opacity': '1',})); } if ($_quick_static_node_11) {
                                 $vnode_8.push($_quick_static_node_11); }else{;$vnode_8.push($_quick_static_node_11=$_create('stop',{'mxs': 'dk:i', 'offset': '75%', 'stop-color': '#0BED00', 'stop-opacity': '1',})); } if ($_quick_static_node_12) {
                                 $vnode_8.push($_quick_static_node_12); }else{;$vnode_8.push($_quick_static_node_12=$_create('stop',{'mxs': 'dk:j', 'offset': '88%', 'stop-color': '#FFFF00', 'stop-opacity': '1',})); } if ($_quick_static_node_13) {
-                                $vnode_8.push($_quick_static_node_13); }else{;$vnode_8.push($_quick_static_node_13=$_create('stop',{'mxs': 'dk:k', 'offset': '100%', 'stop-color': '#FF0000', 'stop-opacity': '1',})); };$vnode_7=[$_create('lineargradient',{'id': 'ghsv_'+$n(id), 'x1': '0%', 'y1': '100%', 'x2': '0%', 'y2': '0%',},$vnode_8 )]; ;$vnode_6=[$_create('defs',0,$vnode_7 )];  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#ghsv_'+$n(id)+')',})); ;$vnode_5=[$_create('svg',$_quick_vnode_attr_static_1,$vnode_6 )];  ;$vnode_5.push($_create('div',{'class': 'daP', 'id': 'si_'+$n(id),})); ;$vnode_4.push($_create('div',{'class': 'daO', 'mx-mousedown': $_viewId+'__aZ()',},$vnode_5 )); ;$vnode_3.push($_create('div',$_quick_vnode_attr_static_0,$vnode_4 )); if(alpha){    ;$vnode_6=[$_create('div',{'class': 'daV', 'id': 'ai_'+$n(id),})]; ;$vnode_5=[$_create('div',{'class': 'daU dh', 'id': 'at_'+$n(id), 'mx-mousedown': $_viewId+'__b_()',},$vnode_6 )]; ;$vnode_4=[$_create('div',$_quick_vnode_attr_static_14,$vnode_5 )]; $vnode_3.push(...$vnode_4); }  ;$vnode_4=[$_create('span',{'class': 'daS', 'id': 'bc_'+$n(id),})];  ;$vnode_4.push($_create('input',{'class': 'du daR', 'readonly': true, 'id': 'v_'+$n(id), 'value': $n(current),},0,1));  $vnode_5=[$_create(0,0,'确定')];;$vnode_4.push($_create('button',{'mxs': 'dk:l', 'class': 'dn do', 'type': 'button', 'mx-click': $_viewId+'__ba();',},$vnode_5 )); ;$vnode_3.push($_create('div',$_quick_vnode_attr_static_15,$vnode_4 )); $vnode_2.push(...$vnode_3); };$vnode_1.push($_create('div',{'id': 'bd_'+$n(id), 'class': 'daG daH-'+$n(placement), 'style': $n(align)+':-1px',},$vnode_2 )); ;$$_class='daC';if(disabled){;$$_class+=' daW';};$vnode_0.push($_create('div',{'mx-contextmenu': $_viewId+'__A()', 'id': 'root_'+$n(id), 'class': $$_class,},$vnode_1 ));  
+                                $vnode_8.push($_quick_static_node_13); }else{;$vnode_8.push($_quick_static_node_13=$_create('stop',{'mxs': 'dk:k', 'offset': '100%', 'stop-color': '#FF0000', 'stop-opacity': '1',})); };$vnode_7=[$_create('lineargradient',{'id': 'ghsv_'+$n(id), 'x1': '0%', 'y1': '100%', 'x2': '0%', 'y2': '0%',},$vnode_8 )]; ;$vnode_6=[$_create('defs',0,$vnode_7 )];  ;$vnode_6.push($_create('rect',{'x': '0', 'y': '0', 'width': '100%', 'height': '100%', 'fill': 'url(#ghsv_'+$n(id)+')',})); ;$vnode_5=[$_create('svg',$_quick_vnode_attr_static_1,$vnode_6 )];  ;$vnode_5.push($_create('div',{'class': 'daO', 'id': 'si_'+$n(id),})); ;$vnode_4.push($_create('div',{'class': 'daN', 'mx-mousedown': $_viewId+'__aX()',},$vnode_5 )); ;$vnode_3.push($_create('div',$_quick_vnode_attr_static_0,$vnode_4 )); if(alpha){    ;$vnode_6=[$_create('div',{'class': 'daU', 'id': 'ai_'+$n(id),})]; ;$vnode_5=[$_create('div',{'class': 'daT dh', 'id': 'at_'+$n(id), 'mx-mousedown': $_viewId+'__aY()',},$vnode_6 )]; ;$vnode_4=[$_create('div',$_quick_vnode_attr_static_14,$vnode_5 )]; $vnode_3.push(...$vnode_4); }  ;$vnode_4=[$_create('span',{'class': 'daR', 'id': 'bc_'+$n(id),})];  ;$vnode_4.push($_create('input',{'class': 'du daQ', 'readonly': true, 'id': 'v_'+$n(id), 'value': $n(current),},0,1));  $vnode_5=[$_create(0,0,'确定')];;$vnode_4.push($_create('button',{'mxs': 'dk:l', 'class': 'dn do', 'type': 'button', 'mx-click': $_viewId+'__aZ();',},$vnode_5 )); ;$vnode_3.push($_create('div',$_quick_vnode_attr_static_15,$vnode_4 )); $vnode_2.push(...$vnode_3); };$vnode_1.push($_create('div',{'id': 'bd_'+$n(id), 'class': 'daF daG-'+$n(placement), 'style': $n(align)+':-1px',},$vnode_2 )); ;$$_class='daB';if(disabled){;$$_class+=' daV';};$vnode_0.push($_create('div',{'mx-contextmenu': $_viewId+'__A()', 'id': 'root_'+$n(id), 'class': $$_class,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     init(data) {
         this.set({
             shortcuts: ShortCuts
         });
-        index_2.default["__aN"]();
+        index_2.default["__aL"]();
         this.on('destroy', () => {
-            index_2.default['__aO'](this);
-            index_2.default['__aP']();
+            index_2.default['__aM'](this);
+            index_2.default['__aN']();
         });
         this.assign(data);
     },
     assign(data) {
         let me = this;
         me['__aa'] = data.color;
-        me['__aQ'] = (data.alpha + '') == 'true';
-        me['__aR'] = {
+        me['__aO'] = (data.alpha + '') == 'true';
+        me['__aP'] = {
             h: 0,
             s: 1,
             v: 1
@@ -4465,14 +4465,14 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     },
     render() {
         this.digest({
-            alpha: this['__aQ'],
+            alpha: this['__aO'],
             color: this['__aa'],
             current: this['__aa']
         });
     },
-    '__aU'(hsv, ignoreSyncUI) {
+    '__aS'(hsv, ignoreSyncUI) {
         let me = this;
-        let selfHSV = me['__aR'];
+        let selfHSV = me['__aP'];
         selfHSV.h = hsv.h;
         selfHSV.s = hsv.s;
         selfHSV.v = hsv.v;
@@ -4482,12 +4482,12 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         let pickerZone = cpickerNode.clientWidth;
         let colorZone = HSV2RGB(hsv.h, 1, 1);
         cpickerNode.style.background = colorZone.hex;
-        me['__aS'] = hex;
-        me['__aT']();
+        me['__aQ'] = hex;
+        me['__aR']();
         if (!ignoreSyncUI) {
-            let selected = magix_1.node('scs_' + me.id).querySelector('li[class$="daK"]');
+            let selected = magix_1.node('scs_' + me.id).querySelector('li[class$="daJ"]');
             if (selected) {
-                selected.classList.remove('daK');
+                selected.classList.remove('daJ');
             }
             let snode = magix_1.node('si_' + me.id);
             let slider = snode.clientHeight / 2;
@@ -4502,10 +4502,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         }
         let sc = magix_1.node('sc_' + hex.substr(1, 6) + '_' + me.id);
         if (sc) {
-            sc.classList.add('daK');
+            sc.classList.add('daJ');
         }
     },
-    '__aX'(hex) {
+    '__aV'(hex) {
         let me = this;
         let r = parseInt(hex.substr(1, 2), 16);
         if (isNaN(r))
@@ -4521,13 +4521,13 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         if (isNaN(a)) {
             a = 255;
         }
-        me['__aV'] = ('0' + a.toString(16)).slice(-2);
-        me['__aU'](hsv);
-        if (me['__aQ']) {
-            me['__aW'](a);
+        me['__aT'] = ('0' + a.toString(16)).slice(-2);
+        me['__aS'](hsv);
+        if (me['__aO']) {
+            me['__aU'](a);
         }
     },
-    '__aW'(a) {
+    '__aU'(a) {
         let me = this;
         let ai = magix_1.node('ai_' + me.id);
         let alphaWidth = magix_1.node('at_' + me.id).clientWidth;
@@ -4537,13 +4537,13 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         a -= slider;
         ai.style.left = a + 'px';
     },
-    '__aT'() {
+    '__aR'() {
         let me = this;
         let n = magix_1.node('bc_' + me.id);
-        let hex = me['__aS'];
-        if (me['__aQ']) {
+        let hex = me['__aQ'];
+        if (me['__aO']) {
             magix_1.node('at_' + me.id).style.background = 'linear-gradient(to right, ' + hex + '00 0%,' + hex + ' 100%)';
-            hex += me['__aV'];
+            hex += me['__aT'];
         }
         n.style.background = hex;
         let n1 = magix_1.node('v_' + me.id);
@@ -4552,10 +4552,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     '__A<contextmenu>'(e) {
         e.preventDefault();
     },
-    '__aY<mousedown>'(e) {
+    '__aW<mousedown>'(e) {
         let me = this, pickerZone = magix_1.node('cz_' + me.id).clientWidth, pickerIndicator = magix_1.node('ci_' + me.id).clientWidth / 2, offset = e.eventTarget.getBoundingClientRect(), left = e.pageX - offset.left - window.pageXOffset, top = e.pageY - offset.top - window.pageYOffset, s = left / pickerZone, v = (pickerZone - top) / pickerZone;
-        me['__aU']({
-            h: me['__aR'].h,
+        me['__aS']({
+            h: me['__aP'].h,
             s: s,
             v: v
         });
@@ -4583,24 +4583,24 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             current.style.top = offsetY + 'px';
             let s = (offsetX + pickerIndicator) / pickerZone;
             let v = (pickerZone - (offsetY + pickerIndicator)) / pickerZone;
-            me['__aU']({
-                h: me['__aR'].h,
+            me['__aS']({
+                h: me['__aP'].h,
                 s: s,
                 v: v
             });
         });
     },
-    '__aZ<mousedown>'(e) {
+    '__aX<mousedown>'(e) {
         let me = this;
         let current = e.eventTarget;
         let indicator = magix_1.node('si_' + me.id);
         let pickerZone = magix_1.node('cz_' + me.id).clientWidth;
         let slider = indicator.clientHeight / 2;
         let offset = current.getBoundingClientRect(), top = e.pageY - offset.top - window.scrollY, h = top / pickerZone * 360;
-        me['__aU']({
+        me['__aS']({
             h: h,
-            s: me['__aR'].s,
-            v: me['__aR'].v
+            s: me['__aP'].s,
+            v: me['__aP'].v
         });
         let startY = parseInt(getComputedStyle(indicator).top, 10);
         me['__w'](e, event => {
@@ -4612,23 +4612,23 @@ return $_create($_viewId, 0, $vnode_0);  } ,
                 offsetY = pickerZone - slider;
             indicator.style.top = offsetY + 'px';
             let h = (offsetY + slider) / pickerZone * 360;
-            me['__aU']({
+            me['__aS']({
                 h: h,
-                s: me['__aR'].s,
-                v: me['__aR'].v
+                s: me['__aP'].s,
+                v: me['__aP'].v
             }, true);
         });
     },
-    '__b_<mousedown>'(e) {
+    '__aY<mousedown>'(e) {
         let current = e.eventTarget;
         let me = this;
         let indicator = magix_1.node('ai_' + me.id);
         let alphaWidth = magix_1.node('at_' + me.id).clientWidth;
         let slider = indicator.clientWidth / 2;
         let offset = current.getBoundingClientRect(), left = e.pageX - offset.left, a = (left / alphaWidth * 255) | 0;
-        me['__aV'] = ('0' + a.toString(16)).slice(-2);
-        me['__aW'](a);
-        me['__aT']();
+        me['__aT'] = ('0' + a.toString(16)).slice(-2);
+        me['__aU'](a);
+        me['__aR']();
         let styles = getComputedStyle(indicator);
         let startX = parseInt(styles.left, 10);
         me['__w'](e, (event) => {
@@ -4640,11 +4640,11 @@ return $_create($_viewId, 0, $vnode_0);  } ,
                 offsetX = alphaWidth - slider;
             indicator.style.left = offsetX + 'px';
             let a = Math.round((offsetX + slider) / alphaWidth * 255);
-            me['__aV'] = ('0' + a.toString(16)).slice(-2);
-            me['__aT']();
+            me['__aT'] = ('0' + a.toString(16)).slice(-2);
+            me['__aR']();
         });
     },
-    '__ba<click>'() {
+    '__aZ<click>'() {
         let me = this;
         me['__y']();
         let n = magix_1.node('v_' + me.id);
@@ -4659,11 +4659,11 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             });
         }
     },
-    '__bb<click>'(e) {
-        this['__aX'](e.params.color);
-        e.eventTarget.classList.add('daK');
+    '__b_<click>'(e) {
+        this['__aV'](e.params.color);
+        e.eventTarget.classList.add('daJ');
     },
-    '__bc'(node) {
+    '__ba'(node) {
         return magix_1.default.inside(node, this.root);
     },
     '__x'() {
@@ -4671,15 +4671,15 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         let d = getComputedStyle(n).display;
         if (d == 'none') {
             n.style.display = 'block';
-            index_2.default["__bd"](this);
+            index_2.default["__bb"](this);
             magix_1.node('root_' + this.id).classList.add('dw');
-            if (!this['__be']) {
+            if (!this['__bc']) {
                 this.digest({
                     renderUI: true
                 }, null, () => {
-                    this['__aX'](this['__aa']);
+                    this['__aV'](this['__aa']);
                 });
-                this['__be'] = 1;
+                this['__bc'] = 1;
             }
         }
     },
@@ -4689,10 +4689,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         if (d != 'none') {
             magix_1.node('root_' + this.id).classList.remove('dw');
             n.style.display = 'none';
-            index_2.default["__aO"](this);
+            index_2.default["__aM"](this);
         }
     },
-    '__bf<click>'() {
+    '__bd<click>'() {
         if (this.get('disabled'))
             return;
         let n = magix_1.node('bd_' + this.id);
@@ -4704,11 +4704,11 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             this['__y']();
         }
     },
-    '__bg<click>'() {
+    '__be<click>'() {
         if (this.get('disabled'))
             return;
         let me = this, c = '';
-        if (me['__be']) {
+        if (me['__bc']) {
             let cr = magix_1.node('v_' + me.id).value;
             me['__y']();
             me.digest({
@@ -4755,27 +4755,27 @@ let $_temp,$vnode_0=[],$_empty_arr=[],
 $vnode_1,
 $vnode_2,
 $text; 
-  $vnode_2=[$_create(0,0,(title))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[$_create(0,0,(body))];;$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));   $vnode_2=[$_create(0,0,(i18n('_M')))];;$vnode_1=[$_create('button',{'mx-click': $_viewId+'__ba();', 'class': 'dn do de', 'type': 'button',},$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  
+  $vnode_2=[$_create(0,0,(title))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[$_create(0,0,(body))];;$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));   $vnode_2=[$_create(0,0,(i18n('_I')))];;$vnode_1=[$_create('button',{'mx-click': $_viewId+'__aZ();', 'class': 'dn do de', 'type': 'button',},$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(extra) {
         let me = this;
-        me['__bh'] = extra.dialog;
-        me['__bi'] = extra.body;
-        me['__bj'] = extra.title || index_1.default('__L');
-        me['__bk'] = extra.enterCallback;
+        me['__bf'] = extra.dialog;
+        me['__bg'] = extra.body;
+        me['__bh'] = extra.title || index_1.default('__H');
+        me['__bi'] = extra.enterCallback;
     },
     render() {
         let me = this;
         me.digest({
-            body: me['__bi'],
-            title: me['__bj']
+            body: me['__bg'],
+            title: me['__bh']
         });
     },
-    '__ba<click>'() {
+    '__aZ<click>'() {
         let me = this;
-        me['__bh'].close();
-        if (me['__bk']) {
-            magix_1.default.toTry(me['__bk']);
+        me['__bf'].close();
+        if (me['__bi']) {
+            magix_1.default.toTry(me['__bi']);
         }
     }
 });
@@ -4808,35 +4808,35 @@ let $_temp,$vnode_0=[],$_empty_arr=[],
 $vnode_1,
 $vnode_2,
 $text; 
-  $vnode_2=[$_create(0,0,(title))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[$_create(0,0,(body))];;$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));   $vnode_2=[$_create(0,0,(i18n('_N')))];;$vnode_1=[$_create('button',{'type': 'button', 'mx-click': $_viewId+'__bm()', 'class': 'dn de',},$vnode_2 )];  $vnode_2=[$_create(0,0,(i18n('_M')))];;$vnode_1.push($_create('button',{'type': 'button', 'mx-click': $_viewId+'__ba()', 'class': 'dn do da de',},$vnode_2 )); ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  
+  $vnode_2=[$_create(0,0,(title))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[$_create(0,0,(body))];;$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));   $vnode_2=[$_create(0,0,(i18n('_J')))];;$vnode_1=[$_create('button',{'type': 'button', 'mx-click': $_viewId+'__bk()', 'class': 'dn de',},$vnode_2 )];  $vnode_2=[$_create(0,0,(i18n('_I')))];;$vnode_1.push($_create('button',{'type': 'button', 'mx-click': $_viewId+'__aZ()', 'class': 'dn do da de',},$vnode_2 )); ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(extra) {
         let me = this;
-        me['__bh'] = extra.dialog;
-        me['__bi'] = extra.body;
-        me['__bj'] = extra.title || index_1.default('__L');
-        me['__bk'] = extra.enterCallback;
-        me['__bl'] = extra.cancelCallback;
+        me['__bf'] = extra.dialog;
+        me['__bg'] = extra.body;
+        me['__bh'] = extra.title || index_1.default('__H');
+        me['__bi'] = extra.enterCallback;
+        me['__bj'] = extra.cancelCallback;
     },
     render() {
         let me = this;
         me.digest({
-            body: me['__bi'],
-            title: me['__bj']
+            body: me['__bg'],
+            title: me['__bh']
         });
     },
-    '__ba<click>'() {
+    '__aZ<click>'() {
         let me = this;
-        me['__bh'].close();
-        if (me['__bk']) {
-            magix_1.default.toTry(me['__bk']);
+        me['__bf'].close();
+        if (me['__bi']) {
+            magix_1.default.toTry(me['__bi']);
         }
     },
-    '__bm<click>'() {
+    '__bk<click>'() {
         let me = this;
-        me['__bh'].close();
-        if (me['__bl']) {
-            magix_1.default.toTry(me['__bl']);
+        me['__bf'].close();
+        if (me['__bj']) {
+            magix_1.default.toTry(me['__bj']);
         }
     }
 });
@@ -4858,7 +4858,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 require("./alert");
 require("./confirm");
-magix_1.default.applyStyle("di",".daX{position:absolute}.daY{position:relative;background-color:#fff;border-radius:2px;border:1px solid #e6e6e6}.daZ{position:absolute;cursor:pointer;opacity:.2;z-index:1;top:7px;right:10px}.daZ:focus,.daZ:hover{opacity:.5}.db_{position:fixed;top:0;right:0;left:0;bottom:0;background-color:#000;opacity:.2}.dba{-webkit-filter:blur(3px);filter:blur(3px)}.dbb{-webkit-animation:dd .3s;animation:dd .3s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}.dbc{position:absolute;right:10px;top:0;width:1px;height:0}.dbd{padding:80px 0}@-webkit-keyframes dd{0%{opacity:0}to{opacity:.2}}@keyframes dd{0%{opacity:0}to{opacity:.2}}.dbe{-webkit-animation:de .2s;animation:de .2s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes de{0%{opacity:.2}to{opacity:0}}@keyframes de{0%{opacity:.2}to{opacity:0}}.dbf{margin-bottom:50px;min-height:60px}.dbg{position:fixed;width:100%;height:100%;overflow:auto;left:0;top:0}.dbh{-webkit-animation:df .3s;animation:df .3s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes df{0%{margin-top:-50px;opacity:0}to{margin-top:0;opacity:1}}@keyframes df{0%{margin-top:-50px;opacity:0}to{margin-top:0;opacity:1}}.dbi{-webkit-animation:dg .2s;animation:dg .2s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes dg{0%{margin-top:0;opacity:1}to{margin-top:-50px;opacity:0}}@keyframes dg{0%{margin-top:0;opacity:1}to{margin-top:-50px;opacity:0}}");
+magix_1.default.applyStyle("di",".daW{position:absolute}.daX{position:relative;background-color:#fff;border-radius:2px;border:1px solid #e6e6e6}.daY{position:absolute;cursor:pointer;opacity:.2;z-index:1;top:7px;right:10px}.daY:focus,.daY:hover{opacity:.5}.daZ{position:fixed;top:0;right:0;left:0;bottom:0;background-color:#000;opacity:.2}.db_{-webkit-filter:blur(3px);filter:blur(3px)}.dba{-webkit-animation:dd .3s;animation:dd .3s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}.dbb{position:absolute;right:10px;top:0;width:1px;height:0}.dbc{padding:80px 0}@-webkit-keyframes dd{0%{opacity:0}to{opacity:.2}}@keyframes dd{0%{opacity:0}to{opacity:.2}}.dbd{-webkit-animation:de .2s;animation:de .2s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes de{0%{opacity:.2}to{opacity:0}}@keyframes de{0%{opacity:.2}to{opacity:0}}.dbe{margin-bottom:50px;min-height:60px}.dbf{position:fixed;width:100%;height:100%;overflow:auto;left:0;top:0}.dbg{-webkit-animation:df .3s;animation:df .3s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes df{0%{margin-top:-50px;opacity:0}to{margin-top:0;opacity:1}}@keyframes df{0%{margin-top:-50px;opacity:0}to{margin-top:0;opacity:1}}.dbh{-webkit-animation:dg .2s;animation:dg .2s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes dg{0%{margin-top:0;opacity:1}to{margin-top:-50px;opacity:0}}@keyframes dg{0%{margin-top:0;opacity:1}to{margin-top:-50px;opacity:0}}");
 let DialogZIndex = 500;
 let CacheList = [];
 let RemoveCache = (view) => {
@@ -4887,8 +4887,8 @@ $vnode_2,
 $vnode_3,
 $text,
 $vnode_4; 
- ;$$_class='db_';if(!removeClass){;$$_class+=' dbb';};$vnode_0.push($_create('div',{'style': 'z-index:'+$n(zIndex-1), 'id': 'mask_'+$n(id), 'class': $$_class,}));    ;$vnode_2=[$_create('input',{'id': 'focus_'+$n(id), 'class': 'dbc',},0,1)];  $vnode_3=[$_create(0,0,'')];;$vnode_2.push($_create('span',{'class': 'd_ daZ '+$n( closable ? '' : 'di'), 'mx-click': $_viewId+'__bp()',},$vnode_3 ));   if ($_quick_static_node_0) {
-                                $vnode_3=[$_quick_static_node_0]; }else{ ;$vnode_4=[$_create('span',{'class': 'dt',})]; ;$vnode_3=[$_quick_static_node_0=$_create('div',{'mxs': 'dn:_', 'class': 'ds dbd',},$vnode_4 )]; };$vnode_2.push($_create('div',{'class': 'daY dbf', 'id': 'cnt_'+$n(id),},$vnode_3 )); ;$$_class='daX';if(!removeClass){;$$_class+=' dbh';};$vnode_1=[$_create('div',{'id': 'body_'+$n(id), 'style': 'left:'+$n(left)+'px;top:'+$n(top)+'px;width:'+$n(width)+'px;', 'class': $$_class,},$vnode_2 )]; ;$vnode_0.push($_create('div',{'class': 'dbg', 'style': 'z-index:'+$n(zIndex)+';',},$vnode_1 ));  
+ ;$$_class='daZ';if(!removeClass){;$$_class+=' dba';};$vnode_0.push($_create('div',{'style': 'z-index:'+$n(zIndex-1), 'id': 'mask_'+$n(id), 'class': $$_class,}));    ;$vnode_2=[$_create('input',{'id': 'focus_'+$n(id), 'class': 'dbb',},0,1)];  $vnode_3=[$_create(0,0,'')];;$vnode_2.push($_create('span',{'class': 'd_ daY '+$n( closable ? '' : 'di'), 'mx-click': $_viewId+'__bn()',},$vnode_3 ));   if ($_quick_static_node_0) {
+                                $vnode_3=[$_quick_static_node_0]; }else{ ;$vnode_4=[$_create('span',{'class': 'dt',})]; ;$vnode_3=[$_quick_static_node_0=$_create('div',{'mxs': 'dn:_', 'class': 'ds dbc',},$vnode_4 )]; };$vnode_2.push($_create('div',{'class': 'daX dbe', 'id': 'cnt_'+$n(id),},$vnode_3 )); ;$$_class='daW';if(!removeClass){;$$_class+=' dbg';};$vnode_1=[$_create('div',{'id': 'body_'+$n(id), 'style': 'left:'+$n(left)+'px;top:'+$n(top)+'px;width:'+$n(width)+'px;', 'class': $$_class,},$vnode_2 )]; ;$vnode_0.push($_create('div',{'class': 'dbf', 'style': 'z-index:'+$n(zIndex)+';',},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(extra) {
         let me = this;
@@ -4898,7 +4898,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             RemoveCache(me);
             DialogZIndex -= 2;
             if (DialogZIndex == 500) {
-                app.classList.remove('dba');
+                app.classList.remove('db_');
             }
             magix_1.default.dispatch(root, 'close');
             root.parentNode.removeChild(root);
@@ -4908,7 +4908,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         }
         me.set(extra);
         if (DialogZIndex == 500) {
-            app.classList.add('dba');
+            app.classList.add('db_');
         }
         DialogZIndex += 2;
         CacheList.push(me);
@@ -4931,19 +4931,19 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             }), 300);
         });
     },
-    '__bn'(e) {
+    '__bl'(e) {
         let n = magix_1.default.node('cnt_' + this.id);
         let vf = magix_1.default.Vframe.byNode(n);
         vf.invoke('fire', ['unload', e]);
     },
-    '__bo'() {
+    '__bm'() {
         let id = this.id, node;
         node = magix_1.default.node('body_' + id);
-        node.classList.add('dbi');
+        node.classList.add('dbh');
         node = magix_1.default.node('mask_' + id);
-        node.classList.add('dbe');
+        node.classList.add('dbd');
     },
-    '__bp<click>'() {
+    '__bn<click>'() {
         magix_1.default.dispatch(this.root, 'dlg_close');
     },
     '$doc<keyup>'(e) {
@@ -4955,17 +4955,17 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         }
     }
 }, {
-    '__br'(view, options) {
+    '__bp'(view, options) {
         let id = magix_1.default.guid('dlg_');
         document.body.insertAdjacentHTML('beforeend', '<div id="' + id + '" style="display:none" />');
         let node = magix_1.default.node(id);
         let vf = view.owner.mountVframe(node, 'gallery/mx-dialog/index', options);
         let suspend;
         let whenClose = () => {
-            if (!node['__bq'] && !suspend) {
+            if (!node['__bo'] && !suspend) {
                 let resume = () => {
-                    node['__bq'] = 1;
-                    vf.invoke('__bo');
+                    node['__bo'] = 1;
+                    vf.invoke('__bm');
                     setTimeout(() => {
                         vf.unmountVframe();
                     }, 200);
@@ -4985,7 +4985,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
                         suspend = 0;
                     }
                 };
-                vf.invoke('__bn', [e]);
+                vf.invoke('__bl', [e]);
                 if (!suspend && !e.p) {
                     resume();
                 }
@@ -5037,7 +5037,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
                     }
                 }
             };
-            dlg = me['__br'](me, dOptions);
+            dlg = me['__bp'](me, dOptions);
             dlg.addEventListener('close', () => {
                 delete me[key];
                 if (closeCallback) {
@@ -5088,28 +5088,28 @@ exports.default = {
     ctor() {
         let me = this;
         me.on('destroy', () => {
-            me['__bs']();
+            me['__bq']();
         });
     },
-    '__bs'(e) {
+    '__bq'(e) {
         let me = this;
-        let info = me['__bt'];
+        let info = me['__br'];
         if (info) {
-            delete me['__bt'];
+            delete me['__br'];
             let fn;
             for (fn of DragMoveEvent) {
-                document.removeEventListener(fn, me['__bu']);
+                document.removeEventListener(fn, me['__bs']);
             }
             for (fn of DragEndEvent) {
-                document.removeEventListener(fn, me['__bv']);
+                document.removeEventListener(fn, me['__bt']);
             }
             for (fn of DragPreventEvent) {
                 document.removeEventListener(fn, DragPrevent);
             }
-            window.removeEventListener('blur', me['__bv']);
+            window.removeEventListener('blur', me['__bt']);
             //let node = info['@{dd&node}'];
-            let stop = info['__bw'];
-            let iStop = info['__bx'];
+            let stop = info['__bu'];
+            let iStop = info['__bv'];
             // if (node.releaseCapture) {
             //     node.releaseCapture();
             // } else if (node.releasePointerCapture && e.pointerId) {
@@ -5122,7 +5122,7 @@ exports.default = {
     },
     '__w'(e, moveCallback, endCallback) {
         let me = this;
-        me['__bs']();
+        me['__bq']();
         if (e) {
             ClearSelection();
             //let node = e.eventTarget || e.target;
@@ -5131,45 +5131,45 @@ exports.default = {
             // } else if (node.setPointerCapture && e.pointerId) {
             //     node.setPointerCapture(e.pointerId);
             // }
-            me['__bt'] = {
-                '__bw': endCallback,
+            me['__br'] = {
+                '__bu': endCallback,
                 //'@{dd&node}': node,
-                '__bx': !!endCallback
+                '__bv': !!endCallback
             };
             let moveIsFunction = !!moveCallback;
-            me['__by'] = 0;
-            me['__bv'] = e => {
-                me['__by'] = 1;
-                me['__bs'](e);
+            me['__bw'] = 0;
+            me['__bt'] = e => {
+                me['__bw'] = 1;
+                me['__bq'](e);
             };
-            me['__bu'] = e => {
+            me['__bs'] = e => {
                 if (moveIsFunction) {
                     moveCallback(e);
                 }
             };
             let fn;
             for (fn of DragMoveEvent) {
-                document.addEventListener(fn, me['__bu']);
+                document.addEventListener(fn, me['__bs']);
             }
             for (fn of DragEndEvent) {
-                document.addEventListener(fn, me['__bv']);
+                document.addEventListener(fn, me['__bt']);
             }
             for (fn of DragPreventEvent) {
                 document.addEventListener(fn, DragPrevent, {
                     passive: false
                 });
             }
-            window.addEventListener('blur', me['__bv']);
+            window.addEventListener('blur', me['__bt']);
         }
     },
     '__aq'(x, y) {
         let node = null;
         if (document.elementFromPoint) {
-            if (!DragPrevent['__bz'] && IsW3C) {
-                DragPrevent['__bz'] = true;
-                DragPrevent['__bA'] = document.elementFromPoint(-1, -1) !== null;
+            if (!DragPrevent['__bx'] && IsW3C) {
+                DragPrevent['__bx'] = true;
+                DragPrevent['__by'] = document.elementFromPoint(-1, -1) !== null;
             }
-            if (DragPrevent['__bA']) {
+            if (DragPrevent['__by']) {
                 x += window.pageXOffset;
                 y += window.pageYOffset;
             }
@@ -5179,7 +5179,7 @@ exports.default = {
         }
         return node;
     },
-    '__bB': ClearSelection
+    '__bz': ClearSelection
 };
 
 });
@@ -5191,7 +5191,7 @@ exports.default = {
 define("gallery/mx-dropdown/index",["magix","../mx-monitor/index"],(require,exports,module)=>{
 /*magix_1,index_1*/
 let $_quick_static_node_0;
-let $_quick_vnode_attr_static_1={'class': 'dbq',};
+let $_quick_vnode_attr_static_1={'class': 'dbp',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -5199,7 +5199,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const magix_1 = require("magix");
 const index_1 = require("../mx-monitor/index");
-magix_1.default.applyStyle("dj",".dbj{outline:0;position:relative;min-width:50px;width:100%;background-color:#fff;border:1px solid #e6e6e6;border-radius:2px;display:inline-block;vertical-align:middle;height:22px;transition:all .25s}.dbj:hover{border-color:#ccc}.dbk{color:#333;position:relative;width:100%;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0 20px 0 3px}.dbl{cursor:not-allowed;background-color:#fbfbfb}.dbl:hover{border-color:#e6e6e6}.dbl .dbk{cursor:not-allowed}.dbm{position:absolute;right:0;top:0;font-size:20px;color:#ccc;transition:all .25s}.dbn .dbm{-webkit-transform:rotate(180deg);transform:rotate(180deg);top:0}.dbj[tabindex=\"0\"]:focus,.dbn,.dbn:hover{border-color:#fa742b}.dbo{height:20px;line-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.dbp{color:#999}.dbq{position:absolute;top:100%;left:-1px;right:-1px;margin-top:4px;border-radius:2px;z-index:300;border:1px solid #e6e6e6;background-color:#fff;display:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.dbn .dbq{display:block}.dbr{overflow:auto;max-height:196px;padding:2px 0}.dbs{padding:0 2px;margin:2px 0}.dbt{cursor:pointer;color:#666;display:block;width:100%;padding:0 5px;height:20px;line-height:20px;border-radius:2px}.dbt:hover{color:#333;background-color:#f0f0f0}.dbu,.dbu:active,.dbu:focus,.dbu:hover{color:#fff;background-color:#fa742b}");
+magix_1.default.applyStyle("dj",".dbi{outline:0;position:relative;min-width:50px;width:100%;background-color:#fff;border:1px solid #e6e6e6;border-radius:2px;display:inline-block;vertical-align:middle;height:22px;transition:all .25s}.dbi:hover{border-color:#ccc}.dbj{color:#333;position:relative;width:100%;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0 20px 0 3px}.dbk{cursor:not-allowed;background-color:#fbfbfb}.dbk:hover{border-color:#e6e6e6}.dbk .dbj{cursor:not-allowed}.dbl{position:absolute;right:0;top:0;font-size:20px;color:#ccc;transition:all .25s}.dbm .dbl{-webkit-transform:rotate(180deg);transform:rotate(180deg);top:0}.dbi[tabindex=\"0\"]:focus,.dbm,.dbm:hover{border-color:#fa742b}.dbn{height:20px;line-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.dbo{color:#999}.dbp{position:absolute;top:100%;left:-1px;right:-1px;margin-top:4px;border-radius:2px;z-index:300;border:1px solid #e6e6e6;background-color:#fff;display:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.dbm .dbp{display:block}.dbq{overflow:auto;max-height:196px;padding:2px 0}.dbr{padding:0 2px;margin:2px 0}.dbs{cursor:pointer;color:#666;display:block;width:100%;padding:0 5px;height:20px;line-height:20px;border-radius:2px}.dbs:hover{color:#333;background-color:#f0f0f0}.dbt,.dbt:active,.dbt:focus,.dbt:hover{color:#fff;background-color:#fa742b}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5222,14 +5222,14 @@ $vnode_4,
 $vnode_5,
 $vnode_6,
 $vnode_7; 
- $vnode_1=[];   $vnode_3=[$_create(0,0,(selectedText))];;$$_class='dbo';if(selected===''||selected==emptyText){;$$_class+=' dbp';};$vnode_2=[$_create('span',{'class': $$_class,},$vnode_3 )];  if ($_quick_static_node_0) {
-                                $vnode_2.push($_quick_static_node_0); }else{$vnode_3=[$_create(0,0,'')];;$vnode_2.push($_quick_static_node_0=$_create('span',{'mxs': 'do:_', 'class': 'd_ dbm',},$vnode_3 )); };$vnode_1.push($_create('div',{'class': 'dbk', 'mx-click': $_viewId+'__bf()', 'title': $n(selectedText),},$vnode_2 )); if(rList){   $vnode_4=[]; for(let $q_key_gxdgdma=0,$q_a_qmsrcizv=list,$q_c_ffndiuqlq=$q_a_qmsrcizv.length;$q_key_gxdgdma<$q_c_ffndiuqlq;$q_key_gxdgdma++){let item=$q_a_qmsrcizv[$q_key_gxdgdma]; $vnode_5=[]; let text=item,value=item;;if(textKey&&valueKey){ $text='';text=item[textKey];$text+=' ';value=item[valueKey];}let equal=(value+'')===(selected+'');;  $vnode_7=[$_create(0,0,(text))];;$$_class='dbt dm';if(equal){;$$_class+=' dbu';};$vnode_6=[$_create('span',{'mx-click': $_viewId+'__bC({item:\''+$i($_ref,item)+'\'})', 'class': $$_class,},$vnode_7 )]; ;$vnode_5.push($_create('li',{'title': $n(text), 'active': ($_temp=(equal))!=null&&$_temp, 'class': 'dbs',},$vnode_6 )); $vnode_4.push(...$vnode_5); };$vnode_3=[$_create('ul',{'class': 'dbr', 'id': 'list_'+$n(id),},$vnode_4 )]; ;$vnode_2=[$_create('div',$_quick_vnode_attr_static_1,$vnode_3 )]; $vnode_1.push(...$vnode_2); };$$_class='dbj';if(disabled){;$$_class+=' dbl';};$vnode_0.push($_create('div',{'id': 'dd_'+$n(id), 'class': $$_class,},$vnode_1 ));  
+ $vnode_1=[];   $vnode_3=[$_create(0,0,(selectedText))];;$$_class='dbn';if(selected===''||selected==emptyText){;$$_class+=' dbo';};$vnode_2=[$_create('span',{'class': $$_class,},$vnode_3 )];  if ($_quick_static_node_0) {
+                                $vnode_2.push($_quick_static_node_0); }else{$vnode_3=[$_create(0,0,'')];;$vnode_2.push($_quick_static_node_0=$_create('span',{'mxs': 'do:_', 'class': 'd_ dbl',},$vnode_3 )); };$vnode_1.push($_create('div',{'class': 'dbj', 'mx-click': $_viewId+'__bd()', 'title': $n(selectedText),},$vnode_2 )); if(rList){   $vnode_4=[]; for(let $q_key_brvfkzjmjv=0,$q_a_gxwmuitlyu=list,$q_c_tywqoeqm=$q_a_gxwmuitlyu.length;$q_key_brvfkzjmjv<$q_c_tywqoeqm;$q_key_brvfkzjmjv++){let item=$q_a_gxwmuitlyu[$q_key_brvfkzjmjv]; $vnode_5=[]; let text=item,value=item;;if(textKey&&valueKey){ $text='';text=item[textKey];$text+=' ';value=item[valueKey];}let equal=(value+'')===(selected+'');;  $vnode_7=[$_create(0,0,(text))];;$$_class='dbs dm';if(equal){;$$_class+=' dbt';};$vnode_6=[$_create('span',{'mx-click': $_viewId+'__bA({item:\''+$i($_ref,item)+'\'})', 'class': $$_class,},$vnode_7 )]; ;$vnode_5.push($_create('li',{'title': $n(text), 'active': ($_temp=(equal))!=null&&$_temp, 'class': 'dbr',},$vnode_6 )); $vnode_4.push(...$vnode_5); };$vnode_3=[$_create('ul',{'class': 'dbq', 'id': 'list_'+$n(id),},$vnode_4 )]; ;$vnode_2=[$_create('div',$_quick_vnode_attr_static_1,$vnode_3 )]; $vnode_1.push(...$vnode_2); };$$_class='dbi';if(disabled){;$$_class+=' dbk';};$vnode_0.push($_create('div',{'id': 'dd_'+$n(id), 'class': $$_class,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
-        index_1.default["__aN"]();
+        index_1.default["__aL"]();
         this.on('destroy', () => {
-            index_1.default['__aO'](this);
-            index_1.default['__aP']();
+            index_1.default['__aM'](this);
+            index_1.default['__aN']();
         });
         this.assign(data);
     },
@@ -5284,14 +5284,14 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     render() {
         this.digest();
     },
-    '__bc'(node) {
+    '__ba'(node) {
         return magix_1.default.inside(node, this.root);
     },
     '__x'() {
         let me = this;
         let node = magix_1.default.node('dd_' + me.id);
-        if (!node.classList.contains('dbn')) {
-            node.classList.add('dbn');
+        if (!node.classList.contains('dbm')) {
+            node.classList.add('dbm');
             let r = me.get('rList');
             let resume = () => {
                 node = magix_1.default.node('list_' + me.id);
@@ -5308,28 +5308,28 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             else {
                 resume();
             }
-            index_1.default['__bd'](me);
+            index_1.default['__bb'](me);
         }
     },
     '__y'() {
         let me = this;
         let node = magix_1.default.node('dd_' + me.id);
-        if (node.classList.contains('dbn')) {
-            node.classList.remove('dbn');
-            index_1.default['__aO'](me);
+        if (node.classList.contains('dbm')) {
+            node.classList.remove('dbm');
+            index_1.default['__aM'](me);
         }
     },
-    '__bf<click>'() {
+    '__bd<click>'() {
         let me = this;
         let node = magix_1.default.node('dd_' + me.id);
-        if (node.classList.contains('dbn')) {
+        if (node.classList.contains('dbm')) {
             me['__y']();
         }
-        else if (!node.classList.contains('dbl')) {
+        else if (!node.classList.contains('dbk')) {
             me['__x']();
         }
     },
-    '__bC<click>'(e) {
+    '__bA<click>'(e) {
         let me = this;
         me['__y']();
         let valueKey = me.get('valueKey');
@@ -5371,7 +5371,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     author:xinglie.lkf@alibaba-inc.com
 */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("dk",".dbv{display:inline-block;height:25px;line-height:25px;vertical-align:bottom}.dbw{width:20px;margin:0 1px;text-align:center;height:20px;line-height:20px;cursor:pointer;background:#e0e0e0;border-radius:2px}.dbw:hover{background:#ccc}.dbx,.dbx:hover{background:#fa742b;color:#fff}.dby,.dby .dbw{cursor:not-allowed;opacity:.7}.dby .dbw,.dby .dbw:hover{background:#e9e9e9}.dby .dbx,.dby .dbx:hover{background:#fb955d}");
+magix_1.default.applyStyle("dk",".dbu{display:inline-block;height:25px;line-height:25px;vertical-align:bottom}.dbv{width:20px;margin:0 1px;text-align:center;height:20px;line-height:20px;cursor:pointer;background:#e0e0e0;border-radius:2px}.dbv:hover{background:#ccc}.dbw,.dbw:hover{background:#fa742b;color:#fff}.dbx,.dbx .dbv{cursor:not-allowed;opacity:.7}.dbx .dbv,.dbx .dbv:hover{background:#e9e9e9}.dbx .dbw,.dbx .dbw:hover{background:#fb955d}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5383,13 +5383,13 @@ $$_class,
 $vnode_1,
 $vnode_2,
 $text; 
-  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.h=='flex-start'){;$$_class+=' dbx';};$vnode_1=[$_create('li',{'title': $n(i18n('_O')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'flex-start\'})', 'class': $$_class,},$vnode_2 )];  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.h=='center'){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_P')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'center\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.h=='flex-end'){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_Q')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'flex-end\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.v=='flex-start'){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_R')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'flex-start\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.v=='center'){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_S')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'center\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.v=='flex-end'){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_T')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'flex-end\'})', 'class': $$_class,},$vnode_2 )); ;$$_class='dk dbv';if(disabled){;$$_class+=' dby';};$vnode_0.push($_create('ul',{'class': $$_class,},$vnode_1 ));  
+  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.h=='flex-start'){;$$_class+=' dbw';};$vnode_1=[$_create('li',{'title': $n(i18n('_K')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'flex-start\'})', 'class': $$_class,},$vnode_2 )];  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.h=='center'){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_L')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'center\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.h=='flex-end'){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_M')), 'mx-click': $_viewId+'__ax({type:\'h\',v:\'flex-end\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.v=='flex-start'){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_N')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'flex-start\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.v=='center'){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_O')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'center\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.v=='flex-end'){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_P')), 'mx-click': $_viewId+'__ax({type:\'v\',v:\'flex-end\'})', 'class': $$_class,},$vnode_2 )); ;$$_class='dk dbu';if(disabled){;$$_class+=' dbx';};$vnode_0.push($_create('ul',{'class': $$_class,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
         this.assign(data);
     },
     assign(data) {
-        this['__bD'] = data.value;
+        this['__bB'] = data.value;
         this.set({
             value: data.value,
             disabled: data.disabled
@@ -5404,10 +5404,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         if (me.get('disabled')) {
             return;
         }
-        let value = me['__bD'];
+        let value = me['__bB'];
         let { type, v } = e.params;
         value[type] = v;
-        me['__bD'] = value;
+        me['__bB'] = value;
         me.digest({
             value
         });
@@ -5432,7 +5432,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     author:xinglie.lkf@alibaba-inc.com
 */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("dk",".dbv{display:inline-block;height:25px;line-height:25px;vertical-align:bottom}.dbw{width:20px;margin:0 1px;text-align:center;height:20px;line-height:20px;cursor:pointer;background:#e0e0e0;border-radius:2px}.dbw:hover{background:#ccc}.dbx,.dbx:hover{background:#fa742b;color:#fff}.dby,.dby .dbw{cursor:not-allowed;opacity:.7}.dby .dbw,.dby .dbw:hover{background:#e9e9e9}.dby .dbx,.dby .dbx:hover{background:#fb955d}");
+magix_1.default.applyStyle("dk",".dbu{display:inline-block;height:25px;line-height:25px;vertical-align:bottom}.dbv{width:20px;margin:0 1px;text-align:center;height:20px;line-height:20px;cursor:pointer;background:#e0e0e0;border-radius:2px}.dbv:hover{background:#ccc}.dbw,.dbw:hover{background:#fa742b;color:#fff}.dbx,.dbx .dbv{cursor:not-allowed;opacity:.7}.dbx .dbv,.dbx .dbv:hover{background:#e9e9e9}.dbx .dbw,.dbx .dbw:hover{background:#fb955d}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5444,13 +5444,13 @@ $$_class,
 $vnode_1,
 $vnode_2,
 $text; 
-  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.bold){;$$_class+=' dbx';};$vnode_1=[$_create('li',{'title': $n(i18n('_U')), 'mx-click': $_viewId+'__ax({key:\'bold\'})', 'class': $$_class,},$vnode_2 )];  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.italic){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_V')), 'mx-click': $_viewId+'__ax({key:\'italic\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbw dx';if(value.underline){;$$_class+=' dbx';};$vnode_1.push($_create('li',{'title': $n(i18n('_W')), 'mx-click': $_viewId+'__ax({key:\'underline\'})', 'class': $$_class,},$vnode_2 )); ;$$_class='dk dbv';if(disabled){;$$_class+=' dby';};$vnode_0.push($_create('ul',{'class': $$_class,},$vnode_1 ));  
+  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.bold){;$$_class+=' dbw';};$vnode_1=[$_create('li',{'title': $n(i18n('_Q')), 'mx-click': $_viewId+'__ax({key:\'bold\'})', 'class': $$_class,},$vnode_2 )];  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.italic){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_R')), 'mx-click': $_viewId+'__ax({key:\'italic\'})', 'class': $$_class,},$vnode_2 ));  $vnode_2=[$_create(0,0,'')];;$$_class='dd dbv dx';if(value.underline){;$$_class+=' dbw';};$vnode_1.push($_create('li',{'title': $n(i18n('_S')), 'mx-click': $_viewId+'__ax({key:\'underline\'})', 'class': $$_class,},$vnode_2 )); ;$$_class='dk dbu';if(disabled){;$$_class+=' dbx';};$vnode_0.push($_create('ul',{'class': $$_class,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
         this.assign(data);
     },
     assign(data) {
-        this['__bD'] = data.value;
+        this['__bB'] = data.value;
         this.set({
             value: data.value,
             disabled: data.disabled
@@ -5465,10 +5465,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         if (me.get('disabled')) {
             return;
         }
-        let v = me['__bD'];
+        let v = me['__bB'];
         let { key } = e.params;
         v[key] = !v[key];
-        me['__bD'] = v;
+        me['__bB'] = v;
         me.digest({
             value: v
         });
@@ -5487,14 +5487,14 @@ return $_create($_viewId, 0, $vnode_0);  } ,
 define("gallery/mx-layout/column",["magix","../mx-number/index"],(require,exports,module)=>{
 /*magix_1*/
 require("../mx-number/index");
-let $_quick_vnode_attr_static_0={'class': 'dbz',};
+let $_quick_vnode_attr_static_0={'class': 'dby',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("dl",".dbz{display:flex;margin:5px 0;align-items:center}.dbA{flex-basis:24px;text-align:right;color:#333;font-size:12px}.dbB,.dbA{cursor:pointer}.dbC{cursor:not-allowed;color:#bbb}");
+magix_1.default.applyStyle("dl",".dby{display:flex;margin:5px 0;align-items:center}.dbz{flex-basis:24px;text-align:right;color:#333;font-size:12px}.dbA,.dbz{cursor:pointer}.dbB{cursor:not-allowed;color:#bbb}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5508,7 +5508,7 @@ $vnode_3,
 $$_class,
 $vnode_4,
 $text; 
-for(let index=0,$q_a_jcsapldzlwl=columns,$q_c_kaelgqkjn=$q_a_jcsapldzlwl.length;index<$q_c_kaelgqkjn;index++){let col=$q_a_jcsapldzlwl[index];  $vnode_2=[];  ;$vnode_2.push($_create('div',{'mxv': 'columns', 'disabled': ($_temp=(disabled))!=null&&$_temp, 'mx-input': $_viewId+'__bF({index:'+$n(index)+'})', 'mx-change': $_viewId+'__bE()', 'class': 'du dh', 'mx-view': 'gallery/mx-number/index?value='+$i($_ref,col.width)+'&max=1&min=0&fixed=2&step=0.01',})); if(columns.length>1){  $vnode_4=[$_create(0,0,'')];;$$_class='dx dbA';if(disabled){;$$_class+=' dbC';};$vnode_3=[$_create('i',{'title': $n(i18n('_X')), 'mx-click': $_viewId+'__bH({index:'+$n(index)+'})', 'class': $$_class,},$vnode_4 )]; $vnode_2.push(...$vnode_3); };$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); } $vnode_1=[$_create(0,0,'')];;$$_class='dx dbB';if(disabled){;$$_class+=' dbC';};$vnode_0.push($_create('i',{'title': $n(i18n('_Y')), 'mx-click': $_viewId+'__bG()', 'class': $$_class,},$vnode_1 ));  
+for(let index=0,$q_a_gkrcunrw=columns,$q_c_ahtethuo=$q_a_gkrcunrw.length;index<$q_c_ahtethuo;index++){let col=$q_a_gkrcunrw[index];  $vnode_2=[];  ;$vnode_2.push($_create('div',{'mxv': 'columns', 'disabled': ($_temp=(disabled))!=null&&$_temp, 'mx-input': $_viewId+'__bD({index:'+$n(index)+'})', 'mx-change': $_viewId+'__bC()', 'class': 'du dh', 'mx-view': 'gallery/mx-number/index?value='+$i($_ref,col.width)+'&max=1&min=0&fixed=2&step=0.01',})); if(columns.length>1){  $vnode_4=[$_create(0,0,'')];;$$_class='dx dbz';if(disabled){;$$_class+=' dbB';};$vnode_3=[$_create('i',{'title': $n(i18n('_T')), 'mx-click': $_viewId+'__bF({index:'+$n(index)+'})', 'class': $$_class,},$vnode_4 )]; $vnode_2.push(...$vnode_3); };$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); } $vnode_1=[$_create(0,0,'')];;$$_class='dx dbA';if(disabled){;$$_class+=' dbB';};$vnode_0.push($_create('i',{'title': $n(i18n('_U')), 'mx-click': $_viewId+'__bE()', 'class': $$_class,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
         this.assign(data);
@@ -5520,16 +5520,16 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     render() {
         this.digest();
     },
-    '__bE<change>'(e) {
+    '__bC<change>'(e) {
         e.stopPropagation();
     },
-    '__bF<input>'(e) {
+    '__bD<input>'(e) {
         let columns = this.get('columns');
         let { index } = e.params;
         columns[index].width = e.value;
         magix_1.default.dispatch(this.root, 'change');
     },
-    '__bG<click>'() {
+    '__bE<click>'() {
         if (this.get('disabled'))
             return;
         let columns = this.get('columns');
@@ -5542,7 +5542,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         });
         magix_1.default.dispatch(this.root, 'change');
     },
-    '__bH<click>'(e) {
+    '__bF<click>'(e) {
         if (this.get('disabled'))
             return;
         let columns = this.get('columns');
@@ -5564,19 +5564,19 @@ return $_create($_viewId, 0, $vnode_0);  } ,
 define("gallery/mx-layout/guage",["magix","../mx-number/index"],(require,exports,module)=>{
 /*magix_1*/
 require("../mx-number/index");
-let $_quick_vnode_attr_static_0={'class': 'dbD',};
-let $_quick_vnode_attr_static_1={'class': 'dbE',};
+let $_quick_vnode_attr_static_0={'class': 'dbC',};
+let $_quick_vnode_attr_static_1={'class': 'dbD',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("dm",".dbD{display:flex;align-items:center}.dbE{width:30px}");
-let GuargeTitles = ['__Z',
-    '__a_',
-    '__aa',
-    '__ab'];
+magix_1.default.applyStyle("dm",".dbC{display:flex;align-items:center}.dbD{width:30px}");
+let GuargeTitles = ['__V',
+    '__W',
+    '__X',
+    '__Y'];
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5589,7 +5589,7 @@ $vnode_1,
 $vnode_2,
 $vnode_3,
 $text; 
-for(let i=0;i<4;i++){   $vnode_3=[$_create(0,0,(i18n(titles[i])))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_1,$vnode_3 )];  ;$vnode_2.push($_create('div',{'mxv': 'guage', 'disabled': ($_temp=(disabled))!=null&&$_temp, 'mx-input': $_viewId+'__bF({index:'+$n(i)+'})', 'mx-change': $_viewId+'__bE()', 'class': 'du dh', 'mx-view': 'gallery/mx-number/index?max=500&min=0&value='+$i($_ref,guage[i]),})); ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); } 
+for(let i=0;i<4;i++){   $vnode_3=[$_create(0,0,(i18n(titles[i])))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_1,$vnode_3 )];  ;$vnode_2.push($_create('div',{'mxv': 'guage', 'disabled': ($_temp=(disabled))!=null&&$_temp, 'mx-input': $_viewId+'__bD({index:'+$n(i)+'})', 'mx-change': $_viewId+'__bC()', 'class': 'du dh', 'mx-view': 'gallery/mx-number/index?max=500&min=0&value='+$i($_ref,guage[i]),})); ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); } 
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
         this.set({
@@ -5613,10 +5613,10 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     render() {
         this.digest();
     },
-    '__bE<change>'(e) {
+    '__bC<change>'(e) {
         e.stopPropagation();
     },
-    '__bF<input>'(e) {
+    '__bD<input>'(e) {
         e.stopPropagation();
         let guage = this.get('guage');
         let { index } = e.params;
@@ -5636,7 +5636,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
 define("gallery/mx-menu/index",["magix","../mx-monitor/index"],(require,exports,module)=>{
 /*magix_1,index_1*/
 let $_quick_static_node_1;
-let $_quick_vnode_attr_static_0={'class': 'dbG dk',};
+let $_quick_vnode_attr_static_0={'class': 'dbF dk',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -5644,7 +5644,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 const magix_1 = require("magix");
 const index_1 = require("../mx-monitor/index");
-magix_1.default.applyStyle("dn",".dbF{z-index:400}.dbG{background-color:#fff;border:1px solid #e6e6e6;border-radius:2px;cursor:default;padding:2px 0;box-shadow:0 1px 3px 1px rgba(0,0,0,.06)}.dbH{height:22px;line-height:22px;cursor:default;border-radius:2px;padding:0 2px;margin:0 2px}.dbI{color:#fff;background-color:#fa742b}.dbJ{height:1px;background:#eee;margin:4px 0}.dbK{color:#ccc;cursor:not-allowed}");
+magix_1.default.applyStyle("dn",".dbE{z-index:400}.dbF{background-color:#fff;border:1px solid #e6e6e6;border-radius:2px;cursor:default;padding:2px 0;box-shadow:0 1px 3px 1px rgba(0,0,0,.06)}.dbG{height:22px;line-height:22px;cursor:default;border-radius:2px;padding:0 2px;margin:0 2px}.dbH{color:#fff;background-color:#fa742b}.dbI{height:1px;background:#eee;margin:4px 0}.dbJ{color:#ccc;cursor:not-allowed}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5661,16 +5661,16 @@ $vnode_4,
 $$_class,
 $vnode_5,
 $text; 
-  $vnode_2=[]; for(let $q_key_gwebplg=0,$q_a_ckazmrzyfmr=list,$q_c_rpyowc=$q_a_ckazmrzyfmr.length;$q_key_gwebplg<$q_c_rpyowc;$q_key_gwebplg++){let one=$q_a_ckazmrzyfmr[$q_key_gwebplg]; $vnode_3=[]; if(one.spliter){  if ($_quick_static_node_1) {
-                                $vnode_4=[$_quick_static_node_1]; }else{;$vnode_4=[$_quick_static_node_1=$_create('li',{'mxs': 'dt:_', 'class': 'dbJ',})]; }$vnode_3.push(...$vnode_4); }else{  $vnode_5=[$_create(0,0,(one[textKey]))];;$$_class='dm dbH ';if(disabled[one.id]){;$$_class+=' dbK';};$vnode_4=[$_create('li',{'mx-mouseover': $_viewId+'__bP({d:'+$n(disabled[one.id]||0)+'})', 'mx-mouseout': $_viewId+'__bP({d:'+$n(disabled[one.id]||0)+'});', 'mx-click': $_viewId+'__bC({item:\''+$i($_ref,one)+'\',d:'+$n(disabled[one.id]||0)+'})', 'title': $n(one[textKey]), 'class': $$_class,},$vnode_5 )]; $vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); };$vnode_1=[$_create('ul',$_quick_vnode_attr_static_0,$vnode_2 )]; ;$vnode_0.push($_create('div',{'style': 'width:'+$n(width)+'px;position:absolute;left:-10000px;top:-10000px', 'class': 'dbF', 'id': 'cnt_'+$n(id), 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));  
+  $vnode_2=[]; for(let $q_key_ymupjdzfg=0,$q_a_nwwfsdk=list,$q_c_unpfbhcon=$q_a_nwwfsdk.length;$q_key_ymupjdzfg<$q_c_unpfbhcon;$q_key_ymupjdzfg++){let one=$q_a_nwwfsdk[$q_key_ymupjdzfg]; $vnode_3=[]; if(one.spliter){  if ($_quick_static_node_1) {
+                                $vnode_4=[$_quick_static_node_1]; }else{;$vnode_4=[$_quick_static_node_1=$_create('li',{'mxs': 'dt:_', 'class': 'dbI',})]; }$vnode_3.push(...$vnode_4); }else{  $vnode_5=[$_create(0,0,(one[textKey]))];;$$_class='dm dbG ';if(disabled[one.id]){;$$_class+=' dbJ';};$vnode_4=[$_create('li',{'mx-mouseover': $_viewId+'__bN({d:'+$n(disabled[one.id]||0)+'})', 'mx-mouseout': $_viewId+'__bN({d:'+$n(disabled[one.id]||0)+'});', 'mx-click': $_viewId+'__bA({item:\''+$i($_ref,one)+'\',d:'+$n(disabled[one.id]||0)+'})', 'title': $n(one[textKey]), 'class': $$_class,},$vnode_5 )]; $vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); };$vnode_1=[$_create('ul',$_quick_vnode_attr_static_0,$vnode_2 )]; ;$vnode_0.push($_create('div',{'style': 'width:'+$n(width)+'px;position:absolute;left:-10000px;top:-10000px', 'class': 'dbE', 'id': 'cnt_'+$n(id), 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(extra) {
         let me = this;
         me.assign(extra);
-        index_1.default['__aN']();
+        index_1.default['__aL']();
         me.on('destroy', () => {
-            index_1.default['__aO'](me);
-            index_1.default['__aP']();
+            index_1.default['__aM'](me);
+            index_1.default['__aN']();
         });
     },
     assign(ops) {
@@ -5678,31 +5678,31 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         let width = ops.width || 140;
         let valueKey = ops.valueKey || 'id';
         let textKey = ops.textKey || 'text';
-        me['__bI'] = ops.list;
-        me['__bJ'] = width;
-        me['__bK'] = valueKey;
-        me['__bL'] = textKey;
-        me['__bM'] = ops.disabled || {};
-        me['__bN'] = ops.picked;
+        me['__bG'] = ops.list;
+        me['__bH'] = width;
+        me['__bI'] = valueKey;
+        me['__bJ'] = textKey;
+        me['__bK'] = ops.disabled || {};
+        me['__bL'] = ops.picked;
         return true;
     },
     render() {
         let me = this;
         me.digest({
-            disabled: me['__bM'],
-            list: me['__bI'],
-            width: me['__bJ'],
-            valueKey: me['__bK'],
-            textKey: me['__bL']
+            disabled: me['__bK'],
+            list: me['__bG'],
+            width: me['__bH'],
+            valueKey: me['__bI'],
+            textKey: me['__bJ']
         });
     },
-    '__bc'(node) {
+    '__ba'(node) {
         return magix_1.default.inside(node, this.root);
     },
     '__x'(e) {
         let me = this;
-        if (!me['__bO']) {
-            me['__bO'] = 1;
+        if (!me['__bM']) {
+            me['__bM'] = 1;
             let n = magix_1.node('cnt_' + me.id);
             let width = n.clientWidth;
             let height = n.clientHeight;
@@ -5720,33 +5720,33 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             }
             n.style.left = left + 'px';
             n.style.top = top + 'px';
-            index_1.default['__bd'](me);
+            index_1.default['__bb'](me);
         }
     },
     '__y'() {
         let me = this;
-        if (me['__bO']) {
-            me['__bO'] = false;
+        if (me['__bM']) {
+            me['__bM'] = false;
             let n = magix_1.node('cnt_' + me.id);
             n.style.left = '-10000px';
-            index_1.default['__aO'](me);
+            index_1.default['__aM'](me);
         }
     },
-    '__bP<mouseover,mouseout>'(e) {
+    '__bN<mouseover,mouseout>'(e) {
         if (e.params.d)
             return;
         let target = e.eventTarget;
         let flag = !magix_1.default.inside(e.relatedTarget, target);
         if (flag) {
-            target.classList[e.type == 'mouseout' ? 'remove' : 'add']('dbI');
+            target.classList[e.type == 'mouseout' ? 'remove' : 'add']('dbH');
         }
     },
-    '__bC<click>'(e) {
+    '__bA<click>'(e) {
         if (e.params.d)
             return;
         let me = this;
         me['__y']();
-        let fn = me['__bN'];
+        let fn = me['__bL'];
         if (fn) {
             fn(e.params.item);
         }
@@ -5792,12 +5792,12 @@ let DocumentEvents = ['mousedown', 'keyup', 'touchstart', 'pointerstart'];
 let Watcher = (e) => {
     for (let i = Instances.length; i--;) {
         let info = Instances[i];
-        if (info['__bQ']) {
+        if (info['__bO']) {
             Instances.splice(i, 1);
         }
         else {
-            let view = info['__bR'];
-            if (e.type == 'resize' || !view['__bc'](e.target)) {
+            let view = info['__bP'];
+            if (e.type == 'resize' || !view['__ba'](e.target)) {
                 view['__y']();
             }
         }
@@ -5806,23 +5806,23 @@ let Watcher = (e) => {
 let Remove = view => {
     let info = Instances[view.id];
     if (info) {
-        info['__bQ'] = true;
+        info['__bO'] = true;
     }
     delete Instances[view.id];
 };
 exports.default = {
-    '__bd'(view) {
+    '__bb'(view) {
         Remove(view);
         let a = [];
         a.concat;
         let info = {
-            '__bR': view
+            '__bP': view
         };
         Instances.push(info);
         Instances[view.id] = info;
     },
-    '__aO': Remove,
-    '__aN'() {
+    '__aM': Remove,
+    '__aL'() {
         if (!ICounter) {
             for (let e of DocumentEvents) {
                 document.addEventListener(e, Watcher);
@@ -5831,7 +5831,7 @@ exports.default = {
         }
         ICounter++;
     },
-    '__aP'() {
+    '__aN'() {
         if (ICounter > 0) {
             ICounter--;
             if (!ICounter) {
@@ -5859,7 +5859,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     author:xinglie.lkf@alibaba-inc.com
  */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("do",".dbL{width:100%;border:none;height:100%;background-color:transparent;color:#333;display:block}.dbM,.dbN{width:20px;height:50%;position:absolute;right:1px;border:2px solid #fff;border-radius:2px;cursor:pointer}.dbM:hover,.dbN:hover{background-color:#f0f0f0}.dbN{top:1px}.dbM{bottom:1px}.dbO:after{width:0;height:0;position:absolute;top:0;right:0;bottom:0;left:0;border-left:4px solid transparent;border-right:4px solid transparent;content:\"\";display:block;margin:auto}.dbM:after{border-top:4px solid #ccc}.dbN:after{border-bottom:4px solid #ccc}.dbM.dbP,.dbN.dbP{cursor:not-allowed;border-color:transparent}.dbM.dbP:hover,.dbN.dbP:hover{background-color:transparent}");
+magix_1.default.applyStyle("do",".dbK{width:100%;border:none;height:100%;background-color:transparent;color:#333;display:block}.dbL,.dbM{width:20px;height:50%;position:absolute;right:1px;border:2px solid #fff;border-radius:2px;cursor:pointer}.dbL:hover,.dbM:hover{background-color:#f0f0f0}.dbM{top:1px}.dbL{bottom:1px}.dbN:after{width:0;height:0;position:absolute;top:0;right:0;bottom:0;left:0;border-left:4px solid transparent;border-right:4px solid transparent;content:\"\";display:block;margin:auto}.dbL:after{border-top:4px solid #ccc}.dbM:after{border-bottom:4px solid #ccc}.dbL.dbO,.dbM.dbO{cursor:not-allowed;border-color:transparent}.dbL.dbO:hover,.dbM.dbO:hover{background-color:transparent}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -5867,7 +5867,7 @@ let $_temp,$vnode_0=[],$_empty_arr=[],
 	id,
 	disabled,}=$$,
 $$_class; 
- ;$vnode_0.push($_create('input',{'class': 'dbL', 'id': 'ipt_'+$n(id), 'mx-focusin': $_viewId+'__cj()', 'mx-focusout': $_viewId+'__cl()', 'mx-change': $_viewId+'__ci()', 'mx-keydown': $_viewId+'__cq()', 'disabled': (disabled), 'autocomplete': 'off', 'mx-input': $_viewId+'__cr()',},0,1));  ;$$_class='dbN dbO dk';if(disabled){;$$_class+=' dbP';};$vnode_0.push($_create('span',{'mx-click': $_viewId+'__ce({i:1})', 'mx-mousedown': $_viewId+'__cp({i:1})', 'mx-contextmenu': $_viewId+'__A()', 'class': $$_class,}));  ;$$_class='dbM dbO dk';if(disabled){;$$_class+=' dbP';};$vnode_0.push($_create('span',{'mx-click': $_viewId+'__ce()', 'mx-mousedown': $_viewId+'__cp()', 'mx-contextmenu': $_viewId+'__A()', 'class': $$_class,}));  
+ ;$vnode_0.push($_create('input',{'class': 'dbK', 'id': 'ipt_'+$n(id), 'mx-focusin': $_viewId+'__ch()', 'mx-focusout': $_viewId+'__cj()', 'mx-change': $_viewId+'__cg()', 'mx-keydown': $_viewId+'__co()', 'disabled': (disabled), 'autocomplete': 'off', 'mx-input': $_viewId+'__cp()',},0,1));  ;$$_class='dbM dbN dk';if(disabled){;$$_class+=' dbO';};$vnode_0.push($_create('span',{'mx-click': $_viewId+'__cc({i:1})', 'mx-mousedown': $_viewId+'__cn({i:1})', 'mx-contextmenu': $_viewId+'__A()', 'class': $$_class,}));  ;$$_class='dbL dbN dk';if(disabled){;$$_class+=' dbO';};$vnode_0.push($_create('span',{'mx-click': $_viewId+'__cc()', 'mx-mousedown': $_viewId+'__cn()', 'mx-contextmenu': $_viewId+'__A()', 'class': $$_class,}));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(extra) {
         let me = this;
@@ -5881,45 +5881,45 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         if (v !== '') {
             v = +v;
         }
-        let diff = me['__bS'] !== v;
-        let preDis = me['__bT'];
-        me['__bS'] = v;
-        me['__bU'] = +ops.step || 1;
-        me['__bV'] = (ops.empty + '') == 'true';
-        me['__bW'] = (ops.format + '') == 'true';
-        me['__bT'] = me.root.hasAttribute('disabled');
-        me['__bX'] = magix_1.default.has(ops, 'max') ? +ops.max : Number.MAX_VALUE;
-        me['__bY'] = magix_1.default.has(ops, 'min') ? +ops.min : -Number.MAX_VALUE;
-        me['__bZ'] = +ops.ratio || 10;
-        me['__c_'] = ops.fixed || 0;
-        return diff || preDis != me['__bT'];
+        let diff = me['__bQ'] !== v;
+        let preDis = me['__bR'];
+        me['__bQ'] = v;
+        me['__bS'] = +ops.step || 1;
+        me['__bT'] = (ops.empty + '') == 'true';
+        me['__bU'] = (ops.format + '') == 'true';
+        me['__bR'] = me.root.hasAttribute('disabled');
+        me['__bV'] = magix_1.default.has(ops, 'max') ? +ops.max : Number.MAX_VALUE;
+        me['__bW'] = magix_1.default.has(ops, 'min') ? +ops.min : -Number.MAX_VALUE;
+        me['__bX'] = +ops.ratio || 10;
+        me['__bY'] = ops.fixed || 0;
+        return diff || preDis != me['__bR'];
     },
     render() {
         let me = this;
         me.digest({
-            disabled: me['__bT']
+            disabled: me['__bR']
         }, null, () => {
-            me['__ca']();
+            me['__bZ']();
         });
     },
-    '__ca'() {
+    '__bZ'() {
         let me = this;
-        let v = me['__bS'];
+        let v = me['__bQ'];
         if (v !== '') {
-            v = me['__cb'](v); //.toFixed(me['@{tail.length}']);
-            if (me['__bW']) {
-                v = v.toFixed(me['__c_']);
+            v = me['__c_'](v); //.toFixed(me['@{tail.length}']);
+            if (me['__bU']) {
+                v = v.toFixed(me['__bY']);
             }
         }
-        me['__cc'] = magix_1.node('ipt_' + me.id);
-        me['__cc'].value = v;
+        me['__ca'] = magix_1.node('ipt_' + me.id);
+        me['__ca'].value = v;
     },
-    '__cb'(v) {
+    '__c_'(v) {
         let me = this;
         v = +v;
         if (v || v === 0) {
-            let max = me['__bX'];
-            let min = me['__bY'];
+            let max = me['__bV'];
+            let min = me['__bW'];
             // let step = me['@{step}'];
             // v = step < 1 ? Math.round(v / step) * step : v;
             if (v > max) {
@@ -5928,140 +5928,140 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             else if (v < min) {
                 v = min;
             }
-            v = +v.toFixed(me['__c_']);
+            v = +v.toFixed(me['__bY']);
         }
-        return isNaN(v) ? (me['__bV'] ? '' : 0) : v;
+        return isNaN(v) ? (me['__bT'] ? '' : 0) : v;
     },
-    '__cd'(v, ignoreFill) {
+    '__cb'(v, ignoreFill) {
         let me = this;
-        if (v === '' && me['__bV']) {
+        if (v === '' && me['__bT']) {
             magix_1.default.dispatch(me.root, 'input', {
-                value: me['__bS'] = v
+                value: me['__bQ'] = v
             });
             return;
         }
-        v = me['__cb'](v);
-        if (v !== me['__bS']) {
+        v = me['__c_'](v);
+        if (v !== me['__bQ']) {
             if (!ignoreFill) {
-                me['__cc'].value = v;
+                me['__ca'].value = v;
             }
             magix_1.default.dispatch(me.root, 'input', {
-                value: me['__bS'] = v
+                value: me['__bQ'] = v
             });
         }
-        return me['__bS'];
+        return me['__bQ'];
     },
-    '__ce'(increase, enlarge) {
+    '__cc'(increase, enlarge) {
         let me = this;
         console.log(increase);
-        let value = me['__bS'];
+        let value = me['__bQ'];
         if (value === '')
             value = 0; //for init
-        let step = me['__bU'];
+        let step = me['__bS'];
         let c = value;
         if (enlarge)
-            step *= me['__bZ'];
+            step *= me['__bX'];
         if (increase) {
             c += step;
         }
         else {
             c -= step;
         }
-        me['__cd'](c);
+        me['__cb'](c);
     },
-    '__cf'() {
+    '__cd'() {
         let me = this;
-        let ipt = me['__cc'];
+        let ipt = me['__ca'];
         if (ipt) {
             ipt.focus();
             ipt.selectionStart = ipt.selectionEnd = ipt.value.length;
         }
     },
-    '__ch'() {
+    '__cf'() {
         let me = this;
         me.root.classList.add('dw');
-        if (!magix_1.default.has(me, '__cg')) {
-            me['__cg'] = me['__bS'];
+        if (!magix_1.default.has(me, '__ce')) {
+            me['__ce'] = me['__bQ'];
         }
     },
-    '__ci<change>'(e) {
+    '__cg<change>'(e) {
         e.stopPropagation();
     },
-    '__cj<focusin>'() {
-        this['__ch']();
+    '__ch<focusin>'() {
+        this['__cf']();
     },
-    '__cl<focusout>'(e) {
+    '__cj<focusout>'(e) {
         let me = this;
-        if (!me['__ck']) {
+        if (!me['__ci']) {
             me.root.classList.remove('dw');
-            me['__ca']();
-            if (me['__cg'] != me['__bS']) {
+            me['__bZ']();
+            if (me['__ce'] != me['__bQ']) {
                 magix_1.default.dispatch(me.root, 'change', {
-                    value: me['__bS']
+                    value: me['__bQ']
                 });
             }
-            delete me['__cg'];
+            delete me['__ce'];
         }
     },
-    '__ce<click>'(e) {
+    '__cc<click>'(e) {
         let me = this;
-        if (!me['__bT'] && !me['__cm']) {
-            me['__ce'](e.params.i, e.shiftKey);
+        if (!me['__bR'] && !me['__ck']) {
+            me['__cc'](e.params.i, e.shiftKey);
+            me['__cd']();
+        }
+    },
+    '__cn<mousedown>'(e) {
+        let me = this;
+        if (!me['__bR']) {
+            me['__ci'] = true;
             me['__cf']();
-        }
-    },
-    '__cp<mousedown>'(e) {
-        let me = this;
-        if (!me['__bT']) {
-            me['__ck'] = true;
-            me['__ch']();
             let i = e.params.i;
-            me['__cn'] = setTimeout(me.wrapAsync(() => {
-                me['__co'] = setInterval(me.wrapAsync(() => {
-                    me['__cm'] = true;
-                    me['__ce'](i);
-                    me['__cf']();
+            me['__cl'] = setTimeout(me.wrapAsync(() => {
+                me['__cm'] = setInterval(me.wrapAsync(() => {
+                    me['__ck'] = true;
+                    me['__cc'](i);
+                    me['__cd']();
                 }), 50);
             }), 300);
         }
     },
-    '__cq<keydown>'(e) {
+    '__co<keydown>'(e) {
         if (e.keyCode == 38 || e.keyCode == 40) {
             e.preventDefault();
             let me = this;
-            if (!me['__bT']) {
+            if (!me['__bR']) {
                 let target = e.eventTarget;
                 let value = target.value;
                 if (value === '') {
-                    me['__bS'] = '';
+                    me['__bQ'] = '';
                 }
                 else {
                     let v = Number(value);
                     if (v || v === 0) {
-                        if (v != me['__bS']) {
-                            me['__bS'] = v;
+                        if (v != me['__bQ']) {
+                            me['__bQ'] = v;
                         }
                     }
                 }
-                me['__ce'](e.keyCode == 38, e.shiftKey);
+                me['__cc'](e.keyCode == 38, e.shiftKey);
             }
         }
     },
     '__A<contextmenu>'(e) {
         e.preventDefault();
     },
-    '__cr<input>'(e) {
+    '__cp<input>'(e) {
         e.stopPropagation();
         let target = e.eventTarget;
-        this['__cd'](target.value, true);
+        this['__cb'](target.value, true);
     },
     '$doc<mouseup>'() {
         let me = this;
-        clearTimeout(me['__cn']);
-        clearInterval(me['__co']);
-        delete me['__ck'];
+        clearTimeout(me['__cl']);
+        clearInterval(me['__cm']);
+        delete me['__ci'];
         setTimeout(me.wrapAsync(() => {
-            delete me['__cm'];
+            delete me['__ck'];
         }), 0);
     }
 });
@@ -6074,7 +6074,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
  */
 define("gallery/mx-picture/index",["magix","../mx-dialog/index"],(require,exports,module)=>{
 /*magix_1,index_1*/
-let $_quick_vnode_attr_static_0={'class': 'dbR',};
+let $_quick_vnode_attr_static_0={'class': 'dbQ',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -6082,7 +6082,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const magix_1 = require("magix");
 const index_1 = require("../mx-dialog/index");
-magix_1.default.applyStyle("dp",".dbQ{height:100px;padding:4px;border:1px solid #e6e6e6;background:#fff;cursor:pointer;margin:4px 0}.dbR{line-height:92px;text-align:center;color:#999}.dbS{min-height:500px}.dbT{width:100px;height:100px;margin:4px;overflow:hidden;border:1px solid #e6e6e6;cursor:pointer;padding:4px}.dbT:hover{border-color:#999}.dbU{width:100%;height:100%;background-position:50%;background-repeat:no-repeat;background-size:contain}.dbV{width:100px;margin:0 5px;height:25px}.dbW{margin:30px 0}.dbX{font-size:16px}.dbY{position:absolute;right:3px;top:2px;opacity:.2}.dbY:hover{opacity:.5}");
+magix_1.default.applyStyle("dp",".dbP{height:100px;padding:4px;border:1px solid #e6e6e6;background:#fff;cursor:pointer;margin:4px 0}.dbQ{line-height:92px;text-align:center;color:#999}.dbR{min-height:500px}.dbS{width:100px;height:100px;margin:4px;overflow:hidden;border:1px solid #e6e6e6;cursor:pointer;padding:4px}.dbS:hover{border-color:#999}.dbT{width:100%;height:100%;background-position:50%;background-repeat:no-repeat;background-size:contain}.dbU{width:100px;margin:0 5px;height:25px}.dbV{margin:30px 0}.dbW{font-size:16px}.dbX{position:absolute;right:3px;top:2px;opacity:.2}.dbX:hover{opacity:.5}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -6094,7 +6094,7 @@ $vnode_2,
 $vnode_3,
 $vnode_4,
 $text; 
- $vnode_1=[]; if(src){   $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'd_ dbY', 'mx-click': $_viewId+'__cu()', 'title': $n(i18n('_ac')),},$vnode_4 )]; ;$vnode_2=[$_create('div',{'class': 'dbU', 'style': 'background-image:url(\''+$n(src)+'\')',},$vnode_3 )]; $vnode_1.push(...$vnode_2); }else{  $vnode_3=[$_create(0,0,(i18n('_ad')))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_0,$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dbQ dh', 'mx-click': $_viewId+'__ct()',},$vnode_1 ));  
+ $vnode_1=[]; if(src){   $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'd_ dbX', 'mx-click': $_viewId+'__cs()', 'title': $n(i18n('_Z')),},$vnode_4 )]; ;$vnode_2=[$_create('div',{'class': 'dbT', 'style': 'background-image:url(\''+$n(src)+'\')',},$vnode_3 )]; $vnode_1.push(...$vnode_2); }else{  $vnode_3=[$_create(0,0,(i18n('_a_')))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_0,$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dbP dh', 'mx-click': $_viewId+'__cr()',},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     init(data) {
@@ -6107,25 +6107,25 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     render() {
         this.digest();
     },
-    '__ct<click>'() {
+    '__cr<click>'() {
         let me = this;
         me.mxDialog('gallery/mx-picture/list', {
             width: 932,
             done(pic) {
                 me.digest(pic);
-                me['__cs'](pic);
+                me['__cq'](pic);
             }
         });
     },
-    '__cs'(pic) {
+    '__cq'(pic) {
         magix_1.default.dispatch(this.root, 'change', pic);
     },
-    '__cu<click>'(e) {
+    '__cs<click>'(e) {
         e.stopPropagation();
         this.digest({
             src: ''
         });
-        this['__cs']({
+        this['__cq']({
             src: '',
             width: 0,
             height: 0
@@ -6142,9 +6142,9 @@ return $_create($_viewId, 0, $vnode_0);  } ,
 define("gallery/mx-picture/list",["magix","../../designer/service","../../i18n/index"],(require,exports,module)=>{
 /*magix_1,service_1,index_1*/
 let $_quick_vnode_attr_static_0={'class': 'dp dF',};
-let $_quick_vnode_attr_static_1={'class': 'dq dj dbS',};
-let $_quick_vnode_attr_static_2={'class': 'dc dbW dbX',};
-let $_quick_vnode_attr_static_3={'class': 'dc dbV dm',};
+let $_quick_vnode_attr_static_1={'class': 'dq dj dbR',};
+let $_quick_vnode_attr_static_2={'class': 'dc dbV dbW',};
+let $_quick_vnode_attr_static_3={'class': 'dc dbU dm',};
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
@@ -6168,12 +6168,12 @@ $text,
 $vnode_3,
 $vnode_4,
 $vnode_5; 
-  $vnode_2=[$_create(0,0,(i18n('_af')))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[]; if(error){  $vnode_3=[$_create(0,0,(error.msg))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_2,$vnode_3 )]; $vnode_1.push(...$vnode_2); }else{ $vnode_2=[]; for(let $q_key_mctmrltzl=0,$q_a_evdmj=list,$q_c_sbjhttzeg=$q_a_evdmj.length;$q_key_mctmrltzl<$q_c_sbjhttzeg;$q_key_mctmrltzl++){let p=$q_a_evdmj[$q_key_mctmrltzl];    ;$vnode_5=[$_create('div',{'class': 'dbU', 'style': 'background-image:url(\''+$n(p.src)+'\')',})]; ;$vnode_4=[$_create('div',{'class': 'dbT', 'mx-click': $_viewId+'__cw({src:\''+($eq(p.src))+'\'})',},$vnode_5 )];  $vnode_5=[$_create(0,0,(p.title))];;$vnode_4.push($_create('div',$_quick_vnode_attr_static_3,$vnode_5 )); ;$vnode_3=[$_create('div',{'class': 'dd', 'title': $n(p.title),},$vnode_4 )]; $vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));  
+  $vnode_2=[$_create(0,0,(i18n('_ab')))];;$vnode_1=[$_create('h5',0,$vnode_2 )]; ;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[]; if(error){  $vnode_3=[$_create(0,0,(error.msg))];;$vnode_2=[$_create('div',$_quick_vnode_attr_static_2,$vnode_3 )]; $vnode_1.push(...$vnode_2); }else{ $vnode_2=[]; for(let $q_key_wvxflrxiogi=0,$q_a_lrxlloli=list,$q_c_ournetyv=$q_a_lrxlloli.length;$q_key_wvxflrxiogi<$q_c_ournetyv;$q_key_wvxflrxiogi++){let p=$q_a_lrxlloli[$q_key_wvxflrxiogi];    ;$vnode_5=[$_create('div',{'class': 'dbT', 'style': 'background-image:url(\''+$n(p.src)+'\')',})]; ;$vnode_4=[$_create('div',{'class': 'dbS', 'mx-click': $_viewId+'__cu({src:\''+($eq(p.src))+'\'})',},$vnode_5 )];  $vnode_5=[$_create(0,0,(p.title))];;$vnode_4.push($_create('div',$_quick_vnode_attr_static_3,$vnode_5 )); ;$vnode_3=[$_create('div',{'class': 'dd', 'title': $n(p.title),},$vnode_4 )]; $vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',$_quick_vnode_attr_static_1,$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init(data) {
         let me = this;
-        me['__bh'] = data.dialog;
-        me['__cv'] = data.done;
+        me['__bf'] = data.dialog;
+        me['__ct'] = data.done;
     },
     render() {
         this.fetch(['__ak'], (err, bag) => {
@@ -6183,18 +6183,18 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             });
         });
     },
-    '__cw<click>'(e) {
+    '__cu<click>'(e) {
         let me = this;
         let img = new Image();
-        let done = me['__cv'];
+        let done = me['__ct'];
         let src = e.params.src;
         img.onerror = me.wrapAsync(() => {
-            me.alert(index_1.default('__ae'));
+            me.alert(index_1.default('__aa'));
         });
         img.onload = me.wrapAsync(() => {
             let w = img.width;
             let h = img.height;
-            me['__bh'].close();
+            me['__bf'].close();
             done({
                 src,
                 width: w,
@@ -6218,16 +6218,16 @@ define("gallery/mx-pointer/cursor",["magix"],(require,exports,module)=>{
 Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 const CursorId = magix_1.default.guid('cursor_');
-magix_1.default.applyStyle("dq",".dbZ{opacity:0;background:#fff;position:fixed;left:0;right:0;top:0;bottom:0;z-index:10000}");
+magix_1.default.applyStyle("dq",".dbY{opacity:0;background:#fff;position:fixed;left:0;right:0;top:0;bottom:0;z-index:10000}");
 exports.default = {
     '__x'(e) {
         let styles = getComputedStyle(e);
-        this['__cx'](styles.cursor);
+        this['__cv'](styles.cursor);
     },
-    '__cx'(cursor) {
+    '__cv'(cursor) {
         let n = magix_1.node(CursorId);
         if (!n) {
-            document.body.insertAdjacentHTML('beforeend', `<div class="dbZ" id="${CursorId}"/>`);
+            document.body.insertAdjacentHTML('beforeend', `<div class="dbY" id="${CursorId}"/>`);
             n = magix_1.node(CursorId);
         }
         n.style.cursor = cursor;
@@ -6250,13 +6250,13 @@ define("gallery/mx-pointer/follower",["magix"],(require,exports,module)=>{
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
-magix_1.default.applyStyle("dr",".dc_{background:#fa742b;position:absolute;opacity:.6;left:-1000px;top:-1000px;width:30px;height:30px;text-align:center;line-height:30px;color:#fff;border-radius:2px;z-index:5000;pointer-events:none}");
+magix_1.default.applyStyle("dr",".dbZ{background:#fa742b;position:absolute;opacity:.6;left:-1000px;top:-1000px;width:30px;height:30px;text-align:center;line-height:30px;color:#fff;border-radius:2px;z-index:5000;pointer-events:none}");
 let DEId = magix_1.default.guid('de_');
 exports.default = {
     '__K'(html) {
         let n = magix_1.node(DEId);
         if (!n) {
-            document.body.insertAdjacentHTML('beforeend', `<div class="dc_ dx" id="${DEId}"/>`);
+            document.body.insertAdjacentHTML('beforeend', `<div class="dbZ dx" id="${DEId}"/>`);
             n = magix_1.node(DEId);
         }
         n.innerHTML = html;
@@ -6288,13 +6288,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
     author:xinglie.lkf@alibaba-inc.com
 */
 const magix_1 = require("magix");
-magix_1.default.applyStyle("ds",".dca{position:absolute;border:1px dashed #fa742b;display:none;pointer-events:none}");
+magix_1.default.applyStyle("ds",".dc_{position:absolute;border:1px dashed #fa742b;display:none;pointer-events:none}");
 let SId = magix_1.default.guid('set_');
 exports.default = {
-    '__cy'() {
+    '__cw'() {
         let n = magix_1.node(SId);
         if (!n) {
-            document.body.insertAdjacentHTML('beforeend', `<div id="${SId}" class="dca"></div>`);
+            document.body.insertAdjacentHTML('beforeend', `<div id="${SId}" class="dc_"></div>`);
         }
     },
     '__K'(left, top, width, height) {
@@ -6331,19 +6331,19 @@ let setRAF = window.requestAnimationFrame || ((fn) => {
 let cancelRAF = window.cancelAnimationFrame || clearTimeout;
 let Now = Date.now;
 exports.default = {
-    '__cz': [],
+    '__cx': [],
     '__an'(interval, fn) {
         let me = this;
-        me['__cz'].push({
+        me['__cx'].push({
             i: interval || 15,
             f: fn,
             n: Now()
         });
-        me['__cA']();
+        me['__cy']();
     },
     '__ao'(fn) {
         let me = this;
-        let q = me['__cz'];
+        let q = me['__cx'];
         for (let o, i = 0; i < q.length; i++) {
             o = q[i];
             if (!o.r && o.f == fn) {
@@ -6352,11 +6352,11 @@ exports.default = {
             }
         }
     },
-    '__cA'() {
+    '__cy'() {
         let me = this;
-        if (!me['__cB']) {
+        if (!me['__cz']) {
             let run = () => {
-                let q = me['__cz'];
+                let q = me['__cx'];
                 for (let i = 0, o, now; i < q.length; i++) {
                     o = q[i];
                     if (o.r) {
@@ -6371,14 +6371,14 @@ exports.default = {
                     }
                 }
                 if (!q.length) {
-                    cancelRAF(me['__cB']);
-                    delete me['__cB'];
+                    cancelRAF(me['__cz']);
+                    delete me['__cz'];
                 }
                 else {
-                    me['__cB'] = setRAF(run);
+                    me['__cz'] = setRAF(run);
                 }
             };
-            me['__cB'] = setRAF(run);
+            me['__cz'] = setRAF(run);
         }
     }
 };
@@ -6435,71 +6435,71 @@ define("i18n/zh-cn",[],(require,exports,module)=>{
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     '_b': '报表设计器',
-    '__L': '提示',
-    '_M': '确定',
-    '_N': '取消',
-    '__ag': '放大',
-    '__ah': '缩小',
+    '__H': '提示',
+    '_I': '确定',
+    '_J': '取消',
+    '__ac': '放大',
+    '__ad': '缩小',
     '__': '删除辅助线',
     '_a': '按下拖动可移动辅助线',
     '_d': '撤销(Ctrl+Z)',
     '_e': '重做(Ctrl+Y,Ctrl+Shift+Z)',
-    '__ai': '按下移动面板',
-    '__aj': '按下拖动改变面板宽度',
-    '__ak': '按下拖动改变面板高度',
-    '__al': '属性',
-    '__am': '数据源',
+    '__ae': '按下移动面板',
+    '__af': '按下拖动改变面板宽度',
+    '__ag': '按下拖动改变面板高度',
+    '__ah': '属性',
+    '__ai': '数据源',
     '_g': '打开{0}面板',
     '_f': '关闭{0}面板',
-    '__an': '展开{0}面板',
-    '__ao': '折叠{0}面板',
-    '__ap': '类型：',
-    '__t': '背景颜色：',
-    '__G': '文字颜色：',
+    '__aj': '展开{0}面板',
+    '__ak': '折叠{0}面板',
+    '__al': '类型：',
+    '__p': '背景颜色：',
+    '__C': '文字颜色：',
     '_c': '删除',
-    '__ae': '获取图片尺寸失败，请重试～～',
-    '_ac': '清除图片',
-    '_ad': '点击选择图片',
-    '_af': '图片库',
-    '_K': '清除颜色',
-    '__D': '字号：',
-    '__u': '背景图片：',
-    '__v': '背景平铺：',
-    '__w': '拉伸铺满',
-    '__x': '原始尺寸',
-    '__y': '横向平铺',
-    '__z': '垂直平铺',
-    '__A': '双向平铺',
-    '__p': '锁定编辑：',
-    '__r': '最小宽度：',
-    '__s': '最小高度：',
-    '__m': '列分配：',
-    '__n': '外边距：',
-    '__o': '内边距：',
-    '__C': '高：',
-    '__l': '布局',
-    '__B': '文本',
-    '__q': '页面',
-    '_Y': '点击添加列',
-    '_X': '点击删除列',
-    '__E': '透明度：',
-    '__F': '字间距：',
-    '__J': '内容：',
-    '__H': '样式：',
-    '__I': '排列：',
-    '_U': '加粗',
-    '_V': '斜体',
-    '_W': '下划线',
-    '_O': '水平居左',
-    '_P': '水平居中',
-    '_Q': '水平居右',
-    '_R': '垂直居上',
-    '_S': '垂直居中',
-    '_T': '垂直居下',
-    '__Z': '上',
-    '__a_': '右',
-    '__aa': '下',
-    '__ab': '左'
+    '__aa': '获取图片尺寸失败，请重试～～',
+    '_Z': '清除图片',
+    '_a_': '点击选择图片',
+    '_ab': '图片库',
+    '_G': '清除颜色',
+    '__z': '字号：',
+    '__q': '背景图片：',
+    '__r': '背景平铺：',
+    '__s': '拉伸铺满',
+    '__t': '原始尺寸',
+    '__u': '横向平铺',
+    '__v': '垂直平铺',
+    '__w': '双向平铺',
+    '__l': '锁定编辑：',
+    '__n': '最小宽度：',
+    '__o': '最小高度：',
+    '__i': '列分配：',
+    '__j': '外边距：',
+    '__k': '内边距：',
+    '__y': '高：',
+    '__h': '布局',
+    '__x': '文本',
+    '__m': '页面',
+    '_U': '点击添加列',
+    '_T': '点击删除列',
+    '__A': '透明度：',
+    '__B': '字间距：',
+    '__F': '内容：',
+    '__D': '样式：',
+    '__E': '排列：',
+    '_Q': '加粗',
+    '_R': '斜体',
+    '_S': '下划线',
+    '_K': '水平居左',
+    '_L': '水平居中',
+    '_M': '水平居右',
+    '_N': '垂直居上',
+    '_O': '垂直居中',
+    '_P': '垂直居下',
+    '__V': '上',
+    '__W': '右',
+    '__X': '下',
+    '__Y': '左'
 };
 
 });
@@ -6515,7 +6515,7 @@ define("panels/index",["magix"],(require,exports,module)=>{
 Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 let Panels = [{
-        title: '__al',
+        title: '__ah',
         icon: '&#xe7a1;',
         width: 240,
         height: 120,
@@ -6526,7 +6526,7 @@ let Panels = [{
         id: 'p-props',
         view: 'panels/props/index'
     }, {
-        title: '__am',
+        title: '__ai',
         icon: '&#xe609;',
         width: 200,
         height: 120,
@@ -6541,12 +6541,12 @@ exports.default = {
     '__Z'() {
         for (let p of Panels) {
             if (p.show) {
-                this['__cC'](p.id, true);
+                this['__cA'](p.id, true);
             }
         }
         magix_1.State.fire('__j');
     },
-    '__cC'(id, prevent) {
+    '__cA'(id, prevent) {
         let info = PanelsMap[id];
         if (!info.opened) {
             info.opened = 1;
@@ -6556,7 +6556,7 @@ exports.default = {
                 app.insertAdjacentHTML('beforeend', `<div id="${info.eId}"></div>`);
                 let root = magix_1.Vframe.byNode(app);
                 info.close = () => {
-                    this['__cD'](info.id);
+                    this['__cB'](info.id);
                 };
                 root.mountVframe(magix_1.node(info.eId), 'panels/panel', info);
             }
@@ -6570,7 +6570,7 @@ exports.default = {
             }
         }
     },
-    '__cD'(id) {
+    '__cB'(id) {
         let info = PanelsMap[id];
         if (info.opened) {
             info.opened = 0;
@@ -6584,10 +6584,10 @@ exports.default = {
     '__aJ'(id) {
         let info = PanelsMap[id];
         if (info.opened) {
-            this['__cD'](id);
+            this['__cB'](id);
         }
         else {
-            this['__cC'](id);
+            this['__cA'](id);
         }
     },
     '__aI'() {
@@ -6603,7 +6603,7 @@ exports.default = {
  */
 define("panels/panel",["magix","../gallery/mx-pointer/cursor","../gallery/mx-dragdrop/index"],(require,exports,module)=>{
 /*magix_1,cursor_1,index_1*/
-let $_quick_vnode_attr_static_0={'class': 'dcc dk dj',};
+let $_quick_vnode_attr_static_0={'class': 'dcb dk dj',};
 let $_quick_vnode_attr_static_1={'class': 'dx dy dz',};
 let $_quick_vnode_attr_static_2={'class': 'de dE db',};
 "use strict";
@@ -6614,29 +6614,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 const cursor_1 = require("../gallery/mx-pointer/cursor");
 const index_1 = require("../gallery/mx-dragdrop/index");
-magix_1.default.applyStyle("dt",".dcb{background:hsla(0,0%,100%,.93);position:absolute;box-shadow:0 2px 4px 0 rgba(0,0,0,.3)}.dcc{font-size:12px;height:18px;line-height:18px;background:#fa742b;color:#fff}.dcd{padding:0 5px;cursor:move;width:calc(100% - 36px)}.dce{width:16px;height:14px;margin:0 1px;font-size:11px;cursor:pointer;display:inline-flex;justify-content:center;align-items:center;border-radius:2px}.dce:hover{background:#e64e30}.dcf{overflow:hidden;transition:height .25s}.dcg{transition:none}.dch{width:calc(100% - 2px);overflow:auto;float:left}.dci{width:2px;float:right;cursor:ew-resize}.dcj,.dci{background:#fafafa}.dcj{height:2px;cursor:ns-resize}.dck{scroll-behavior:smooth}.dck::-webkit-scrollbar,.dck::-webkit-scrollbar-corner{height:2px;width:2px;background:#fafafa}");
+magix_1.default.applyStyle("dt",".dca{background:hsla(0,0%,100%,.93);position:absolute;box-shadow:0 2px 4px 0 rgba(0,0,0,.3)}.dcb{font-size:12px;height:18px;line-height:18px;background:#fa742b;color:#fff}.dcc{padding:0 5px;cursor:move;width:calc(100% - 36px)}.dcd{width:16px;height:14px;margin:0 1px;font-size:11px;cursor:pointer;display:inline-flex;justify-content:center;align-items:center;border-radius:2px}.dcd:hover{background:#e64e30}.dce{overflow:hidden;transition:height .25s}.dcf{transition:none}.dcg{width:calc(100% - 2px);overflow:auto;float:left}.dch{width:2px;float:right;cursor:ew-resize}.dci,.dch{background:#fafafa}.dci{height:2px;cursor:ns-resize}.dcj{scroll-behavior:smooth}.dcj::-webkit-scrollbar,.dcj::-webkit-scrollbar-corner{height:2px;width:2px;background:#fafafa}");
 let MinWidth = 100;
 let ZIndex = 300;
 let Panels = [];
 let PanelsManager = {
-    '__bd'(view) {
+    '__bb'(view) {
         Panels.push(view);
     },
-    '__aO'(view) {
+    '__aM'(view) {
         for (let i = Panels.length; i--;) {
             if (Panels[i] == view) {
                 Panels.splice(i, 1);
                 break;
             }
         }
-        this['__cE']();
+        this['__cC']();
     },
-    '__cE'() {
+    '__cC'() {
         for (let i = Panels.length; i--;) {
-            Panels[i]['__cF'](ZIndex + i);
+            Panels[i]['__cD'](ZIndex + i);
         }
     },
-    '__cG'(view) {
+    '__cE'(view) {
         if (Panels[Panels.length - 1] != view) {
             for (let i = Panels.length; i--;) {
                 if (Panels[i] == view) {
@@ -6645,7 +6645,7 @@ let PanelsManager = {
                 }
             }
             Panels.push(view);
-            this['__cE']();
+            this['__cC']();
         }
     }
 };
@@ -6674,15 +6674,15 @@ $vnode_3,
 $vnode_4,
 $text,
 $$_class; 
-    $vnode_4=[$_create(0,1,(icon))];;$vnode_3=[$_create('i',$_quick_vnode_attr_static_1,$vnode_4 )]; $vnode_3.push($_create(0,0,(i18n(title))));;$vnode_2=[$_create('div',{'class': 'dcd dd', 'title': $n(i18n('__ai')), 'mx-mousedown': $_viewId+'__cI()',},$vnode_3 )];   $vnode_4=[$_create(0,0,'')];;$$_class='dx dce';if(shrink){;$$_class+=' dA';};$vnode_3=[$_create('i',{'mx-click': $_viewId+'__cK()', 'title': $n(i18n(shrink?'__an':'__ao',title)), 'class': $$_class,},$vnode_4 )];  $vnode_4=[$_create(0,0,'')];;$vnode_3.push($_create('i',{'class': 'dx dce', 'mx-click': $_viewId+'__bp()', 'title': $n(i18n('_f',title)),},$vnode_4 )); ;$vnode_2.push($_create('div',$_quick_vnode_attr_static_2,$vnode_3 )); ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )];  $vnode_2=[];  ;$vnode_2.push($_create('div',{'style': 'width:'+$n(resizeX?'calc(100% - 2px)':'100%'), 'class': 'dch dl dck db', 'mx-view': $n(view),})); if(!resizeX){  ;$vnode_3=[$_create('div',{'class': 'dci dk db', 'title': $n(i18n('__aj')), 'mx-mousedown': $_viewId+'__aM({w:1})',})]; $vnode_2.push(...$vnode_3); };$vnode_1.push($_create('div',{'class': 'dcf', 'id': 'c_'+$n(id), 'style': 'height:'+$n((shrink?0:`calc(100vh - ${height}px)`)),},$vnode_2 ));  ;$$_class='dcj dk';if(shrink||!resizeY){;$$_class+=' di';};$vnode_1.push($_create('div',{'title': $n(i18n('__ak')), 'mx-mousedown': $_viewId+'__aM({h:1})', 'class': $$_class,})); ;$$_style='width:'+$n(width)+'px;';if(left===0||left){;$$_style+='left:'+$n(left);}else{;$$_style+='right:'+$n(right);};$$_style+='px;top:'+$n(top)+'px;z-index:'+$n(zIndex)+';';$vnode_0.push($_create('div',{'class': 'dcb', 'id': 'p_'+$n(id), 'mx-mousedown': $_viewId+'__cJ()', 'style': $$_style,},$vnode_1 ));  
+    $vnode_4=[$_create(0,1,(icon))];;$vnode_3=[$_create('i',$_quick_vnode_attr_static_1,$vnode_4 )]; $vnode_3.push($_create(0,0,(i18n(title))));;$vnode_2=[$_create('div',{'class': 'dcc dd', 'title': $n(i18n('__ae')), 'mx-mousedown': $_viewId+'__cG()',},$vnode_3 )];   $vnode_4=[$_create(0,0,'')];;$$_class='dx dcd';if(shrink){;$$_class+=' dA';};$vnode_3=[$_create('i',{'mx-click': $_viewId+'__cJ()', 'title': $n(i18n(shrink?'__aj':'__ak',title)), 'class': $$_class,},$vnode_4 )];  $vnode_4=[$_create(0,0,'')];;$vnode_3.push($_create('i',{'class': 'dx dcd', 'mx-click': $_viewId+'__bn()', 'title': $n(i18n('_f',title)),},$vnode_4 )); ;$vnode_2.push($_create('div',$_quick_vnode_attr_static_2,$vnode_3 )); ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )];  $vnode_2=[];  ;$vnode_2.push($_create('div',{'style': 'width:'+$n(resizeX?'calc(100% - 2px)':'100%'), 'class': 'dcg dl dcj db', 'mx-view': $n(view),})); if(!resizeX){  ;$vnode_3=[$_create('div',{'class': 'dch dk db', 'title': $n(i18n('__af')), 'mx-mousedown': $_viewId+'__cH({w:1})',})]; $vnode_2.push(...$vnode_3); };$vnode_1.push($_create('div',{'class': 'dce', 'id': 'c_'+$n(id), 'style': 'height:'+$n((shrink?0:`calc(100vh - ${height}px)`)),},$vnode_2 ));  ;$$_class='dci dk';if(shrink||!resizeY){;$$_class+=' di';};$vnode_1.push($_create('div',{'title': $n(i18n('__ag')), 'mx-mousedown': $_viewId+'__cH({h:1})', 'class': $$_class,})); ;$$_style='width:'+$n(width)+'px;';if(left===0||left){;$$_style+='left:'+$n(left);}else{;$$_style+='right:'+$n(right);};$$_style+='px;top:'+$n(top)+'px;z-index:'+$n(zIndex)+';';$vnode_0.push($_create('div',{'class': 'dca', 'id': 'p_'+$n(id), 'mx-mousedown': $_viewId+'__cI()', 'style': $$_style,},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     init(data) {
-        PanelsManager["__bd"](this);
+        PanelsManager["__bb"](this);
         this.on('destroy', () => {
-            PanelsManager["__aO"](this);
+            PanelsManager["__aM"](this);
         });
-        this['__cH'] = data.close;
+        this['__cF'] = data.close;
         this.set({
             icon: data.icon,
             title: data.title,
@@ -6701,7 +6701,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             zIndex: ZIndex + Panels.length
         });
     },
-    '__cI<mousedown>'(e) {
+    '__cG<mousedown>'(e) {
         let n = magix_1.node('p_' + this.id);
         let styles = n.style;
         let startX = this.get('left');
@@ -6744,13 +6744,13 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             cursor_1.default["__y"]();
         });
     },
-    '__aM<mousedown>'(e) {
+    '__cH<mousedown>'(e) {
         let { w: resizeWidth } = e.params;
         let startWidth = this.get('width');
         let startHeight = this.get('height');
         let startRight = this.get('right');
         let cNode = magix_1.node('c_' + this.id);
-        cNode.classList.add('dcg');
+        cNode.classList.add('dcf');
         let cStyles = cNode.style;
         let pStyles = magix_1.node('p_' + this.id).style;
         let showedCursor = 0;
@@ -6786,27 +6786,27 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             }
         }, () => {
             cursor_1.default["__y"]();
-            cNode.classList.remove('dcg');
+            cNode.classList.remove('dcf');
         });
     },
-    '__cF'(z) {
+    '__cD'(z) {
         magix_1.node('p_' + this.id).style.zIndex = z;
     },
-    '__cJ<mousedown>'() {
-        PanelsManager["__cG"](this);
+    '__cI<mousedown>'() {
+        PanelsManager["__cE"](this);
     },
     '__x'() {
-        PanelsManager["__cG"](this);
+        PanelsManager["__cE"](this);
     },
     '__y'() {
     },
-    '__cK<click>'() {
+    '__cJ<click>'() {
         this.digest({
             shrink: !this.get('shrink')
         });
     },
-    '__bp<click>'() {
-        let c = this['__cH'];
+    '__bn<click>'() {
+        let c = this['__cF'];
         if (c) {
             magix_1.default.toTry(c);
         }
@@ -6857,10 +6857,10 @@ require("./page");
 let $_quick_static_node_3;
 let $_quick_static_node_5;
 let $_quick_static_node_6;
-let $_quick_vnode_attr_static_0={'class': 'dcl',};
-let $_quick_vnode_attr_static_1={'class': 'dcm',};
-let $_quick_vnode_attr_static_2={'class': 'dcn',};
-let $_quick_vnode_attr_static_4={'class': 'dcs',};
+let $_quick_vnode_attr_static_0={'class': 'dck',};
+let $_quick_vnode_attr_static_1={'class': 'dcl',};
+let $_quick_vnode_attr_static_2={'class': 'dcm',};
+let $_quick_vnode_attr_static_4={'class': 'dcr',};
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -6869,7 +6869,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 const props_1 = require("../../designer/props");
 const history_1 = require("../../designer/history");
-magix_1.default.applyStyle("du",".dcl{padding:4px;min-width:200px}.dcm{line-height:28px;display:flex;align-items:center}.dcn{width:80px;text-align:right}.dco{height:1px;line-height:1px;margin:5px 0;background:rgba(0,0,0,.2);background:-webkit-gradient(linear,left top,right top,from(rgba(165,69,243,0)),color-stop(.5,rgba(125,118,132,.33)),to(rgba(165,69,243,0)))}.dcp{width:140px}.dcq{height:90px}.dcr{align-items:flex-start}.dcs{display:flex;align-items:center;cursor:pointer}.dct{visibility:hidden;position:absolute}.dcu{width:32px;height:16px;position:relative;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;display:inline-block;border-radius:22px;background:#ccc}.dcu:before{content:\"\";width:12px;height:12px;position:absolute;left:0;margin:2px;border-radius:50%;background:#fff;transition:all .25s}.dct:checked+.dcu{background:#fa742b}.dct:checked+.dcu:before{left:100%;margin-left:-14px}.dct:disabled+.dcu{background:#e6e6e6;cursor:not-allowed}");
+magix_1.default.applyStyle("du",".dck{padding:4px;min-width:200px}.dcl{line-height:28px;display:flex;align-items:center}.dcm{width:80px;text-align:right}.dcn{height:1px;line-height:1px;margin:5px 0;background:rgba(0,0,0,.2);background:-webkit-gradient(linear,left top,right top,from(rgba(165,69,243,0)),color-stop(.5,rgba(125,118,132,.33)),to(rgba(165,69,243,0)))}.dco{width:140px}.dcp{height:90px}.dcq{align-items:flex-start}.dcr{display:flex;align-items:center;cursor:pointer}.dcs{visibility:hidden;position:absolute}.dct{width:32px;height:16px;position:relative;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;display:inline-block;border-radius:22px;background:#ccc}.dct:before{content:\"\";width:12px;height:12px;position:absolute;left:0;margin:2px;border-radius:50%;background:#fff;transition:all .25s}.dcs:checked+.dct{background:#fa742b}.dcs:checked+.dct:before{left:100%;margin-left:-14px}.dcs:disabled+.dct{background:#e6e6e6;cursor:not-allowed}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i,$eq)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -6888,13 +6888,13 @@ $vnode_6,
 $vnode_7,
 $$_mx_view,
 $vnode_8; 
-if(elements.length==1){ let e=elements[0];; $vnode_2=[];   $vnode_4=[$_create(0,0,(i18n('__ap')))];;$vnode_3=[$_create('span',$_quick_vnode_attr_static_2,$vnode_4 )];  $vnode_4=[$_create(0,0,(i18n(e.ctrl.title)))];;$vnode_3.push($_create('span',0,$vnode_4 )); ;$vnode_2.push($_create('li',$_quick_vnode_attr_static_1,$vnode_3 )); for(let $q_key_clyiiqhw=0,$q_a_bqhxdz=e.ctrl.props,$q_c_iukn=$q_a_bqhxdz.length;$q_key_clyiiqhw<$q_c_iukn;$q_key_clyiiqhw++){let p=$q_a_bqhxdz[$q_key_clyiiqhw]; $vnode_3=[]; if(p.type==props['__ab']){  if ($_quick_static_node_3) {
-                                $vnode_4=[$_quick_static_node_3]; }else{;$vnode_4=[$_quick_static_node_3=$_create('li',{'mxs': 'dz:_', 'class': 'dco',})]; }$vnode_3.push(...$vnode_4); }else{ $vnode_4=[]; let data=e.props[p.key];;if(!p.ifShow||p.ifShow(e.props)){  $vnode_6=[];  $vnode_7=[$_create(0,0,(i18n(p.tip)))];;$vnode_6.push($_create('span',$_quick_vnode_attr_static_2,$vnode_7 )); if(p.type==props['__a_']){  ;$$_mx_view='gallery/mx-number/index?value='+$i($_ref,data);if(($_temp=p.max)!=null){;$$_mx_view+='&max='+($eu($_temp));};if(($_temp=p.step)!=null){;$$_mx_view+='&step='+($eu($_temp));};if(($_temp=p.fixed)!=null){;$$_mx_view+='&fixed='+($eu($_temp));};if(($_temp=p.min)!=null){;$$_mx_view+='&min='+($eu($_temp));};$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp du dh', 'disabled': ($_temp=(e.props.locked))!=null&&$_temp, 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': $$_mx_view,})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__aa']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp', 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'color\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-color/index?clear='+($eu(p.clear))+'&color='+$i($_ref,data)+'&align=right&disabled='+($eu(e.props.locked))+'&alpha='+($eu(p.alpha)),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ac']){   ;$vnode_8=[$_create('input',{'class': 'dct', 'type': 'checkbox', 'checked': (e.props[p.key]), 'mx-change': $_viewId+'__cM({key:\''+($eq(p.key))+'\',bool:1,element:\''+$i($_ref,e)+'\',refresh:\''+$i($_ref,p.refresh)+'\'})',},0,1)];  if ($_quick_static_node_5) {
-                                $vnode_8.push($_quick_static_node_5); }else{;$vnode_8.push($_quick_static_node_5=$_create('i',{'mxs': 'dz:a', 'class': 'dcu',})); };$vnode_7=[$_create('label',$_quick_vnode_attr_static_4,$vnode_8 )]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ad']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp', 'mx-change': $_viewId+'__cM({key:\''+($eq(p.key))+'\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-layout/column?columns='+$i($_ref,data)+'&disabled='+$i($_ref,e.props.locked),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ae']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp', 'mx-change': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-layout/guage?guage='+$i($_ref,data)+'&disabled='+$i($_ref,e.props.locked),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ah']){  ;$vnode_7=[$_create('textarea',{'class': 'dv dcp dcq', 'disabled': (e.props.locked), 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',ta:1,element:\''+$i($_ref,e)+'\'})', 'value': $n(data),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__af']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp', 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-font/style?disabled='+$i($_ref,e.props.locked)+'&value='+$i($_ref,data),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ag']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dcp', 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-font/align?disabled='+$i($_ref,e.props.locked)+'&value='+$i($_ref,data),})]; $vnode_6.push(...$vnode_7); };$$_class='dcm';if(p.dockTop){;$$_class+=' dcr';};$vnode_5=[$_create('li',{'class': $$_class,},$vnode_6 )]; $vnode_4.push(...$vnode_5); }$vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); };$vnode_1=[$_create('ul',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); }else{  if ($_quick_static_node_6) {
+if(elements.length==1){ let e=elements[0];; $vnode_2=[];   $vnode_4=[$_create(0,0,(i18n('__al')))];;$vnode_3=[$_create('span',$_quick_vnode_attr_static_2,$vnode_4 )];  $vnode_4=[$_create(0,0,(i18n(e.ctrl.title)))];;$vnode_3.push($_create('span',0,$vnode_4 )); ;$vnode_2.push($_create('li',$_quick_vnode_attr_static_1,$vnode_3 )); for(let $q_key_bskxx=0,$q_a_xaghgoke=e.ctrl.props,$q_c_woaekcvcd=$q_a_xaghgoke.length;$q_key_bskxx<$q_c_woaekcvcd;$q_key_bskxx++){let p=$q_a_xaghgoke[$q_key_bskxx]; $vnode_3=[]; if(p.type==props['__ab']){  if ($_quick_static_node_3) {
+                                $vnode_4=[$_quick_static_node_3]; }else{;$vnode_4=[$_quick_static_node_3=$_create('li',{'mxs': 'dz:_', 'class': 'dcn',})]; }$vnode_3.push(...$vnode_4); }else{ $vnode_4=[]; let data=e.props[p.key];;if(!p.ifShow||p.ifShow(e.props)){  $vnode_6=[];  $vnode_7=[$_create(0,0,(i18n(p.tip)))];;$vnode_6.push($_create('span',$_quick_vnode_attr_static_2,$vnode_7 )); if(p.type==props['__a_']){  ;$$_mx_view='gallery/mx-number/index?value='+$i($_ref,data);if(($_temp=p.max)!=null){;$$_mx_view+='&max='+($eu($_temp));};if(($_temp=p.step)!=null){;$$_mx_view+='&step='+($eu($_temp));};if(($_temp=p.fixed)!=null){;$$_mx_view+='&fixed='+($eu($_temp));};if(($_temp=p.min)!=null){;$$_mx_view+='&min='+($eu($_temp));};$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco du dh', 'disabled': ($_temp=(e.props.locked))!=null&&$_temp, 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': $$_mx_view,})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__aa']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco', 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'color\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-color/index?clear='+($eu(p.clear))+'&color='+$i($_ref,data)+'&align=right&disabled='+($eu(e.props.locked))+'&alpha='+($eu(p.alpha)),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ac']){   ;$vnode_8=[$_create('input',{'class': 'dcs', 'type': 'checkbox', 'checked': (e.props[p.key]), 'mx-change': $_viewId+'__cL({key:\''+($eq(p.key))+'\',bool:1,element:\''+$i($_ref,e)+'\',refresh:\''+$i($_ref,p.refresh)+'\'})',},0,1)];  if ($_quick_static_node_5) {
+                                $vnode_8.push($_quick_static_node_5); }else{;$vnode_8.push($_quick_static_node_5=$_create('i',{'mxs': 'dz:a', 'class': 'dct',})); };$vnode_7=[$_create('label',$_quick_vnode_attr_static_4,$vnode_8 )]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ad']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco', 'mx-change': $_viewId+'__cL({key:\''+($eq(p.key))+'\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-layout/column?columns='+$i($_ref,data)+'&disabled='+$i($_ref,e.props.locked),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ae']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco', 'mx-change': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-layout/guage?guage='+$i($_ref,data)+'&disabled='+$i($_ref,e.props.locked),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ah']){  ;$vnode_7=[$_create('textarea',{'class': 'dv dco dcp', 'disabled': (e.props.locked), 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',ta:1,element:\''+$i($_ref,e)+'\'})', 'value': $n(data),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__af']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco', 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-font/style?disabled='+$i($_ref,e.props.locked)+'&value='+$i($_ref,data),})]; $vnode_6.push(...$vnode_7); }else if(p.type==props['__ag']){  ;$vnode_7=[$_create('div',{'mxv': 'elements', 'class': 'dco', 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\',element:\''+$i($_ref,e)+'\'})', 'mx-view': 'gallery/mx-font/align?disabled='+$i($_ref,e.props.locked)+'&value='+$i($_ref,data),})]; $vnode_6.push(...$vnode_7); };$$_class='dcl';if(p.dockTop){;$$_class+=' dcq';};$vnode_5=[$_create('li',{'class': $$_class,},$vnode_6 )]; $vnode_4.push(...$vnode_5); }$vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); };$vnode_1=[$_create('ul',$_quick_vnode_attr_static_0,$vnode_2 )]; $vnode_0.push(...$vnode_1); }else{  if ($_quick_static_node_6) {
                                 $vnode_1=[$_quick_static_node_6]; }else{;$vnode_1=[$_quick_static_node_6=$_create('div',{'mxs': 'dz:b', 'mx-view': 'panels/props/page',})]; }$vnode_0.push(...$vnode_1); } 
 return $_create($_viewId, 0, $vnode_0);  } ,
     init() {
-        let update = this['__cL'](this.render.bind(this), 100);
+        let update = this['__cK'](this.render.bind(this), 100);
         magix_1.State.on('__h', update);
         magix_1.State.on('__k', update);
         magix_1.State.on('___', update);
@@ -6906,7 +6906,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             elements: magix_1.State.get('__P')
         });
     },
-    '__cM<input,change>'(e) {
+    '__cL<input,change>'(e) {
         let { key, use, element, refresh, ta, bool } = e.params;
         if (use || bool || ta) {
             let props = element.props;
@@ -6940,9 +6940,9 @@ require("gallery/mx-color/index");
 require("gallery/mx-picture/index");
 require("gallery/mx-dropdown/index");
 let $_quick_static_node_3;
-let $_quick_vnode_attr_static_0={'class': 'dcl',};
-let $_quick_vnode_attr_static_1={'class': 'dcm',};
-let $_quick_vnode_attr_static_2={'class': 'dcn',};
+let $_quick_vnode_attr_static_0={'class': 'dck',};
+let $_quick_vnode_attr_static_1={'class': 'dcl',};
+let $_quick_vnode_attr_static_2={'class': 'dcm',};
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
@@ -6968,8 +6968,8 @@ $$_class,
 $vnode_4,
 $vnode_5,
 $$_mx_view; 
- $vnode_1=[];   $vnode_3=[$_create(0,0,(i18n('__ap')))];;$vnode_2=[$_create('span',$_quick_vnode_attr_static_2,$vnode_3 )];  $vnode_3=[$_create(0,0,(i18n(ctrl.title)))];;$vnode_2.push($_create('span',0,$vnode_3 )); ;$vnode_1.push($_create('li',$_quick_vnode_attr_static_1,$vnode_2 )); for(let $q_key_vgdggkbr=0,$q_a_fgzzxhn=ctrl.props,$q_c_isbzuomea=$q_a_fgzzxhn.length;$q_key_vgdggkbr<$q_c_isbzuomea;$q_key_vgdggkbr++){let p=$q_a_fgzzxhn[$q_key_vgdggkbr]; $vnode_2=[]; if(p.type==props['__ab']){  if ($_quick_static_node_3) {
-                                $vnode_3=[$_quick_static_node_3]; }else{;$vnode_3=[$_quick_static_node_3=$_create('li',{'mxs': 'dA:_', 'class': 'dco',})]; }$vnode_2.push(...$vnode_3); }else if(!p.ifShow||p.ifShow(page)){  $vnode_4=[];  $vnode_5=[$_create(0,0,(i18n(p.tip)))];;$vnode_4.push($_create('span',$_quick_vnode_attr_static_2,$vnode_5 )); if(p.type==props['__a_']){  ;$$_mx_view='gallery/mx-number/index?value='+$i($_ref,page[p.key]);if(($_temp=p.max)!=null){;$$_mx_view+='&max='+($eu($_temp));};if(($_temp=p.step)!=null){;$$_mx_view+='&step='+($eu($_temp));};if(($_temp=p.fixed)!=null){;$$_mx_view+='&fixed='+($eu($_temp));};if(($_temp=p.min)!=null){;$$_mx_view+='&min='+($eu($_temp));};$vnode_5=[$_create('div',{'mxv': 'page,ctrl', 'class': 'dcp du dh', 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\'})', 'mx-view': $$_mx_view,})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__aa']){  ;$$_mx_view='gallery/mx-color/index?clear='+($eu(p.clear))+'&color='+$i($_ref,page[p.key])+'&align=right';if(($_temp=p.alpha)!=null){;$$_mx_view+='&alpha='+($eu($_temp));};$vnode_5=[$_create('div',{'mxv': 'page,ctrl', 'class': 'dcp', 'mx-input': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'color\'})', 'mx-view': $$_mx_view,})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__ai']){  ;$vnode_5=[$_create('div',{'class': 'dcp', 'mx-change': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'src\',refresh:\''+$i($_ref,p.refresh)+'\',write:\''+$i($_ref,p.write)+'\'})', 'mx-view': 'gallery/mx-picture/index?src='+($eu(page[p.key])),})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__aj']){  ;$vnode_5=[$_create('div',{'mxv': 'ctrl', 'class': 'dcp', 'mx-change': $_viewId+'__cM({key:\''+($eq(p.key))+'\',use:\'value\'})', 'mx-view': 'gallery/mx-dropdown/index?selected='+($eu(page[p.key]))+'&list='+$i($_ref,p.items)+'&textKey=text&valueKey=value',})]; $vnode_4.push(...$vnode_5); };$$_class='dcm';if(p.dockTop){;$$_class+=' dcr';};$vnode_3=[$_create('li',{'class': $$_class,},$vnode_4 )]; $vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('ul',$_quick_vnode_attr_static_0,$vnode_1 ));  
+ $vnode_1=[];   $vnode_3=[$_create(0,0,(i18n('__al')))];;$vnode_2=[$_create('span',$_quick_vnode_attr_static_2,$vnode_3 )];  $vnode_3=[$_create(0,0,(i18n(ctrl.title)))];;$vnode_2.push($_create('span',0,$vnode_3 )); ;$vnode_1.push($_create('li',$_quick_vnode_attr_static_1,$vnode_2 )); for(let $q_key_ddvukgb=0,$q_a_lynbxiinf=ctrl.props,$q_c_pzezuhgqo=$q_a_lynbxiinf.length;$q_key_ddvukgb<$q_c_pzezuhgqo;$q_key_ddvukgb++){let p=$q_a_lynbxiinf[$q_key_ddvukgb]; $vnode_2=[]; if(p.type==props['__ab']){  if ($_quick_static_node_3) {
+                                $vnode_3=[$_quick_static_node_3]; }else{;$vnode_3=[$_quick_static_node_3=$_create('li',{'mxs': 'dA:_', 'class': 'dcn',})]; }$vnode_2.push(...$vnode_3); }else if(!p.ifShow||p.ifShow(page)){  $vnode_4=[];  $vnode_5=[$_create(0,0,(i18n(p.tip)))];;$vnode_4.push($_create('span',$_quick_vnode_attr_static_2,$vnode_5 )); if(p.type==props['__a_']){  ;$$_mx_view='gallery/mx-number/index?value='+$i($_ref,page[p.key]);if(($_temp=p.max)!=null){;$$_mx_view+='&max='+($eu($_temp));};if(($_temp=p.step)!=null){;$$_mx_view+='&step='+($eu($_temp));};if(($_temp=p.fixed)!=null){;$$_mx_view+='&fixed='+($eu($_temp));};if(($_temp=p.min)!=null){;$$_mx_view+='&min='+($eu($_temp));};$vnode_5=[$_create('div',{'mxv': 'page,ctrl', 'class': 'dco du dh', 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\'})', 'mx-view': $$_mx_view,})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__aa']){  ;$$_mx_view='gallery/mx-color/index?clear='+($eu(p.clear))+'&color='+$i($_ref,page[p.key])+'&align=right';if(($_temp=p.alpha)!=null){;$$_mx_view+='&alpha='+($eu($_temp));};$vnode_5=[$_create('div',{'mxv': 'page,ctrl', 'class': 'dco', 'mx-input': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'color\'})', 'mx-view': $$_mx_view,})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__ai']){  ;$vnode_5=[$_create('div',{'class': 'dco', 'mx-change': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'src\',refresh:\''+$i($_ref,p.refresh)+'\',write:\''+$i($_ref,p.write)+'\'})', 'mx-view': 'gallery/mx-picture/index?src='+($eu(page[p.key])),})]; $vnode_4.push(...$vnode_5); }else if(p.type==props['__aj']){  ;$vnode_5=[$_create('div',{'mxv': 'ctrl', 'class': 'dco', 'mx-change': $_viewId+'__cL({key:\''+($eq(p.key))+'\',use:\'value\'})', 'mx-view': 'gallery/mx-dropdown/index?selected='+($eu(page[p.key]))+'&list='+$i($_ref,p.items)+'&textKey=text&valueKey=value',})]; $vnode_4.push(...$vnode_5); };$$_class='dcl';if(p.dockTop){;$$_class+=' dcq';};$vnode_3=[$_create('li',{'class': $$_class,},$vnode_4 )]; $vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('ul',$_quick_vnode_attr_static_0,$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     init() {
         let update = this.render.bind(this);
@@ -6982,7 +6982,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
             page: magix_1.State.get('__N')
         });
     },
-    '__cM<input,change>'(e) {
+    '__cL<input,change>'(e) {
         let { key, use, refresh, write } = e.params;
         let page = magix_1.State.get('__N');
         page[key] = e[use];
@@ -7005,7 +7005,7 @@ return $_create($_viewId, 0, $vnode_0);  } ,
  */
 define("elements/designer",["magix","../gallery/mx-dragdrop/index"],(require,exports,module)=>{
 /*magix_1,index_1*/
-let $_quick_static_node_0;
+
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -7013,7 +7013,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 const magix_1 = require("magix");
 const index_1 = require("../gallery/mx-dragdrop/index");
-magix_1.default.applyStyle("df",".das{left:50%;top:50%;position:absolute}.das:before{width:1px;height:5px;left:0;top:-2px}.das:after,.das:before{content:\" \";position:absolute;background:red}.das:after{width:5px;height:1px;left:-2px;top:0}.dat{border:1px dotted hsla(0,0%,86.7%,.4);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.dau{border:1px solid #fa742b}.dav{border:1px solid #999}.daw{border-right:3px solid #fa742b;right:-2px}.dax,.day{border-bottom:3px solid #fa742b;bottom:-2px}.day{border-right:3px solid #fa742b;right:-2px}.daz{cursor:url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABvUExURUdwTP///9XV1R0dHf///3Nzc////////////////1ZWVq+vr/T09PX19QQEBP///////8XFxf///////////wYGBv///+jo6P///4aGhqioqMzMzP///2BgYP///////////zExMf///wAAAP///xLps0AAAAAjdFJOUwCxxOdixRDmzSDMv8/Z+tz5wWpXWPk3zALCv8KnyXZVMNuNPnv3CwAAAJ1JREFUKM/NkckOwyAMRFkDBMhC9qWr+//fWCIV1WlzrjoXS36yxmMT8hdqqKoUvRAjMtw22kvecem1GjTuK1vApmI+wQMBbQFy5li+QQRaX4AtRX+vbntAJeRl9HTTx4TiwESs61DXNUPmVQeujzVrQwh43TTxpeRBslVfMUhbiXKWyiAwvnIsMcdyJkfJYdpNvG/ltDm+bjP+8KFP8ggL+zQLGxwAAAAASUVORK5CYII=\") 14 14,pointer;top:-3px;right:-3px;width:6px;height:6px;border-radius:50%;background:#fa742b}");
+magix_1.default.applyStyle("df",".das{pointer-events:none}.dat{display:flex}.dau{position:absolute;left:0;top:0;right:0;bottom:0;background:transparent}.dav,.daw{border:1px solid #fa742b}.daw{border-color:#999}.dax{border:1px dotted #ddd;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.day{border-style:dashed}");
 let WatchSelectElements = {};
 let CheckStatus = () => {
     for (let p in WatchSelectElements) {
@@ -7033,21 +7033,10 @@ let $_temp,$vnode_0=[],$_empty_arr=[],
 	element,
 	view,
 	id,
-	scale,
-	onlyMove,
-	fullscreen,
-	selected,
-	count,
-	i18n,}=$$,
+	selected,}=$$,
 $text,
-$$_style,
-$$_class,
-$vnode_1,
-$vnode_2,
-$vnode_3,
-$vnode_4; 
-let props=element.props;; ;$vnode_0.push($_create('div',{'mxv': 'element,scale,onlyMove', 'class': 'dk', 'mx-view': $n(view)+'?props='+$i($_ref,props)+'&scale='+$i($_ref,scale)+'&onlyMove='+$i($_ref,onlyMove), 'id': 'entity_'+$n(id),})); let r=props.rotate%360;; $vnode_1=[]; if(!fullscreen&&!props.locked){ $vnode_2=[]; if(selected){ $vnode_3=[];  if ($_quick_static_node_0) {
-                                $vnode_3.push($_quick_static_node_0); }else{;$vnode_3.push($_quick_static_node_0=$_create('div',{'mxs': 'dh:_', 'class': 'das',})); }if(count==1){  ;$vnode_4=[$_create('div',{'class': 'daz dg', 'mx-mousedown': $_viewId+'__aL()', 'title': $n(i18n('_h')),})]; $text='';let height=(Math.min(20,props.height-3)-4);;$text+=' ';let width=(Math.min(20,props.width)-4);;$text+=' ';let size=Math.max(Math.min(width,height)-2,0);;$text+=' ';width=Math.min(width,props.width-size-6);$text+=' ';height=Math.min(height,props.height-size-6-3);$text+=' ';let top=(props.height-height-size+3)/2;; ;$$_style='height:'+$n(Math.max(height,0))+'px;top:'+$n(top)+'px;cursor:';if(r<=22.5||r>337.5||(r>157.5&&r<=202.5)){;$$_style+='ew';}else if(r<=67.5||(r>202.5&&r<=247.5)){;$$_style+='nwse';}else if(r<=112.5||(r>247.5&&r<=292.5)){;$$_style+='ns';}else if(r<=157.5||(r>292.5&&r<=337.5)){;$$_style+='nesw';};$$_style+='-resize';$vnode_4.push($_create('div',{'class': 'dg daw', 'title': $n(i18n('_i')), 'mx-mousedown': $_viewId+'__aM({key:\'rm\'})', 'style': $$_style,})); let left=(props.width-width-size)/2;; ;$$_style='width:'+$n(Math.max(width,0))+'px;left:'+$n(left)+'px;cursor:';if(r<=22.5||r>337.5||(r>157.5&&r<=202.5)){;$$_style+='ns';}else if(r<=67.5||(r>202.5&&r<=247.5)){;$$_style+='nesw';}else if(r<=112.5||(r>247.5&&r<=292.5)){;$$_style+='ew';}else if(r<=157.5||(r>292.5&&r<=337.5)){;$$_style+='nwse';};$$_style+='-resize';$vnode_4.push($_create('div',{'class': 'dg dax', 'title': $n(i18n('_j')), 'mx-mousedown': $_viewId+'__aM({key:\'mb\'})', 'style': $$_style,}));  ;$$_style='';if(size==0){;$$_style+='display:none;';};$$_style+='width:'+$n(size)+'px;height:'+$n(size)+'px;cursor:';if(r<=22.5||r>337.5||(r>157.5&&r<=202.5)){;$$_style+='nwse';}else if(r<=67.5||(r>202.5&&r<=247.5)){;$$_style+='ns';}else if(r<=112.5||(r>247.5&&r<=292.5)){;$$_style+='nesw';}else if(r<=157.5||(r>292.5&&r<=337.5)){;$$_style+='ew';};$$_style+='-resize;';$vnode_4.push($_create('div',{'class': 'dg day', 'title': $n(i18n('_k')), 'mx-mousedown': $_viewId+'__aM({key:\'rb\'})', 'style': $$_style,})); $vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$$_style='left:'+$n(props.x)+'px;top:'+$n(props.y)+'px;width:'+$n(props.width)+'px;height:'+$n(props.height)+'px;';if(r){;$$_style+='transform:rotate('+$n(r)+'deg);';}$$_class='dg dk';if(!fullscreen){;$$_class+=' dat';};if(selected&&!fullscreen){;$$_class+=' ';if(props.locked){;$$_class+='dav';}else{;$$_class+='dau';};};$vnode_0.push($_create('div',{'id': 'mask_'+$n(element.id), 'style': $$_style, 'class': $$_class,},$vnode_1 ));  
+$$_class; 
+$text='';let props=element.props;;$text+=' ';let ctrl=element.ctrl;; ;$$_class='dax';if(props.locked){;$$_class+=' day';};if(ctrl.role=='layout'){;$$_class+=' dat';}else{;$$_class+=' das';};$vnode_0.push($_create('div',{'mxv': 'element', 'mx-view': $n(view)+'?element='+$i($_ref,element)+'&props='+$i($_ref,props), 'id': 'entity_'+$n(id), 'class': $$_class,}));  ;$$_class='dau';if(ctrl.role=='layout'){;$$_class+=' das';};if(selected){;if(props.locked){;$$_class+=' daw';}else{;$$_class+=' dav';};};$vnode_0.push($_create('div',{'class': $$_class,}));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     ctor(data) {
@@ -7159,7 +7148,7 @@ exports.default = designer_1.default.extend({
 }, {
     type: 'layout',
     role: 'layout',
-    title: '__l',
+    title: '__h',
     icon: '&#xe764;',
     getProps() {
         return {
@@ -7173,24 +7162,24 @@ exports.default = designer_1.default.extend({
         };
     },
     props: [{
-            tip: '__m',
+            tip: '__i',
             key: 'columns',
             dockTop: true,
             type: props_1.default["__ad"]
         }, {
-            tip: '__n',
+            tip: '__j',
             key: 'margin',
             dockTop: true,
             type: props_1.default["__ae"]
         }, {
-            tip: '__o',
+            tip: '__k',
             key: 'padding',
             dockTop: true,
             type: props_1.default["__ae"]
         }, {
             type: props_1.default["__ab"]
         }, {
-            tip: '__p',
+            tip: '__l',
             key: 'locked',
             type: props_1.default["__ac"],
             refresh: true,
@@ -7215,7 +7204,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const magix_1 = require("magix");
 const stage_elements_1 = require("../../designer/stage-elements");
 const index_1 = require("../../gallery/mx-dragdrop/index");
-magix_1.default.applyStyle("dg",".daA{display:flex;width:100%;min-height:40px}.daB{flex-shrink:1;overflow:hidden;border:1px dashed #ccc}");
+magix_1.default.applyStyle("dg",".daz{display:flex;width:100%;min-height:40px}.daA{flex-shrink:1;overflow:hidden;border:1px dashed #ccc}");
 exports.default = magix_1.default.View.extend({
     tmpl: ($$, $_create,$_viewId,$n,$eu,$_ref,$i)=> { 
 let $_temp,$vnode_0=[],$_empty_arr=[],
@@ -7226,7 +7215,7 @@ $vnode_1,
 $vnode_2,
 $vnode_3,
 $vnode_4; 
- $vnode_1=[]; for(let index=0,$q_a_zlrms=props.columns,$q_c_ulstoisehm=$q_a_zlrms.length;index<$q_c_ulstoisehm;index++){let col=$q_a_zlrms[index];  $vnode_3=[]; for(let $q_key_obykxsb=0,$q_a_wwr=col.elements,$q_c_nmuppjwg=$q_a_wwr.length;$q_key_obykxsb<$q_c_nmuppjwg;$q_key_obykxsb++){let e=$q_a_wwr[$q_key_obykxsb];  ;$vnode_4=[$_create('div',{'mxv': 'props', 'class': 'dh', 'id': $n(e.id), 'eid': $n(e.id), 'mx-view': 'elements/'+$n(e.ctrl.role)+'/designer?element='+$i($_ref,e), 'mx-mousedown': $_viewId+'__aB({element:\''+$i($_ref,e)+'\'})', 'role': $n(e.ctrl.role),})]; $vnode_3.push(...$vnode_4); };$vnode_2=[$_create('div',{'style': 'flex-basis:'+$n(col.width*100)+'%;', 'class': 'daB', 'role': 'column', 'index': $n(index), 'pid': $n(element.id),},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'style': 'margin:'+$n(props.margin)+';padding:'+$n(props.padding)+';', 'class': 'daA',},$vnode_1 ));  
+ $vnode_1=[]; for(let index=0,$q_a_wcnoecawvo=props.columns,$q_c_lzovxhi=$q_a_wcnoecawvo.length;index<$q_c_lzovxhi;index++){let col=$q_a_wcnoecawvo[index];  $vnode_3=[]; for(let $q_key_ozsimr=0,$q_a_zqfbtwgecd=col.elements,$q_c_vdilgqq=$q_a_zqfbtwgecd.length;$q_key_ozsimr<$q_c_vdilgqq;$q_key_ozsimr++){let e=$q_a_zqfbtwgecd[$q_key_ozsimr];  ;$vnode_4=[$_create('div',{'mxv': 'props', 'class': 'dh', 'id': $n(e.id), 'eid': $n(e.id), 'mx-view': 'elements/'+$n(e.ctrl.role)+'/designer?element='+$i($_ref,e), 'mx-mousedown': $_viewId+'__aB({element:\''+$i($_ref,e)+'\'})', 'role': $n(e.ctrl.role),})]; $vnode_3.push(...$vnode_4); };$vnode_2=[$_create('div',{'style': 'flex-basis:'+$n(col.width*100)+'%;', 'class': 'daA', 'role': 'column', 'index': $n(index), 'pid': $n(element.id),},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'style': 'margin:'+$n(props.margin)+';padding:'+$n(props.padding)+';', 'class': 'daz',},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     init(data) {
@@ -7253,6 +7242,87 @@ return $_create($_viewId, 0, $vnode_0);  } ,
     author: kooboy_li@163.com
     loader: cmd_es
  */
+define("elements/page/designer",["../../designer/props","../../i18n/index"],(require,exports,module)=>{
+/*props_1,index_1*/
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/*
+    author:xinglie.lkf@alibaba-inc.com
+*/
+const props_1 = require("../../designer/props");
+const index_1 = require("../../i18n/index");
+exports.default = {
+    title: '__m',
+    getProps() {
+        return {
+            width: 900,
+            height: 500,
+            background: '#ffffff',
+            backgroundImage: '',
+            backgroundRepeat: 'full',
+            backgroundWidth: 0,
+            backgroundHeight: 0
+        };
+    },
+    props: [{
+            tip: '__n',
+            key: 'width',
+            type: props_1.default["__a_"],
+            min: 0
+        }, {
+            tip: '__o',
+            key: 'height',
+            type: props_1.default["__a_"],
+            min: 0
+        }, {
+            type: props_1.default["__ab"]
+        }, {
+            tip: '__p',
+            key: 'background',
+            type: props_1.default["__aa"]
+        }, {
+            tip: '__q',
+            dockTop: true,
+            key: 'backgroundImage',
+            type: props_1.default["__ai"],
+            refresh: true,
+            write(page, e) {
+                page.backgroundWidth = e.width;
+                page.backgroundHeight = e.height;
+            }
+        }, {
+            tip: '__r',
+            key: 'backgroundRepeat',
+            type: props_1.default["__aj"],
+            items: [{
+                    text: index_1.default('__s'),
+                    value: 'full'
+                }, {
+                    text: index_1.default('__t'),
+                    value: 'no-repeat'
+                }, {
+                    text: index_1.default('__u'),
+                    value: 'repeat-x'
+                }, {
+                    text: index_1.default('__v'),
+                    value: 'repeat-y'
+                }, {
+                    text: index_1.default('__w'),
+                    value: 'repeat'
+                }],
+            ifShow(page) {
+                return page.backgroundImage;
+            }
+        }]
+};
+
+});
+/*
+    generate by magix-combine@5.0.0: https://github.com/thx/magix-combine
+    author: kooboy_li@163.com
+    loader: cmd_es
+ */
 define("elements/text/designer",["../designer","../../designer/props"],(require,exports,module)=>{
 /*designer_1,props_1*/
 
@@ -7272,7 +7342,7 @@ exports.default = designer_1.default.extend({
 }, {
     type: 'text',
     role: 'text',
-    title: '__B',
+    title: '__x',
     icon: '&#xe6bc;',
     getProps() {
         return {
@@ -7298,17 +7368,17 @@ exports.default = designer_1.default.extend({
         };
     },
     props: [{
-            tip: '__C',
+            tip: '__y',
             key: 'height',
             type: props_1.default["__a_"],
             min: 0
         }, {
-            tip: '__D',
+            tip: '__z',
             key: 'fontsize',
             type: props_1.default["__a_"],
             min: 0
         }, {
-            tip: '__E',
+            tip: '__A',
             key: 'alpha',
             type: props_1.default["__a_"],
             step: 0.1,
@@ -7316,49 +7386,49 @@ exports.default = designer_1.default.extend({
             min: 0,
             max: 1
         }, {
-            tip: '__F',
+            tip: '__B',
             key: 'ls',
             type: props_1.default["__a_"],
             min: 0
         }, {
-            tip: '__t',
+            tip: '__p',
             key: 'background',
             clear: true,
             alpha: true,
             type: props_1.default["__aa"]
         }, {
-            tip: '__G',
+            tip: '__C',
             key: 'forecolor',
             type: props_1.default["__aa"]
         }, {
-            tip: '__H',
+            tip: '__D',
             key: 'style',
             type: props_1.default["__af"]
         }, {
-            tip: '__I',
+            tip: '__E',
             key: 'align',
             type: props_1.default["__ag"]
         }, {
-            tip: '__J',
+            tip: '__F',
             key: 'text',
             type: props_1.default["__ah"],
             dockTop: true
         }, {
             type: props_1.default["__ab"]
         }, {
-            tip: '__n',
+            tip: '__j',
             key: 'margin',
             dockTop: true,
             type: props_1.default["__ae"]
         }, {
-            tip: '__o',
+            tip: '__k',
             key: 'padding',
             dockTop: true,
             type: props_1.default["__ae"]
         }, {
             type: props_1.default["__ab"]
         }, {
-            tip: '__p',
+            tip: '__l',
             key: 'locked',
             type: props_1.default["__ac"],
             refresh: true,
@@ -7402,87 +7472,6 @@ return $_create($_viewId, 0, $vnode_0);  } ,
         this.digest();
     }
 });
-
-});
-/*
-    generate by magix-combine@5.0.0: https://github.com/thx/magix-combine
-    author: kooboy_li@163.com
-    loader: cmd_es
- */
-define("elements/page/designer",["../../designer/props","../../i18n/index"],(require,exports,module)=>{
-/*props_1,index_1*/
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
-    author:xinglie.lkf@alibaba-inc.com
-*/
-const props_1 = require("../../designer/props");
-const index_1 = require("../../i18n/index");
-exports.default = {
-    title: '__q',
-    getProps() {
-        return {
-            width: 900,
-            height: 500,
-            background: '#ffffff',
-            backgroundImage: '',
-            backgroundRepeat: 'full',
-            backgroundWidth: 0,
-            backgroundHeight: 0
-        };
-    },
-    props: [{
-            tip: '__r',
-            key: 'width',
-            type: props_1.default["__a_"],
-            min: 0
-        }, {
-            tip: '__s',
-            key: 'height',
-            type: props_1.default["__a_"],
-            min: 0
-        }, {
-            type: props_1.default["__ab"]
-        }, {
-            tip: '__t',
-            key: 'background',
-            type: props_1.default["__aa"]
-        }, {
-            tip: '__u',
-            dockTop: true,
-            key: 'backgroundImage',
-            type: props_1.default["__ai"],
-            refresh: true,
-            write(page, e) {
-                page.backgroundWidth = e.width;
-                page.backgroundHeight = e.height;
-            }
-        }, {
-            tip: '__v',
-            key: 'backgroundRepeat',
-            type: props_1.default["__aj"],
-            items: [{
-                    text: index_1.default('__w'),
-                    value: 'full'
-                }, {
-                    text: index_1.default('__x'),
-                    value: 'no-repeat'
-                }, {
-                    text: index_1.default('__y'),
-                    value: 'repeat-x'
-                }, {
-                    text: index_1.default('__z'),
-                    value: 'repeat-y'
-                }, {
-                    text: index_1.default('__A'),
-                    value: 'repeat'
-                }],
-            ifShow(page) {
-                return page.backgroundImage;
-            }
-        }]
-};
 
 });
 /*
@@ -7544,7 +7533,7 @@ $vnode_5,
 $vnode_6,
 $vnode_7,
 $vnode_8; 
-let temp,current; $vnode_1=[]; for(let $q_key_vwmwzmo=0,$q_a_yououkdn=yHelpers,$q_c_owvewolfig=$q_a_yououkdn.length;$q_key_vwmwzmo<$q_c_owvewolfig;$q_key_vwmwzmo++){let yHelp=$q_a_yououkdn[$q_key_vwmwzmo]; current=Math.abs(yStart)+yHelp.mm*scale+20;  $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'dx dT', 'title': $n(i18n('__')), 'mx-click': $_viewId+'__v({type:\'y\',id:\''+($eq(yHelp.id))+'\'})',},$vnode_4 )];  $vnode_4=[$_create(0,0,(yHelp.mm))];;$vnode_3.push($_create('span',$_quick_vnode_attr_static_0,$vnode_4 ));  ;$vnode_3.push($_create('span',{'class': 'dV', 'mx-mousedown': $_viewId+'__z({type:\'y\',id:\''+($eq(yHelp.id))+'\',c:'+$n(current)+'})', 'title': $n(i18n('_a')),})); ;$vnode_2=[$_create('div',{'class': 'dQ', 'style': 'width:'+$n(vWidth)+'px;top:'+$n(current)+'px;',},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dO', 'style': 'top:-'+$n(sTop)+'px', 'id': $n(id)+'_y_help', 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));  $vnode_1=[]; for(let $q_key_dfeqlyp=0,$q_a_hymjvgch=xHelpers,$q_c_jmbdapfoayf=$q_a_hymjvgch.length;$q_key_dfeqlyp<$q_c_jmbdapfoayf;$q_key_dfeqlyp++){let xHelp=$q_a_hymjvgch[$q_key_dfeqlyp]; current=Math.abs(xStart)+xHelp.mm*scale;  $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'dx dR', 'title': $n(i18n('__')), 'mx-click': $_viewId+'__v({type:\'x\',id:\''+($eq(xHelp.id))+'\'})',},$vnode_4 )];  $vnode_4=[$_create(0,0,(xHelp.mm))];;$vnode_3.push($_create('span',$_quick_vnode_attr_static_1,$vnode_4 ));  ;$vnode_3.push($_create('span',{'class': 'dW', 'mx-mousedown': $_viewId+'__z({type:\'x\',id:\''+($eq(xHelp.id))+'\',c:'+$n(current)+'})', 'title': $n(i18n('_a')),})); ;$vnode_2=[$_create('div',{'class': 'dP', 'style': 'height:'+$n(vHeight)+'px;left:'+$n(current)+'px;',},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dN', 'style': 'left:-'+$n(sLeft)+'px', 'id': $n(id)+'_x_help', 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));     $vnode_4=[]; for(let i=0;i<xStart;i+=step){ $vnode_5=[]; if(i){ $vnode_6=[]; temp=i/scale;if(temp%space===0){  ;$vnode_7=[$_create('rect',{'width': '1', 'height': $n(hbar), 'x': $n(xStart-i), 'y': $n(20-hbar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_8=[$_create(0,0,(-temp))];;$vnode_7.push($_create('text',{'x': $n(xStart-i+2), 'y': '14', 'style': 'font-size:10px;fill:#999;',},$vnode_8 )); $vnode_6.push(...$vnode_7); }else{  ;$vnode_7=[$_create('rect',{'width': '1', 'height': $n(bar), 'x': $n(xStart-i), 'y': $n(20-bar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_6.push(...$vnode_7); }$vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); }for(let i=0;i<xEnd;i+=step){ $vnode_5=[]; temp=i/scale;if(temp%space===0){  ;$vnode_6=[$_create('rect',{'width': '1', 'height': $n(hbar), 'x': $n(xStart+i), 'y': $n(20-hbar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_7=[$_create(0,0,(temp))];;$vnode_6.push($_create('text',{'x': $n(xStart+i+2), 'y': '14', 'style': 'font-size:10px;fill:#999;',},$vnode_7 )); $vnode_5.push(...$vnode_6); }else{  ;$vnode_6=[$_create('rect',{'width': '1', 'height': $n(bar), 'x': $n(xStart+i), 'y': $n(20-bar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); };$vnode_3=[$_create('svg',{'xmlns': 'http://www.w3.org/2000/svg', 'viewBox': '0 0 '+$n(width)+' 19', 'style': 'cursor:default;',},$vnode_4 )]; ;$vnode_2=[$_create('div',{'style': 'width:'+$n(width)+'px;height:100%',},$vnode_3 )]; ;$vnode_1=[$_create('div',{'class': 'dG', 'id': $n(id)+'_x',},$vnode_2 )];   $vnode_3=[$_create(0,0,'-')];;$vnode_2=[$_create('span',{'class': 'dL', 'id': $n(id)+'_x_tip',},$vnode_3 )]; ;$vnode_1.push($_create('div',{'class': 'dH', 'id': $n(id)+'_x_line', 'style': 'height:'+$n(vHeight+20)+'px',},$vnode_2 )); ;$vnode_0.push($_create('div',{'mx-mousemove': $_viewId+'__o()', 'mx-mouseout': $_viewId+'__p()', 'mx-click': $_viewId+'__t()',},$vnode_1 ));     $vnode_4=[]; for(let i=0;i<yStart;i+=step){ $vnode_5=[]; if(i){ $vnode_6=[]; temp=i/scale;if(temp%space===0){  ;$vnode_7=[$_create('rect',{'width': $n(hbar), 'height': '1', 'x': $n(20-hbar), 'y': $n(yStart-i), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_8=[$_create(0,0,(-temp))];;$vnode_7.push($_create('text',{'x': '14', 'y': $n(yStart-i+2), 'style': 'font-size:10px;fill:#999;', 'transform': 'rotate(-90,13,'+$n(yStart-i)+')',},$vnode_8 )); $vnode_6.push(...$vnode_7); }else{  ;$vnode_7=[$_create('rect',{'width': $n(bar), 'height': '1', 'x': $n(20-bar), 'y': $n(yStart-i), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_6.push(...$vnode_7); }$vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); }for(let i=0;i<yEnd;i+=step){ $vnode_5=[]; temp=i/scale;if(temp%space===0){  ;$vnode_6=[$_create('rect',{'width': $n(hbar), 'height': '1', 'x': $n(20-hbar), 'y': $n(yStart+i), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_7=[$_create(0,0,(temp))];;$vnode_6.push($_create('text',{'x': '14', 'y': $n(yStart+i), 'style': 'font-size:10px;fill:#999;;', 'transform': 'rotate(-90,13,'+$n(yStart+i-2)+')',},$vnode_7 )); $vnode_5.push(...$vnode_6); }else{  ;$vnode_6=[$_create('rect',{'width': $n(bar), 'height': '1', 'x': $n(20-bar), 'y': $n(yStart+i), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); };$vnode_3=[$_create('svg',{'xmlns': 'http://www.w3.org/2000/svg', 'viewBox': '0 0 19 '+$n(height), 'style': 'cursor:default',},$vnode_4 )]; ;$vnode_2=[$_create('div',{'style': 'height:'+$n(height)+'px;',},$vnode_3 )]; ;$vnode_1=[$_create('div',{'class': 'dJ', 'style': 'height:'+$n(vHeight)+'px;', 'id': $n(id)+'_y',},$vnode_2 )];   $vnode_3=[$_create(0,0,'-')];;$vnode_2=[$_create('span',{'class': 'dM', 'id': $n(id)+'_y_tip',},$vnode_3 )]; ;$vnode_1.push($_create('div',{'class': 'dI', 'id': $n(id)+'_y_line', 'style': 'width:'+$n(vWidth+20)+'px',},$vnode_2 )); ;$vnode_0.push($_create('div',{'mx-mousemove': $_viewId+'__q()', 'mx-mouseout': $_viewId+'__r()', 'mx-click': $_viewId+'__u()',},$vnode_1 ));  if ($_quick_static_node_2) {
+let temp,current; $vnode_1=[]; for(let $q_key_pmruet=0,$q_a_dthabivik=yHelpers,$q_c_wfzskjug=$q_a_dthabivik.length;$q_key_pmruet<$q_c_wfzskjug;$q_key_pmruet++){let yHelp=$q_a_dthabivik[$q_key_pmruet]; current=Math.abs(yStart)+yHelp.mm*scale+20;  $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'dx dT', 'title': $n(i18n('__')), 'mx-click': $_viewId+'__v({type:\'y\',id:\''+($eq(yHelp.id))+'\'})',},$vnode_4 )];  $vnode_4=[$_create(0,0,(yHelp.mm))];;$vnode_3.push($_create('span',$_quick_vnode_attr_static_0,$vnode_4 ));  ;$vnode_3.push($_create('span',{'class': 'dV', 'mx-mousedown': $_viewId+'__z({type:\'y\',id:\''+($eq(yHelp.id))+'\',c:'+$n(current)+'})', 'title': $n(i18n('_a')),})); ;$vnode_2=[$_create('div',{'class': 'dQ', 'style': 'width:'+$n(vWidth)+'px;top:'+$n(current)+'px;',},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dO', 'style': 'top:-'+$n(sTop)+'px', 'id': $n(id)+'_y_help', 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));  $vnode_1=[]; for(let $q_key_nypnbuvg=0,$q_a_zijhzbd=xHelpers,$q_c_qcxhnui=$q_a_zijhzbd.length;$q_key_nypnbuvg<$q_c_qcxhnui;$q_key_nypnbuvg++){let xHelp=$q_a_zijhzbd[$q_key_nypnbuvg]; current=Math.abs(xStart)+xHelp.mm*scale;  $vnode_4=[$_create(0,0,'')];;$vnode_3=[$_create('i',{'class': 'dx dR', 'title': $n(i18n('__')), 'mx-click': $_viewId+'__v({type:\'x\',id:\''+($eq(xHelp.id))+'\'})',},$vnode_4 )];  $vnode_4=[$_create(0,0,(xHelp.mm))];;$vnode_3.push($_create('span',$_quick_vnode_attr_static_1,$vnode_4 ));  ;$vnode_3.push($_create('span',{'class': 'dW', 'mx-mousedown': $_viewId+'__z({type:\'x\',id:\''+($eq(xHelp.id))+'\',c:'+$n(current)+'})', 'title': $n(i18n('_a')),})); ;$vnode_2=[$_create('div',{'class': 'dP', 'style': 'height:'+$n(vHeight)+'px;left:'+$n(current)+'px;',},$vnode_3 )]; $vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',{'class': 'dN', 'style': 'left:-'+$n(sLeft)+'px', 'id': $n(id)+'_x_help', 'mx-contextmenu': $_viewId+'__A()',},$vnode_1 ));     $vnode_4=[]; for(let i=0;i<xStart;i+=step){ $vnode_5=[]; if(i){ $vnode_6=[]; temp=i/scale;if(temp%space===0){  ;$vnode_7=[$_create('rect',{'width': '1', 'height': $n(hbar), 'x': $n(xStart-i), 'y': $n(20-hbar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_8=[$_create(0,0,(-temp))];;$vnode_7.push($_create('text',{'x': $n(xStart-i+2), 'y': '14', 'style': 'font-size:10px;fill:#999;',},$vnode_8 )); $vnode_6.push(...$vnode_7); }else{  ;$vnode_7=[$_create('rect',{'width': '1', 'height': $n(bar), 'x': $n(xStart-i), 'y': $n(20-bar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_6.push(...$vnode_7); }$vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); }for(let i=0;i<xEnd;i+=step){ $vnode_5=[]; temp=i/scale;if(temp%space===0){  ;$vnode_6=[$_create('rect',{'width': '1', 'height': $n(hbar), 'x': $n(xStart+i), 'y': $n(20-hbar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_7=[$_create(0,0,(temp))];;$vnode_6.push($_create('text',{'x': $n(xStart+i+2), 'y': '14', 'style': 'font-size:10px;fill:#999;',},$vnode_7 )); $vnode_5.push(...$vnode_6); }else{  ;$vnode_6=[$_create('rect',{'width': '1', 'height': $n(bar), 'x': $n(xStart+i), 'y': $n(20-bar-1), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); };$vnode_3=[$_create('svg',{'xmlns': 'http://www.w3.org/2000/svg', 'viewBox': '0 0 '+$n(width)+' 19', 'style': 'cursor:default;',},$vnode_4 )]; ;$vnode_2=[$_create('div',{'style': 'width:'+$n(width)+'px;height:100%',},$vnode_3 )]; ;$vnode_1=[$_create('div',{'class': 'dG', 'id': $n(id)+'_x',},$vnode_2 )];   $vnode_3=[$_create(0,0,'-')];;$vnode_2=[$_create('span',{'class': 'dL', 'id': $n(id)+'_x_tip',},$vnode_3 )]; ;$vnode_1.push($_create('div',{'class': 'dH', 'id': $n(id)+'_x_line', 'style': 'height:'+$n(vHeight+20)+'px',},$vnode_2 )); ;$vnode_0.push($_create('div',{'mx-mousemove': $_viewId+'__o()', 'mx-mouseout': $_viewId+'__p()', 'mx-click': $_viewId+'__t()',},$vnode_1 ));     $vnode_4=[]; for(let i=0;i<yStart;i+=step){ $vnode_5=[]; if(i){ $vnode_6=[]; temp=i/scale;if(temp%space===0){  ;$vnode_7=[$_create('rect',{'width': $n(hbar), 'height': '1', 'x': $n(20-hbar), 'y': $n(yStart-i), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_8=[$_create(0,0,(-temp))];;$vnode_7.push($_create('text',{'x': '14', 'y': $n(yStart-i+2), 'style': 'font-size:10px;fill:#999;', 'transform': 'rotate(-90,13,'+$n(yStart-i)+')',},$vnode_8 )); $vnode_6.push(...$vnode_7); }else{  ;$vnode_7=[$_create('rect',{'width': $n(bar), 'height': '1', 'x': $n(20-bar), 'y': $n(yStart-i), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_6.push(...$vnode_7); }$vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); }for(let i=0;i<yEnd;i+=step){ $vnode_5=[]; temp=i/scale;if(temp%space===0){  ;$vnode_6=[$_create('rect',{'width': $n(hbar), 'height': '1', 'x': $n(20-hbar), 'y': $n(yStart+i), 'style': 'fill:'+$n(barColor)+';',},0,1)];  $vnode_7=[$_create(0,0,(temp))];;$vnode_6.push($_create('text',{'x': '14', 'y': $n(yStart+i), 'style': 'font-size:10px;fill:#999;;', 'transform': 'rotate(-90,13,'+$n(yStart+i-2)+')',},$vnode_7 )); $vnode_5.push(...$vnode_6); }else{  ;$vnode_6=[$_create('rect',{'width': $n(bar), 'height': '1', 'x': $n(20-bar), 'y': $n(yStart+i), 'style': 'fill:'+$n(barColor)+';',},0,1)]; $vnode_5.push(...$vnode_6); }$vnode_4.push(...$vnode_5); };$vnode_3=[$_create('svg',{'xmlns': 'http://www.w3.org/2000/svg', 'viewBox': '0 0 19 '+$n(height), 'style': 'cursor:default',},$vnode_4 )]; ;$vnode_2=[$_create('div',{'style': 'height:'+$n(height)+'px;',},$vnode_3 )]; ;$vnode_1=[$_create('div',{'class': 'dJ', 'style': 'height:'+$n(vHeight)+'px;', 'id': $n(id)+'_y',},$vnode_2 )];   $vnode_3=[$_create(0,0,'-')];;$vnode_2=[$_create('span',{'class': 'dM', 'id': $n(id)+'_y_tip',},$vnode_3 )]; ;$vnode_1.push($_create('div',{'class': 'dI', 'id': $n(id)+'_y_line', 'style': 'width:'+$n(vWidth+20)+'px',},$vnode_2 )); ;$vnode_0.push($_create('div',{'mx-mousemove': $_viewId+'__q()', 'mx-mouseout': $_viewId+'__r()', 'mx-click': $_viewId+'__u()',},$vnode_1 ));  if ($_quick_static_node_2) {
                                 $vnode_0.push($_quick_static_node_2); }else{;$vnode_0.push($_quick_static_node_2=$_create('div',{'mxs': 'd_:_', 'class': 'dK',})); } 
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
@@ -7856,9 +7845,9 @@ $vnode_7,
 $vnode_8,
 $vnode_9; 
   if ($_quick_static_node_1) {
-                                $vnode_1=[$_quick_static_node_1]; }else{$vnode_2=[$_create(0,0,'')];;$vnode_1=[$_quick_static_node_1=$_create('i',{'mxs': 'da:_', 'class': 'dx da',},$vnode_2 )]; }$vnode_1.push($_create(0,0,(i18n('_b'))+'™'));;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[]; for(let $q_key_gmilauzi=0,$q_a_tbanbct=elements,$q_c_hmgltmcfmv=$q_a_tbanbct.length;$q_key_gmilauzi<$q_c_hmgltmcfmv;$q_key_gmilauzi++){let e=$q_a_tbanbct[$q_key_gmilauzi]; $vnode_2=[]; if(e.spliter){  if ($_quick_static_node_3) {
+                                $vnode_1=[$_quick_static_node_1]; }else{$vnode_2=[$_create(0,0,'')];;$vnode_1=[$_quick_static_node_1=$_create('i',{'mxs': 'da:_', 'class': 'dx da',},$vnode_2 )]; }$vnode_1.push($_create(0,0,(i18n('_b'))+'™'));;$vnode_0.push($_create('div',$_quick_vnode_attr_static_0,$vnode_1 ));  $vnode_1=[]; for(let $q_key_xiwuldn=0,$q_a_zhg=elements,$q_c_frxtaagd=$q_a_zhg.length;$q_key_xiwuldn<$q_c_frxtaagd;$q_key_xiwuldn++){let e=$q_a_zhg[$q_key_xiwuldn]; $vnode_2=[]; if(e.spliter){  if ($_quick_static_node_3) {
                                 $vnode_3=[$_quick_static_node_3]; }else{;$vnode_3=[$_quick_static_node_3=$_create('div',{'mxs': 'da:a', 'class': 'dad',})]; }$vnode_2.push(...$vnode_3); }else{ $vnode_3=[]; if(e.subs){   $vnode_6=[$_create(0,1,(e.icon))];;$vnode_5=[$_create('i',$_quick_vnode_attr_static_5,$vnode_6 )];  $vnode_6=[$_create(0,0,(i18n(e.title)))];;$vnode_5.push($_create('b',{'class': 'dab', 'title': $n(i18n(e.title)),},$vnode_6 ));  if ($_quick_static_node_6) {
-                                $vnode_5.push($_quick_static_node_6); }else{$vnode_6=[$_create(0,0,'')];;$vnode_5.push($_quick_static_node_6=$_create('i',{'mxs': 'da:b', 'class': 'dac dx',},$vnode_6 )); } $vnode_6=[]; for(let $q_key_szlxktigf=0,$q_a_qtbtwyui=e.subs,$q_c_okycxlkyj=$q_a_qtbtwyui.length;$q_key_szlxktigf<$q_c_okycxlkyj;$q_key_szlxktigf++){let es=$q_a_qtbtwyui[$q_key_szlxktigf];   $vnode_9=[$_create(0,1,(es.icon))];;$vnode_8=[$_create('i',$_quick_vnode_attr_static_5,$vnode_9 )];  $vnode_9=[$_create(0,0,(i18n(es.title)))];;$vnode_8.push($_create('b',$_quick_vnode_attr_static_8,$vnode_9 )); ;$vnode_7=[$_create('div',{'class': 'dY', 'mx-mousedown': $_viewId+'__M({ctrl:\''+$i($_ref,es)+'\'})', 'title': $n(i18n(es.title)),},$vnode_8 )]; $vnode_6.push(...$vnode_7); };$vnode_5.push($_create('div',$_quick_vnode_attr_static_7,$vnode_6 )); ;$vnode_4=[$_create('div',$_quick_vnode_attr_static_4,$vnode_5 )]; $vnode_3.push(...$vnode_4); }else{   $vnode_6=[$_create(0,1,(e.icon))];;$vnode_5=[$_create('i',$_quick_vnode_attr_static_5,$vnode_6 )];  $vnode_6=[$_create(0,0,(i18n(e.title)))];;$vnode_5.push($_create('b',$_quick_vnode_attr_static_8,$vnode_6 )); ;$vnode_4=[$_create('div',{'class': 'dX dh', 'mx-mousedown': $_viewId+'__M({ctrl:\''+$i($_ref,e)+'\'})', 'title': $n(i18n(e.title)),},$vnode_5 )]; $vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  if ($_quick_static_node_9) {
+                                $vnode_5.push($_quick_static_node_6); }else{$vnode_6=[$_create(0,0,'')];;$vnode_5.push($_quick_static_node_6=$_create('i',{'mxs': 'da:b', 'class': 'dac dx',},$vnode_6 )); } $vnode_6=[]; for(let $q_key_jmskudeml=0,$q_a_kfldllfxm=e.subs,$q_c_qtxhvojwf=$q_a_kfldllfxm.length;$q_key_jmskudeml<$q_c_qtxhvojwf;$q_key_jmskudeml++){let es=$q_a_kfldllfxm[$q_key_jmskudeml];   $vnode_9=[$_create(0,1,(es.icon))];;$vnode_8=[$_create('i',$_quick_vnode_attr_static_5,$vnode_9 )];  $vnode_9=[$_create(0,0,(i18n(es.title)))];;$vnode_8.push($_create('b',$_quick_vnode_attr_static_8,$vnode_9 )); ;$vnode_7=[$_create('div',{'class': 'dY', 'mx-mousedown': $_viewId+'__M({ctrl:\''+$i($_ref,es)+'\'})', 'title': $n(i18n(es.title)),},$vnode_8 )]; $vnode_6.push(...$vnode_7); };$vnode_5.push($_create('div',$_quick_vnode_attr_static_7,$vnode_6 )); ;$vnode_4=[$_create('div',$_quick_vnode_attr_static_4,$vnode_5 )]; $vnode_3.push(...$vnode_4); }else{   $vnode_6=[$_create(0,1,(e.icon))];;$vnode_5=[$_create('i',$_quick_vnode_attr_static_5,$vnode_6 )];  $vnode_6=[$_create(0,0,(i18n(e.title)))];;$vnode_5.push($_create('b',$_quick_vnode_attr_static_8,$vnode_6 )); ;$vnode_4=[$_create('div',{'class': 'dX dh', 'mx-mousedown': $_viewId+'__M({ctrl:\''+$i($_ref,e)+'\'})', 'title': $n(i18n(e.title)),},$vnode_5 )]; $vnode_3.push(...$vnode_4); }$vnode_2.push(...$vnode_3); }$vnode_1.push(...$vnode_2); };$vnode_0.push($_create('div',$_quick_vnode_attr_static_2,$vnode_1 ));  if ($_quick_static_node_9) {
                                 $vnode_0.push($_quick_static_node_9); }else{  $vnode_3=[$_create(0,0,'')];;$vnode_2=[$_create('i',{'class': 'dx',},$vnode_3 )];  $vnode_3=[$_create(0,0,'保存')];;$vnode_2.push($_create('b',$_quick_vnode_attr_static_8,$vnode_3 )); ;$vnode_1=[$_create('div',{'class': 'dX',},$vnode_2 )]; ;$vnode_0.push($_quick_static_node_9=$_create('div',{'mxs': 'da:c', 'class': 'dE de dD dk',},$vnode_1 )); } 
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_2.default],
@@ -9022,7 +9011,7 @@ $vnode_2,
 $$_style,
 $vnode_3,
 $vnode_4; 
-   $vnode_3=[]; for(let $q_key_tnzjwoc=0,$q_a_mztwhmp=layouts,$q_c_jseiusigqq=$q_a_mztwhmp.length;$q_key_tnzjwoc<$q_c_jseiusigqq;$q_key_tnzjwoc++){let layout=$q_a_mztwhmp[$q_key_tnzjwoc];  ;$vnode_4=[$_create('div',{'mxv': 'layouts', 'class': 'dh', 'id': $n(layout.id), 'mx-view': 'elements/'+$n(layout.ctrl.role)+'/designer?element='+$i($_ref,layout), 'mx-mousedown': $_viewId+'__aB({element:\''+$i($_ref,layout)+'\'})', 'role': 'layout', 'eid': $n(layout.id),})]; $vnode_3.push(...$vnode_4); };$$_style='min-width:'+$n(page.width*scale)+'px;min-height:'+$n(page.height*scale)+'px;background:'+$n(page.background)+';';if(page.backgroundImage){;$$_style+='background-image:url('+$n(page.backgroundImage)+');background-repeat:'+$n(page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat)+';background-size:';if(page.backgroundRepeat=='full'){;$$_style+='100% 100%';}else{;$$_style+=''+$n(page.backgroundWidth*scale)+'px '+$n(page.backgroundHeight*scale)+'px;';};};$vnode_2=[$_create('div',{'class': 'dal', 'id': 'stage_canvas', 'style': $$_style,},$vnode_3 )]; ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )];  ;$vnode_1.push($_create('div',{'class': 'dam', 'id': $n(id)+'_bar',})); ;$vnode_0.push($_create('div',{'class': 'daj', 'id': 'stage_outer', 'mx-contextmenu': $_viewId+'__A()', 'mx-mousedown': $_viewId+'__aC()', 'tabindex': '0', 'mx-focusin': $_viewId+'__aE()', 'mx-focusout': $_viewId+'__aF()', 'mx-keydown': $_viewId+'__aD()',},$vnode_1 ));  
+   $vnode_3=[]; for(let $q_key_gnsxvaxsk=0,$q_a_azlaauq=layouts,$q_c_yxghkja=$q_a_azlaauq.length;$q_key_gnsxvaxsk<$q_c_yxghkja;$q_key_gnsxvaxsk++){let layout=$q_a_azlaauq[$q_key_gnsxvaxsk];  ;$vnode_4=[$_create('div',{'mxv': 'layouts', 'class': 'dh', 'id': $n(layout.id), 'mx-view': 'elements/'+$n(layout.ctrl.role)+'/designer?element='+$i($_ref,layout), 'mx-mousedown': $_viewId+'__aB({element:\''+$i($_ref,layout)+'\'})', 'role': 'layout', 'eid': $n(layout.id),})]; $vnode_3.push(...$vnode_4); };$$_style='min-width:'+$n(page.width*scale)+'px;min-height:'+$n(page.height*scale)+'px;background:'+$n(page.background)+';';if(page.backgroundImage){;$$_style+='background-image:url('+$n(page.backgroundImage)+');background-repeat:'+$n(page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat)+';background-size:';if(page.backgroundRepeat=='full'){;$$_style+='100% 100%';}else{;$$_style+=''+$n(page.backgroundWidth*scale)+'px '+$n(page.backgroundHeight*scale)+'px;';};};$vnode_2=[$_create('div',{'class': 'dal', 'id': 'stage_canvas', 'style': $$_style,},$vnode_3 )]; ;$vnode_1=[$_create('div',$_quick_vnode_attr_static_0,$vnode_2 )];  ;$vnode_1.push($_create('div',{'class': 'dam', 'id': $n(id)+'_bar',})); ;$vnode_0.push($_create('div',{'class': 'daj', 'id': 'stage_outer', 'mx-contextmenu': $_viewId+'__A()', 'mx-mousedown': $_viewId+'__aC()', 'tabindex': '0', 'mx-focusin': $_viewId+'__aE()', 'mx-focusout': $_viewId+'__aF()', 'mx-keydown': $_viewId+'__aD()',},$vnode_1 ));  
 return $_create($_viewId, 0, $vnode_0);  } ,
     mixins: [index_1.default],
     init() {
@@ -9242,7 +9231,7 @@ $vnode_1,
 $$_class,
 $vnode_2,
 $text; 
-for(let $q_key_vcgijrwbi=0,$q_a_puble=panels,$q_c_zrfwnybyzh=$q_a_puble.length;$q_key_vcgijrwbi<$q_c_zrfwnybyzh;$q_key_vcgijrwbi++){let p=$q_a_puble[$q_key_vcgijrwbi];  $vnode_2=[$_create(0,1,(p.icon))];;$$_class='dx dao';if(p.opened){;$$_class+=' dap';};$vnode_1=[$_create('i',{'mx-click': $_viewId+'__aJ({id:\''+($eq(p.id))+'\'})', 'title': $n(i18n(p.opened?'_f':'_g',p.title)), 'class': $$_class,},$vnode_2 )]; $vnode_0.push(...$vnode_1); } 
+for(let $q_key_aslywsn=0,$q_a_eebtbllqyi=panels,$q_c_yojywtc=$q_a_eebtbllqyi.length;$q_key_aslywsn<$q_c_yojywtc;$q_key_aslywsn++){let p=$q_a_eebtbllqyi[$q_key_aslywsn];  $vnode_2=[$_create(0,1,(p.icon))];;$$_class='dx dao';if(p.opened){;$$_class+=' dap';};$vnode_1=[$_create('i',{'mx-click': $_viewId+'__aJ({id:\''+($eq(p.id))+'\'})', 'title': $n(i18n(p.opened?'_f':'_g',p.title)), 'class': $$_class,},$vnode_2 )]; $vnode_0.push(...$vnode_1); } 
 return $_create($_viewId, 0, $vnode_0);  } ,
     init() {
         magix_1.State.on('__j', () => {
