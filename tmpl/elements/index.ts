@@ -1,12 +1,30 @@
 import { toMap as ToMap } from 'magix';
+import Line from './line/designer';
+import Rect from './rect/designer';
+import Circle from './circle/designer';
 import XText from './text/designer';
+import XImage from './image/designer';
+import Repeat from './repeat/designer';
 import Page from './page/designer';
-let Elements = [XText];
+import ChartLine from './chart-line/designer';
+import ChartMeter from './chart-meter/designer';
+import ChartBar from './chart-bar/designer';
+import ChartPie from './chart-pie/designer';
+let Elements = [Line,
+    Rect,
+    Circle,
+    XText,
+    XImage,
+    Repeat,
+    ChartLine,
+    ChartMeter,
+    ChartBar,
+    ChartPie];
 let ElementsMap = ToMap(Elements, 'type');
-let Groups = [XText, { spliter: true }, {
+let Groups = [Line, Rect, Circle, XText, XImage, Repeat, { spliter: true }, {
     icon: '&#xe629;',
     title: '图表',
-    subs: [XText, XText, XText, XText, XText, XText, XText, XText]
+    subs: [ChartLine, ChartMeter, ChartBar, ChartPie]
 }];
 export default {
     '@{element.list}'() {

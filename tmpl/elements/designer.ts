@@ -74,10 +74,11 @@ export default Magix.View.extend({
     },
     '@{update}'(element) {
         this.digest({
-            element
+            element,
+            onlyMove: false
         });
     },
-    '@{start.rotate}<mousedown>'(e: Magix.DOMEvent) {
+    '@{start.rotate}<mousedown>'(e: Magix5.MagixMouseEvent) {
         e.stopPropagation();
         let me = this;
         let element = me.get('element');
@@ -109,7 +110,8 @@ export default Magix.View.extend({
             deg = (deg - sdeg) * 180 / Math.PI;
             props.rotate = (360 + (deg | 0)) % 360;
             this.digest({
-                element
+                element,
+                onlyMove: true
             });
             State.fire('@{event#stage.select.element.props.change}');
         }, () => {
@@ -120,7 +122,7 @@ export default Magix.View.extend({
             State.fire('@{event#stage.lock.scroll}');
         });
     },
-    '@{start.resize}<mousedown>'(e: Magix.DOMEvent) {
+    '@{start.resize}<mousedown>'(e: Magix5.MagixMouseEvent) {
         if (e.button) return;
         e.stopPropagation();
         let me = this;
@@ -241,7 +243,8 @@ export default Magix.View.extend({
                 props.width = width;
                 props.height = height;
                 me.digest({
-                    element
+                    element,
+                    onlyMove: false
                 });
                 State.fire('@{event#stage.select.element.props.change}');
             }

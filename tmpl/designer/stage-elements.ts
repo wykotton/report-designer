@@ -125,7 +125,10 @@ export default {
                         e.props.y = s.y + offsetY;
                         let vf = Vframe.byNode(node(e.id));
                         if (vf) {
-                            if (vf.invoke('assign', [{ element: e }])) {
+                            if (vf.invoke('assign', [{
+                                element: e,
+                                onlyMove: true
+                            }])) {
                                 vf.invoke('render');
                             }
                         }

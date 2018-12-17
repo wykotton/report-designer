@@ -7,5 +7,7 @@ export default {
     '@{font.align}': 2 << 5,
     '@{text.area}': 2 << 6,
     '@{image}': 2 << 7,
-    '@{dropdown}': 2 << 8
+    '@{dropdown}': 2 << 8,
+    '@{image.reset}': 2 << 9,
+    '@{text.input}': 2 << 10
 };

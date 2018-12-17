@@ -3,12 +3,13 @@
 */
 import Props from '../../designer/props';
 import I18n from '../../i18n/index';
+import Const from '../../designer/const';
 export default {
     title: '@{lang#elements.page}',
     getProps() {
         return {
-            width: 900,
-            height: 500,
+            width: Const["@{page.width}"],
+            height: Const["@{page.height}"],
             background: '#ffffff',
             backgroundImage: '',
             backgroundRepeat: 'full',
@@ -46,13 +47,14 @@ export default {
         type: Props["@{color}"]
     }, {
         tip: '@{lang#props.background.image}',
-        dockTop: true,
+        //dockTop: true,
         key: 'backgroundImage',
         type: Props["@{image}"],
         refresh: true,
-        write(page, e) {
-            page.backgroundWidth = e.width;
-            page.backgroundHeight = e.height;
+        write(v, props, e) {
+            props.backgroundWidth = e.width;
+            props.backgroundHeight = e.height;
+            return v;
         }
     }, {
         tip: '@{lang#props.background.repeat}',

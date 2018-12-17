@@ -30,7 +30,7 @@ export default Magix.View.extend({
     '@{fire.event}'(pic) {
         Magix.dispatch(this.root, 'change', pic);
     },
-    '@{clear.image}<click>'(e: Magix.DOMEvent) {
+    '@{clear.image}<click>'(e: Magix5.MagixMouseEvent) {
         e.stopPropagation();
         this.digest({
             src: ''

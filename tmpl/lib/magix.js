@@ -1538,7 +1538,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     compareKey.push(nodes[i]);
                 }
             }
-            if (DEBUG) {
+            if (DEBUG && lastVDOM['b'] != Q_TEXTAREA) {
                 CheckNodes(nodes, oldChildren);
             }
             for (i = 0; i < newCount; i++) {

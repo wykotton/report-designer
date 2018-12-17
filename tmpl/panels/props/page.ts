@@ -23,7 +23,7 @@ export default Magix.View.extend({
         let page = State.get('@{stage.page}');
         page[key] = e[use];
         if (write) {
-            write(page, e);
+            write(e[use], page, e);
         }
         DHistory["@{save}"]('@{history#save.page.change}', 500);
         State.fire('@{event#stage.page.change}');

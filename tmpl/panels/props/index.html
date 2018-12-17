@@ -19,7 +19,7 @@
                 {{=i18n(p.tip)}}
             </span>
             {{if p.type==props['@{number}']}}
-            <mx-number class="ipt" @#disabled="{{@e.props.locked}}" value="{{@data}}" max="{{=p.max}}??" step="{{=p.step}}??" fixed="{{=p.fixed}}??" min="{{=p.min}}??" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}},write:{{@p.write}}})"/>
+            <mx-number class="ipt" #disabled="{{@e.props.locked}}??" value="{{@data}}" max="{{=p.max}}??" step="{{=p.step}}??" fixed="{{=p.fixed}}??" min="{{=p.min}}??" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}},write:{{@p.write}}})"/>
             {{else if p.type==props['@{color}']}}
             <mx-color clear="{{=p.clear}}" class="ipt" color="{{@data}}" *align="right" *disabled="{{=e.props.locked}}" *alpha="{{=p.alpha}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'color',element:{{@e}}})"/>
             {{else if p.type==props['@{boolean}']}}
@@ -28,10 +28,18 @@
                 <i class="switch-button"></i>
             </label>
             {{else if p.type==props['@{text.area}']}}
-            <textarea class="textarea ipt ta" @#disabled="{{@e.props.locked}}" mx-input="@{update.prop}({key:'{{=p.key}}',native:'value',element:{{@e}}})">{{=data}}</textarea>
+            <textarea class="textarea ipt ta" disabled="{{@e.props.locked}}??" mx-input="@{update.prop}({key:'{{=p.key}}',native:'value',element:{{@e}}})">{{=data}}</textarea>
             {{else if p.type==props['@{font.style}']}}
             <mx-font.style class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>{{else if p.type==props['@{font.align}']}}
             <mx-font.align class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            {{else if p.type==props['@{dropdown}']}}
+            <mx-dropdown class="ipt" disabled="{{@e.props.locked}}??" selected="{{=data}}" list="{{@p.items}}" text-key="text" value-key="value" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            {{else if p.type==props['@{image}']}}
+            <mx-picture class="ipt" src="{{=data}}" *disabled="{{@e.props.locked}}" mx-change="@{update.prop}({key:'{{=p.key}}',use:'src',refresh:{{@p.refresh}},element:{{@e}},write:{{@p.write}}})"/>
+            {{else if p.type==props['@{image.reset}']}}
+            <button class="btn btn-brand" disabled="{{=e.props.locked}}??" mx-click="@{update.image.size}({key:'{{=p.key}}',element:{{@e}}})">{{=i18n('@{lang#elements.image.reset}')}}</button>
+            {{else if p.type==props['@{text.input}']}}
+            <input class="input" disabled="{{=e.props.locked}}??" mx-input="@{update.prop}({key:'{{=p.key}}',native:'value',element:{{@e}}})"/>
             {{/if}}
         </li>
         {{/if}}

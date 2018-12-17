@@ -18,8 +18,9 @@ let Service = Magix.Service.extend((bag, callback) => {
 });
 
 Service.add([{
-    name: '@{get.background.images}',
-    url: Magix.config('getBackgroundImageUrl')
+    name: '@{get.images}',
+    url: Magix.config('getImageUrl'),
+    cache: 30 * 60 * 1000
 }]);
 
 export default {

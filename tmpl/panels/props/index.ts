@@ -32,7 +32,7 @@ export default Magix.View.extend({
             }
             let v = native ? e.eventTarget[native] : e[use];
             if (write) {
-                v = write(v, props);
+                v = write(v, props, e);
             }
             props[key] = v;
             if (resetXY) {
@@ -52,5 +52,27 @@ export default Magix.View.extend({
             vf.invoke('@{update}', [element]);
         }
         DHistory["@{save}"]('@{history#save.props}' + key, 500);
+    },
+    '@{update.image.size}<click>'(e: Magix5.MagixMouseEvent) {
+        let { key, element } = e.params;
+        let props = element.props;
+        let old = Transform["@{get.rect.xy}"](props, props.rotate);
+        let img = new Image();
+        img.onload = () => {
+            props.width = img.width;
+            props.height = img.height;
+            let n = Transform["@{get.rect.xy}"](props, props.rotate);
+            props.x += old.x - n.x;
+            props.y += old.y - n.y;
+            this.render();
+            State.fire('@{event#stage.select.element.props.update}');
+            let n1 = node(element.id);
+            let vf = Vframe.byNode(n1);
+            if (vf) {
+                vf.invoke('@{update}', [element]);
+            }
+            DHistory["@{save}"]('@{history#save.props}' + key, 500);
+        };
+        img.src = props[key];
     }
 });

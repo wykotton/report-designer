@@ -50,7 +50,7 @@ export default Magix.View.extend({
     init() {
         State.on('@{event#stage.apply.state}', (e: {
             json: any
-        } & Magix.TriggerEventDescriptor) => {
+        } & Magix5.TriggerEventDescriptor) => {
             ApplyState(e.json);
         });
         State.set({

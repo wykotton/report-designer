@@ -12,9 +12,12 @@ export default Magix.View.extend({
         let me = this;
         me['@{dialog}'] = data.dialog;
         me['@{done.callback}'] = data.done;
+        me.set({
+            cIndex: 0
+        });
     },
     render() {
-        this.fetch(['@{get.background.images}'], (err, bag) => {
+        this.fetch('@{get.images}', (err, bag) => {
             this.digest({
                 error: err,
                 list: bag.get('data', [])
@@ -40,5 +43,11 @@ export default Magix.View.extend({
             });
         });
         img.src = src;
+    },
+    '@{change.tab}<click>'(e: Magix5.MagixMouseEvent) {
+        let { to } = e.params;
+        this.digest({
+            cIndex: to
+        });
     }
 });

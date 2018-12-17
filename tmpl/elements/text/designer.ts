@@ -35,8 +35,8 @@ export default Designer.extend({
                     italic: false
                 },
                 align: {
-                    h: 'flex-start',
-                    v: 'flex-start'
+                    h: 'center',
+                    v: 'center'
                 }
             }
         },

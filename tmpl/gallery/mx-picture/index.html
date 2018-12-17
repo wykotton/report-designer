@@ -1,7 +1,7 @@
-<div class="pic pr" mx-click="@{choose.picture}()">
+<div class="pic pr{{if disabled}} notallowed{{/if}}" mx-click="{{!disabled}}??@{choose.picture}()">
     {{if src}}
     <div class="item" style="background-image:url('{{=src}}')">
-        <i class="mc-iconfont remove" mx-click="@{clear.image}()" title="{{=i18n('@{lang#remove.image}')}}">&#xe67f;</i>
+        <i class="mc-iconfont remove" mx-click="{{!disabled}}??@{clear.image}()" title="{{=i18n('@{lang#remove.image}')}}">&#xe67f;</i>
     </div>
     {{else}}
     <div class="pic-tip">

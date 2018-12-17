@@ -1,0 +1,5 @@
+<div style="position:absolute;left:{{=props.x}}px;top:{{=props.y}}px;height:{{=props.height}}px;opacity:{{=props.alpha}};width:{{=props.width}}px;transform:rotate({{=props.rotate}}deg);{{if props.radius}}border-radius:{{=props.radius}}px;{{/if}}{{if props.image}}background-image:url({{=props.image}});background-size:{{=props.imageWidth}}px {{=props.imageHeight}}px;background-repeat:{{=props.repeat}};{{/if}}">
+    {{if !props.image}}
+        <div style="display:flex;align-items:center;justify-content:center;height:100%">请选择平铺图片</div>
+    {{/if}}
+</div>
