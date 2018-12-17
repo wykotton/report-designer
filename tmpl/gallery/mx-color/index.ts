@@ -331,6 +331,10 @@ export default Magix.View.extend({
                 color: '',
                 current: cr
             });
+        } else {
+            me.digest({
+                color: ''
+            });
         }
         Magix.dispatch(me.root, 'input', {
             color: me['@{color}'] = c

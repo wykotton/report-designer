@@ -102,7 +102,7 @@ gulp.task('dist', ['cleanSrc'], () => {
             './src/panels/**',
             './src/elements/**',
             './src/designer/**'])
-            .pipe(concat('report.js'))
+            .pipe(concat('page.js'))
             .pipe(gulp.dest('./dist'));
     });
 });
