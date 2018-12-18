@@ -1151,7 +1151,8 @@ let Body_DOMEventProcessor = domEvent => {
     let lastVfId;
     let params, arr = [];
     while (target != Doc_Body) {
-        if ((ignore = target['d']) && ignore[type]) {
+        if (domEvent.cancelBubble ||
+            (ignore = target['d']) && ignore[type]) {
             break;
         }
         arr.push(target);
@@ -1199,9 +1200,6 @@ let Body_DOMEventProcessor = domEvent => {
                     }
                 }
             }
-        }
-        if (domEvent.cancelBubble) { //避免使用停止事件冒泡，比如别处有一个下拉框，弹开，点击到阻止冒泡的元素上，弹出框不隐藏
-            break;
         }
         target = target.parentNode || Doc_Body;
     }
@@ -1525,13 +1523,12 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 oldChildren = lastVDOM['h'],
                 newChildren = newVDOM['h'], oc, nc,
                 oldCount = oldChildren.length,
-                oldRealCount = oldCount,
                 newCount = newChildren.length,
                 reused = newVDOM['i'],
                 nodes = realNode.childNodes, compareKey,
                 keyedNodes = {},
                 oldVIndex = 0,
-                removedCount = 0;
+                realNodeStep;
             for (i = oldCount; i--;) {
                 oc = oldChildren[i];
                 compareKey = oc['d'];
@@ -1540,7 +1537,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     compareKey.push(nodes[i]);
                 }
             }
-            if (DEBUG) {
+            if (DEBUG && lastVDOM['b'] != Q_TEXTAREA) {
                 CheckNodes(nodes, oldChildren);
             }
             for (i = 0; i < newCount; i++) {
@@ -1549,12 +1546,12 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
                     if (compareKey != nodes[i]) {
-                        for (oi = oldRealCount; oi-- > i;) {
-                            if (nodes[oi + removedCount] == compareKey) {
-                                oc = oldChildren[oi];
+                        for (oi = oldVIndex, realNodeStep = 1;
+                            oi < oldCount;
+                            oi++ , realNodeStep++) {
+                            oc = oldChildren[oi];
+                            if (oc && nodes[i + realNodeStep] == compareKey) {
                                 oldChildren.splice(oi, 1);
-                                removedCount++;
-                                oldRealCount--;
                                 oldVIndex--;
                                 break;
                             }
@@ -3027,7 +3024,7 @@ Noop.extend = function extend(props, statics) {
     X.extend = extend;
     return Extend(X, me, props, statics);
 };
-    let Magix_Booted = 0;
+    
 /**
  * Magix对象，提供常用方法
  * @name Magix
