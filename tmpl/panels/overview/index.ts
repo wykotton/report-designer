@@ -5,7 +5,7 @@ import Magix, { State, node } from 'magix';
 import Dragdrop from '../../gallery/mx-dragdrop/index';
 Magix.applyStyle('@index.less');
 let StagePadding = [50, 240, 50, 120];
-let OverviewSize = [200, 120];
+let OverviewSize = [180, 120];
 let Idle = window.requestIdleCallback || ((fn) => {
     setTimeout(fn, 500);
 });
@@ -14,6 +14,7 @@ export default Magix.View.extend({
     mixins: [Dragdrop],
     tmpl: '@index.html',
     init() {
+        let stage = node('stage');
         let updateOverview = this['@{update.ui}'].bind(this);
         State.on('@{event#history.shift}', updateOverview);
         State.on('@{event#stage.scale.change}', updateOverview);
@@ -21,21 +22,26 @@ export default Magix.View.extend({
         State.on('@{event#stage.elements.change}', updateOverview);
         State.on('@{event#stage.select.element.props.change}', updateOverview);
         State.on('@{event#stage.select.element.props.update}', updateOverview);
-        let stage = node('stage');
-        stage.addEventListener('scroll', () => {
-            let ratio = this.get('ratio');
-            if (ratio) {
-                this.digest({
-                    left: stage.scrollLeft * ratio,
-                    top: stage.scrollTop * ratio
-                });
-            }
-        });
+        stage.addEventListener('scroll', this['@{update.viewport.pos}'].bind(this));
     },
     '@{update.ui}'() {
         let me = this;
         CancelIdle(me['@{task.timer}']);
         me['@{task.timer}'] = Idle(this.render.bind(this));
+    },
+    '@{update.viewport.pos}'() {
+        let stage = node('stage');
+        let ratio = this.get('ratio');
+        if (ratio) {
+            let width = this.get('width');
+            let height = this.get('height');
+            let viewportWidth = this.get('viewportWidth');
+            let viewportHeight = this.get('viewportHeight');
+            this.digest({
+                left: Math.min(stage.scrollLeft * ratio, width - viewportWidth),
+                top: Math.min(stage.scrollTop * ratio, height - viewportHeight)
+            });
+        }
     },
     render() {
         let page = State.get('@{stage.page}');
@@ -58,9 +64,9 @@ export default Magix.View.extend({
             canvasMargin += ratio * e + 'px ';
         }
         let centerMargin = `${(OverviewSize[1] - height) / 2}px ${(OverviewSize[0] - width) / 2}px`;
-        let viewportWidth = stage.offsetWidth * ratio - 1;//for border
-        let viewportHeight = stage.offsetHeight * ratio - 2;
-        this.digest({
+        let viewportWidth = Math.min(stage.offsetWidth, stageRealWidth) * ratio;//for border
+        let viewportHeight = Math.min(stage.offsetHeight, stageRealHeight) * ratio;
+        this.set({
             width,
             height,
             page,
@@ -68,13 +74,12 @@ export default Magix.View.extend({
             pageHeight,
             ratio,
             elements: State.get('@{stage.elements}'),
-            left: stage.scrollLeft * ratio,
-            top: stage.scrollTop * ratio,
             viewportHeight,
             viewportWidth,
             canvasMargin,
             centerMargin
         });
+        this['@{update.viewport.pos}']();
     },
     '@{move.viewport}<mousedown>'(e) {
         let startX = this.get('left'),
