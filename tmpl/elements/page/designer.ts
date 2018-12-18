@@ -76,8 +76,35 @@ export default {
             text: I18n('@{lang#props.repeat}'),
             value: 'repeat'
         }],
+        refresh: true,
         ifShow(page) {
             return page.backgroundImage;
+        }
+    }, {
+        tip: '@{lang#props.image.width}',
+        key: 'backgroundWidth',
+        type: Props["@{number}"],
+        min: 0,
+        ifShow(props) {
+            let img = props.backgroundImage;
+            let repeat = props.backgroundRepeat;
+            let support = repeat == 'repeat' ||
+                repeat == 'repeat-x' ||
+                repeat == 'repeat-y';
+            return img && support;
+        }
+    }, {
+        tip: '@{lang#props.image.height}',
+        key: 'backgroundHeight',
+        type: Props["@{number}"],
+        min: 0,
+        ifShow(props) {
+            let img = props.backgroundImage;
+            let repeat = props.backgroundRepeat;
+            let support = repeat == 'repeat' ||
+                repeat == 'repeat-x' ||
+                repeat == 'repeat-y';
+            return img && support;
         }
     }]
 }

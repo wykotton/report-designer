@@ -16,7 +16,7 @@
         {{else if p.type==props['@{image}']}}
             <mx-picture class="ipt" src="{{=page[p.key]}}" mx-change="@{update.prop}({key:'{{=p.key}}',use:'src',refresh:{{@p.refresh}},write:{{@p.write}}})"/>
         {{else if p.type==props['@{dropdown}']}}
-            <mx-dropdown class="ipt" selected="{{=page[p.key]}}" list="{{@p.items}}" text-key="text" value-key="value" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value'})"/>
+            <mx-dropdown class="ipt" selected="{{=page[p.key]}}" list="{{@p.items}}" text-key="text" value-key="value" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',refresh:{{@p.refresh}}})"/>
         {{/if}}
     </li>
     {{/if}}

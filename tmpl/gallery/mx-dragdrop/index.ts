@@ -11,8 +11,8 @@ let DragPrevent = (e) => {
     console.log(e);
     e.preventDefault();
 };
-let DragMoveEvent = ['mousemove', 'touchmove', 'pointermove'];
-let DragEndEvent = ['mouseup', 'touchend', 'pointercancel', 'touchcancel'];
+let DragMoveEvent = ['mousemove'];
+let DragEndEvent = ['mouseup', 'pointercancel', 'touchcancel'];
 let DragPreventEvent = ['keydown', 'mousewheel', 'DOMMouseScroll', 'fullscreenchange'];
 
 export default {

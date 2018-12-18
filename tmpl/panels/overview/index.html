@@ -1,0 +1,10 @@
+<div class="stage-container" style="width:{{=width}}px;height:{{=height}}px;margin:{{=centerMargin}}">
+    <div style="position: relative;background:{{=page.background}};width:{{=pageWidth}}px;height:{{=pageHeight}}px;margin:{{=canvasMargin}}">
+        {{each elements as {props}}}
+            {{set ew=Math.max(props.width*ratio,1),eh=Math.max(props.height*ratio,1)}}
+            <div class="item" style="left:{{=props.x*ratio}}px;top:{{=props.y*ratio}}px;width:{{=ew}}px;height:{{=eh}}px;transform:rotate({{=props.rotate}}deg);"></div>
+        {{/each}}
+    </div>
+    <div class="stage-viewport" style="left:{{=left}}px;top:{{=top}}px;width:{{=viewportWidth}}px;height:{{=viewportHeight}}px;" mx-mousedown="@{move.viewport}()">
+    </div>
+</div>

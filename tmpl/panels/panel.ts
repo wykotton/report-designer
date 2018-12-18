@@ -56,7 +56,9 @@ export default Magix.View.extend({
             left: data.left,
             top: data.top,
             right: data.right,
+            bottom: data.bottom,
             view: data.view,
+            fixedSize: data.fixedSize,
             resizeX: data.resizeX,
             resizeY: data.resizeY
         });
@@ -72,12 +74,18 @@ export default Magix.View.extend({
         let startX = this.get('left');
         let width = this.get('width');
         let dockRight = 0;
-        if (startX === undefined) {
+        if (startX == null) {
             dockRight = 1;
             startX = this.get('right');
         }
         let startY = this.get('top');
-        let dockKey = dockRight ? 'right' : 'left';
+        let dockBottom = 0;
+        if (startY == null) {
+            dockBottom = 1;
+            startY = this.get('bottom');
+        }
+        let dockXKey = dockRight ? 'right' : 'left';
+        let dockYKey = dockBottom ? 'bottom' : 'top';
         let showedCursor = 0;
         let target = e.eventTarget;
         this['@{drag.drop}'](e, ex => {
@@ -91,17 +99,17 @@ export default Magix.View.extend({
             } else if (offsetX + width > window.innerWidth) {
                 offsetX = window.innerWidth - width;
             }
-            let offsetY = ex.pageY - e.pageY + startY;
+            let offsetY = (dockBottom ? e.pageY - ex.pageY : ex.pageY - e.pageY) + startY;
             if (offsetY < 0) {
                 offsetY = 0;
             } else if (offsetY + 18 > window.innerHeight) {
                 offsetY = window.innerHeight - 18;
             }
-            styles[dockKey] = offsetX + 'px';
-            styles.top = offsetY + 'px';
+            styles[dockXKey] = offsetX + 'px';
+            styles[dockYKey] = offsetY + 'px';
             this.set({
-                [dockKey]: offsetX,
-                top: offsetY
+                [dockXKey]: offsetX,
+                [dockYKey]: offsetY
             });
         }, () => {
             Cursor["@{hide}"]();

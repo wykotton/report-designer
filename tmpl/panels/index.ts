@@ -3,7 +3,7 @@ let Panels = [{
     title: '@{lang#panel.elements}',
     icon: '&#xe629;',
     width: 100,
-    height: 120,
+    height: 270,
     left: 25,
     top: 90,
     show: false,
@@ -31,6 +31,17 @@ let Panels = [{
     top: 90,
     id: 'p-data',
     view: '@./data/index'
+}, {
+    title: '@{lang#panel.overview}',
+    icon: '&#xe7ad;',
+    width: 200,
+    height: 120,
+    show: true,
+    left: 25,
+    bottom: 10,
+    id: 'p-overview',
+    view: '@./overview/index',
+    fixedSize: true
 }];
 let PanelsMap = Magix.toMap(Panels, 'id');
 export default {
