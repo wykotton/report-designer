@@ -1529,7 +1529,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 nodes = realNode.childNodes, compareKey,
                 keyedNodes = {},
                 oldVIndex = 0,
-                removedCount = 0;
+                realNodeStep;
             for (i = oldCount; i--;) {
                 oc = oldChildren[i];
                 compareKey = oc['d'];
@@ -1538,7 +1538,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                     compareKey.push(nodes[i]);
                 }
             }
-            if (DEBUG) {
+            if (DEBUG && lastVDOM['b'] != Q_TEXTAREA) {
                 CheckNodes(nodes, oldChildren);
             }
             for (i = 0; i < newCount; i++) {
@@ -1547,11 +1547,10 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
                     if (compareKey != nodes[i]) {
-                        for (oi = oldRealCount; oi-- > i;) {
-                            if (nodes[oi + removedCount] == compareKey) {
+                        for (oi = oldVIndex, realNodeStep = 1; oi < oldRealCount; oi++ , realNodeStep++) {
+                            if (nodes[i + realNodeStep] == compareKey) {
                                 oc = oldChildren[oi];
                                 oldChildren.splice(oi, 1);
-                                removedCount++;
                                 oldRealCount--;
                                 oldVIndex--;
                                 break;
