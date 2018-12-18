@@ -35,7 +35,7 @@ let Panels = [{
     title: '@{lang#panel.overview}',
     icon: '&#xe7ad;',
     width: 200,
-    height: 120,
+    height: 124,
     show: true,
     left: 25,
     bottom: 10,

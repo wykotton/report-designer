@@ -59,7 +59,7 @@ export default Magix.View.extend({
         }
         let centerMargin = `${(OverviewSize[1] - height) / 2}px ${(OverviewSize[0] - width) / 2}px`;
         let viewportWidth = stage.offsetWidth * ratio - 1;//for border
-        let viewportHeight = stage.offsetHeight * ratio - 1;
+        let viewportHeight = stage.offsetHeight * ratio - 2;
         this.digest({
             width,
             height,
