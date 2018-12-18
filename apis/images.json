@@ -50,6 +50,27 @@
             ]
         },
         {
+            "title": "平铺背景",
+            "list": [
+                {
+                    "src": "https://i.stack.imgur.com/7YKUD.jpg",
+                    "title": ""
+                },
+                {
+                    "src": "http://i.stack.imgur.com/jGlzr.png",
+                    "title": ""
+                },
+                {
+                    "src": "https://i.stack.imgur.com/1voHP.png",
+                    "title": ""
+                },
+                {
+                    "src": "https://i.stack.imgur.com/IehB7.png",
+                    "title": ""
+                }
+            ]
+        },
+        {
             "title": "管道",
             "list": [
                 {

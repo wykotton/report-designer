@@ -5,7 +5,7 @@ import Magix, { State, node } from 'magix';
 import Dragdrop from '../../gallery/mx-dragdrop/index';
 Magix.applyStyle('@index.less');
 let StagePadding = [50, 240, 50, 120];
-let OverviewSize = [200, 120];
+let OverviewSize = [180, 120];
 let Idle = window.requestIdleCallback || ((fn) => {
     setTimeout(fn, 500);
 });
