@@ -1,0 +1,22 @@
+@import "../../gallery/mx-style/_vars.less";
+.overview{
+    padding:2px 0;
+}
+.stage-container{
+    background: #edeef3;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 1px 1px 6px 2px #dadada;
+}
+.stage-viewport{
+    position: absolute;
+    border:solid 1px @color-brand;
+    cursor: move;
+    background: #fff2;
+    box-sizing: border-box;
+}
+.item{
+    background: lighten(@color-brand,20%);
+    position: absolute;
+    border:dotted 1px #fff;
+}

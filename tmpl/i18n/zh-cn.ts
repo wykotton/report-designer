@@ -15,6 +15,7 @@ export default {
     '@{lang#panel.elements}': '元素',
     '@{lang#panel.props}': '属性',
     '@{lang#panel.data}': '数据源',
+    '@{lang#panel.overview}': '概览图',
     '@{lang#panel.open.panel}': '打开{0}面板',
     '@{lang#panel.close.panel}': '关闭{0}面板',
     '@{lang#panel.expand.panel}': '展开{0}面板',

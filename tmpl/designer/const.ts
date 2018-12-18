@@ -1,6 +1,6 @@
 export default {
     '@{history.max.count}': 50,
     '@{stage.scale}': 1,
-    '@{stage.width}': 900,
-    '@{stage.height}': 500
+    '@{page.width}': 900,
+    '@{page.height}': 500
 }
