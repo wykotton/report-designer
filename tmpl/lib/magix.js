@@ -1523,7 +1523,6 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 oldChildren = lastVDOM['h'],
                 newChildren = newVDOM['h'], oc, nc,
                 oldCount = oldChildren.length,
-                oldRealCount = oldCount,
                 newCount = newChildren.length,
                 reused = newVDOM['i'],
                 nodes = realNode.childNodes, compareKey,
@@ -1547,11 +1546,12 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
                     if (compareKey != nodes[i]) {
-                        for (oi = oldVIndex, realNodeStep = 1; oi < oldRealCount; oi++ , realNodeStep++) {
-                            if (nodes[i + realNodeStep] == compareKey) {
-                                oc = oldChildren[oi];
+                        for (oi = oldVIndex, realNodeStep = 1;
+                            oi < oldCount;
+                            oi++ , realNodeStep++) {
+                            oc = oldChildren[oi];
+                            if (oc && nodes[i + realNodeStep] == compareKey) {
                                 oldChildren.splice(oi, 1);
-                                oldRealCount--;
                                 oldVIndex--;
                                 break;
                             }
@@ -3024,7 +3024,7 @@ Noop.extend = function extend(props, statics) {
     X.extend = extend;
     return Extend(X, me, props, statics);
 };
-    let Magix_Booted = 0;
+    
 /**
  * Magix对象，提供常用方法
  * @name Magix

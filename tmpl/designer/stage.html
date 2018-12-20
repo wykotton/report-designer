@@ -2,7 +2,7 @@
     <div class="stage-workaround" style="{{if fullscreen}}transform:scaleX({{=rx}}) scaleY({{=ry}});transform-origin:0 0;margin:{{=marginTop}}px 0 0 {{=marginLeft}}px;{{/if}}">
         <div class="stage-canvas pr" style="width:{{=page.width*scale}}px;height:{{=page.height*scale}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth*scale}}px {{=page.backgroundHeight*scale}}px;{{/if}}{{/if}}" id="stage_canvas">
             {{each elements as e}}
-                <mx-vframe id="{{=e.id}}" src="@../elements/{{=e.type}}/designer" *element="{{@e}}" *scale="{{@scale}}" *fullscreen="{{@fullscreen}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})"/>
+                <mx-vframe id="{{=e.id}}" src="@../elements/{{=e.type}}/designer" *element="{{@e}}" *scale="{{@scale}}" *only-move="{{@false}}" *fullscreen="{{@fullscreen}}" mx-mousedown="@{element.start.drag}({element:{{@e}}})"/>
             {{/each}}
         </div>
     </div>

@@ -7,7 +7,7 @@
     {{else}}
     <div class="clearfix tabs">
         {{each list as category ci}}
-            <div class="tabs-item{{if ci==cIndex}} tabs-active{{/if}}" mx-click="{{ci!=cIndex}}??@{change.tab}({to:{{=ci}}})">{{=category.title}}</div>
+            <div class="tabs-item{{if ci==cIndex}} tabs-active{{/if}}" mx-click="{{ci!=cIndex}}?@{change.tab}({to:{{=ci}}})">{{=category.title}}</div>
         {{/each}}
     </div>
     {{each list[cIndex].list as p}}

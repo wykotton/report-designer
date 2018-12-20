@@ -16,7 +16,7 @@
                 {{value=item[valueKey]}}
             {{/if}}
             {{set equal=(value+'')===(selected+'')}}
-            <li title="{{=text}}" active="{{=equal}}??" class="dropdown-item">
+            <li title="{{=text}}" active="{{=equal}}?" class="dropdown-item">
                 <span
                     class="item-link ellipsis{{if equal}} active{{/if}}"
                     mx-click="@{select}({item:'{{@item}}'})">
