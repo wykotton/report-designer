@@ -6,7 +6,7 @@ let Panels = [{
     height: 270,
     left: 25,
     top: 90,
-    show: false,
+    show: true,
     resizeY: true,
     id: 'p-elements',
     view: '@./elements/index'
@@ -21,7 +21,7 @@ let Panels = [{
     resizeY: true,
     id: 'p-props',
     view: '@./props/index'
-}, {
+}, /*{
     title: '@{lang#panel.data}',
     icon: '&#xe609;',
     width: 200,
@@ -31,7 +31,7 @@ let Panels = [{
     top: 90,
     id: 'p-data',
     view: '@./data/index'
-}, {
+},*/ {
     title: '@{lang#panel.overview}',
     icon: '&#xe7ad;',
     width: 180,

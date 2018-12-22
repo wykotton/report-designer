@@ -15,7 +15,7 @@ export default Designer.extend({
         type: 'circle',
         role: 'circle',
         title: '@{lang#elements.circle}',
-        icon: '&#xe630;',
+        icon: '&#xe654;',
         getProps(x, y) {
             return {
                 fillcolor: '',

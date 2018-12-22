@@ -1651,7 +1651,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 if (updateAttribute) {
                     updateAttribute = V_SetAttributes(realNode, lastVDOM, newVDOM, commonAttrs);
                     if (updateAttribute) {
-                        updateAttribute = ref['b'] = 1;
+                        ref['b'] = 1;
                     }
                 }
                 //旧节点有view,新节点有view,且是同类型的view

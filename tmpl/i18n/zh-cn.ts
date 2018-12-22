@@ -78,6 +78,8 @@ export default {
     '@{lang#elements.chart-meter}': '仪表盘',
     '@{lang#elements.chart-bar}': '柱状图',
     '@{lang#elements.chart-pie}': '饼图',
+    '@{lang#elements.repeat.select.image}':'请选择平铺图片',
+    '@{lang#elements.image.select.image}':'请选择图片',
     '@{lang#props.alpha}': '透明度：',
     '@{lang#props.letter.spacing}': '字间距：',
     '@{lang#props.text.content}': '内容：',
