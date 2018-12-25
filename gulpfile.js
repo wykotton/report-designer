@@ -8,7 +8,7 @@ let del = require('del');
 let fs = require('fs');
 let ts = require('typescript');
 let concat = require('gulp-concat');
-let combineTool = require('../magix-combine/index');
+let combineTool = require('../magix-composer/index');
 
 combineTool.config({
     debug: true,
