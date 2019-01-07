@@ -29,6 +29,8 @@ export default Designer.extend({
                 repeat: 'repeat',
                 imageWidth: 0,
                 imageHeight: 0,
+                hor: 0,
+                ver: 0,
                 locked: false
             }
         },
@@ -102,6 +104,20 @@ export default Designer.extend({
             key: 'imageHeight',
             type: Props["@{number}"],
             min: 0,
+            ifShow(props) {
+                return props.image;
+            }
+        }, {
+            tip: '@{lang#props.offset.hor}',
+            key: 'hor',
+            type: Props["@{number}"],
+            ifShow(props) {
+                return props.image;
+            }
+        }, {
+            tip: '@{lang#props.offset.ver}',
+            key: 'ver',
+            type: Props["@{number}"],
             ifShow(props) {
                 return props.image;
             }

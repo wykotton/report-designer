@@ -22,7 +22,7 @@ let Designer = {
         seajs.use([
             'magix',
             'i18n/index'
-        ], (Magix: IMagix5, I18n) => {
+        ], (Magix: Magix5.Magix, I18n) => {
             Magix.applyStyle('@scoped.style');
             let lang = 'zh-cn';
             try {

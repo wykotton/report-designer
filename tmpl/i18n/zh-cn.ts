@@ -55,7 +55,7 @@ export default {
     '@{lang#props.font.size}': '字号：',
     '@{lang#props.page.width}': '页面宽度：',
     '@{lang#props.page.height}': '页面高度：',
-    '@{lang#props.page.scale}': '页面缩放：',
+    '@{lang#props.page.scale}': '全屏显示：',
     '@{lang#props.background.image}': '背景图片：',
     '@{lang#props.color}': '颜色：',
     '@{lang#props.background.repeat}': '平铺方式：',
@@ -78,8 +78,8 @@ export default {
     '@{lang#elements.chart-meter}': '仪表盘',
     '@{lang#elements.chart-bar}': '柱状图',
     '@{lang#elements.chart-pie}': '饼图',
-    '@{lang#elements.repeat.select.image}':'请选择平铺图片',
-    '@{lang#elements.image.select.image}':'请选择图片',
+    '@{lang#elements.repeat.select.image}': '请选择平铺图片',
+    '@{lang#elements.image.select.image}': '请选择图片',
     '@{lang#props.alpha}': '透明度：',
     '@{lang#props.letter.spacing}': '字间距：',
     '@{lang#props.text.content}': '内容：',
@@ -109,6 +109,8 @@ export default {
     '@{lang#props.image.height}': '图片高：',
     '@{lang#props.image.reset}': '还原尺寸：',
     '@{lang#props.chart.title}': '图表标题：',
+    '@{lang#props.offset.hor}': '水平(%)：',
+    '@{lang#props.offset.ver}': '垂直(%)：',
     '@{lang#elements.image.reset}': '图片自身宽高',
     '@{lang#elements.text.content}': '请输入内容'
 };

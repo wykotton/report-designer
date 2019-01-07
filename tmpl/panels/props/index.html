@@ -30,7 +30,8 @@
             {{else if p.type==props['@{text.area}']}}
             <textarea class="textarea ipt ta" disabled="{{@e.props.locked}}?" mx-input="@{update.prop}({key:'{{=p.key}}',native:'value',element:{{@e}}})">{{=data}}</textarea>
             {{else if p.type==props['@{font.style}']}}
-            <mx-font.style class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>{{else if p.type==props['@{font.align}']}}
+            <mx-font.style class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
+            {{else if p.type==props['@{font.align}']}}
             <mx-font.align class="ipt" *disabled="{{@e.props.locked}}" *value="{{@data}}" mx-input="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>
             {{else if p.type==props['@{dropdown}']}}
             <mx-dropdown class="ipt" disabled="{{@e.props.locked}}?" selected="{{=data}}" list="{{@p.items}}" text-key="text" value-key="value" mx-change="@{update.prop}({key:'{{=p.key}}',use:'value',element:{{@e}}})"/>

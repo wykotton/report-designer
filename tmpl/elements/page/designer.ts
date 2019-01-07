@@ -15,7 +15,9 @@ export default {
             backgroundRepeat: 'full',
             backgroundWidth: 0,
             backgroundHeight: 0,
-            scaleType: 'auto'
+            scaleType: 'auto',
+            hor: 0,
+            ver: 0
         }
     },
     props: [{
@@ -88,9 +90,7 @@ export default {
         ifShow(props) {
             let img = props.backgroundImage;
             let repeat = props.backgroundRepeat;
-            let support = repeat == 'repeat' ||
-                repeat == 'repeat-x' ||
-                repeat == 'repeat-y';
+            let support = repeat !== 'full';
             return img && support;
         }
     }, {
@@ -101,10 +101,22 @@ export default {
         ifShow(props) {
             let img = props.backgroundImage;
             let repeat = props.backgroundRepeat;
-            let support = repeat == 'repeat' ||
-                repeat == 'repeat-x' ||
-                repeat == 'repeat-y';
+            let support = repeat != 'full';
             return img && support;
+        }
+    }, {
+        tip: '@{lang#props.offset.hor}',
+        key: 'hor',
+        type: Props["@{number}"],
+        ifShow(props) {
+            return props.backgroundRepeat != 'full';
+        }
+    }, {
+        tip: '@{lang#props.offset.ver}',
+        key: 'ver',
+        type: Props["@{number}"],
+        ifShow(props) {
+            return props.backgroundRepeat != 'full';
         }
     }]
 }
