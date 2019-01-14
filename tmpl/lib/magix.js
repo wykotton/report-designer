@@ -44,6 +44,7 @@ let IsObject = o => Type(o) == 'Object';
 let IsArray = Array.isArray;
 let GUID = prefix => (prefix || 'mx_') + Counter++;
 let GetById = id => Doc_Document.getElementById(id);
+let SetInnerHTML = (n, html) => n.innerHTML = html;
 let MxGlobalView = GUID();
 let Mx_Cfg = {
     rootId: GUID(),
@@ -100,10 +101,10 @@ let ApplyStyle = (key, css) => {
             if (key.indexOf('$throw_') === 0) {
                 throw new Error(css);
             }
-            Temp.innerHTML = `<style id="${key}">${css}`;
+            SetInnerHTML(Temp, `<style id="${key}">${css}`);
             Header.appendChild(Temp.firstChild);
         } else {
-            Temp.innerHTML = `<style>${css}`;
+            SetInnerHTML(Temp, `<style>${css}`);
             Header.appendChild(Temp.firstChild);
         }
     }
@@ -283,19 +284,7 @@ let RemoveEventListener = (element, type, cb, viewId, eventOptions) => {
     }
 };
     
-let Path_Trim_Params_Reg = /[#?].*$/;
-let Path_Params_Reg = /([^=&?\/#]+)=?([^&#?]*)/g;
-let Path_Is_Param_Reg = /(?!^)=|&/;
 let PathToObject = new Cache();
-let ParamsObjectTemp;
-let ParamsFn = (match, name, value) => {
-    try {
-        value = decodeURIComponent(value);
-    } catch (_magix) {
-
-    }
-    ParamsObjectTemp[name] = value;
-};
 /**
  * 把路径字符串转换成对象
  * @param  {String} path 路径字符串
@@ -308,29 +297,28 @@ let ParseUri = path => {
     //把形如 /xxx/?a=b&c=d 转换成对象 {path:'/xxx/',params:{a:'b',c:'d'}}
     //1. /xxx/a.b.c.html?a=b&c=d  path /xxx/a.b.c.html
     //2. /xxx/?a=b&c=d  path /xxx/
-    //3. /xxx/#?a=b => path /xxx/
-    //4. /xxx/index.html# => path /xxx/index.html
     //5. /xxx/index.html  => path /xxx/index.html
-    //6. /xxx/#           => path /xxx/
-    //7. a=b&c=d          => path ''
-    //8. /s?src=b#        => path /s params:{src:'b'}
-    //9. a=YT3O0sPH1No=   => path '' params:{a:'YT3O0sPH1No='}
-    //10.a=YT3O0sPH1No===&b=c => path '' params:{a:'YT3O0sPH1No===',b:'c'}
     //11. ab?a&b          => path ab  params:{a:'',b:''}
-    //12. a=b&c           => path '' params:{a:'b',c:''}
-    //13. =abc            => path '=abc'
-    //14. ab=             => path '' params:{ab:''}
-    //15. a&b             => path '' params:{a:'',b:''}
     let r = PathToObject.get(path),
-        pathname;
+        pathname, key, value, po, q;
     if (!r) {
-        ParamsObjectTemp = {};
-        pathname = path.replace(Path_Trim_Params_Reg, Empty);
-        if (path == pathname && Path_Is_Param_Reg.test(pathname)) pathname = Empty; //考虑 YT3O0sPH1No= base64后的pathname
-        path.replace(pathname, Empty).replace(Path_Params_Reg, ParamsFn);
+        po = {};
+        q = path.indexOf('?');
+        if (q == -1) {
+            pathname = path;
+        } else {
+            pathname = path.substring(0, q);
+            path = path.substring(q + 1);
+            if (path) {
+                for (q of path.split('&')) {
+                    [key, value] = q.split('=');
+                    po[key] = decodeURIComponent(value || Empty);
+                }
+            }
+        }
         PathToObject.set(path, r = {
             a: pathname,
-            b: ParamsObjectTemp
+            b: po
         });
     }
     return {
@@ -581,38 +569,6 @@ let MxEvent = {
         return me;
     }
 };
-    let State_AppData = {};
-/**
- * 可观察的内存数据对象
- * @name State
- * @namespace
- * @borrows Event.on as on
- * @borrows Event.fire as fire
- * @borrows Event.off as off
- * @beta
- * @module router
- */
-let State = Assign({
-    /**
-     * @lends State
-     */
-    /**
-     * 从Magix.State中获取数据
-     * @param {String} [key] 数据key
-     * @return {Object}
-     */
-    get(key) {
-        let r = key ? State_AppData[key] : State_AppData;
-        return r;
-    },
-    /**
-     * 设置数据
-     * @param {Object} data 数据对象
-     */
-    set(data) {
-        Assign(State_AppData, data);
-    }
-}, MxEvent);
     
     
     let Vframe_RootVframe;
@@ -801,7 +757,7 @@ Assign(Vframe[Prototype], {
      */
     unmountView() {
         let me = this;
-        let { 'a': v, id, root } = me;
+        let { 'a': v, root } = me;
         me['c'] = [];
         if (v) {
             me.unmountZone();
@@ -816,7 +772,7 @@ Assign(Vframe[Prototype], {
             }
             v['d']--;
             if (root && me['e'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
-                root.innerHTML = me['f'];
+                SetInnerHTML(root, me['f']);
             }
         }
         me['d']++; //增加signature，阻止相应的回调，见mountView
@@ -1392,8 +1348,7 @@ let Q_Create = (tag, props, children, unary) => {
             if (prop == Value &&
                 tag == Q_TEXTAREA) {
                 innerHTML = value;
-            }
-            if (!Has(V_SKIP_PROPS, prop)) {
+            } else if (!Has(V_SKIP_PROPS, prop)) {
                 outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
             }
         }
@@ -1511,7 +1466,7 @@ let V_CreateNode = (vnode, owner, ref) => {
         if (V_SetAttributes(c, 0, vnode, 1)) {
             ref['b'] = 1;
         }
-        c.innerHTML = vnode['c'];
+        SetInnerHTML(c, vnode['c']);
     }
     return c;
 };
@@ -1573,7 +1528,11 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                         V_SetNode(nodes[i], realNode, oc, nc, ref, vframe, keys);
                     }
                 } else {//添加新的节点
-                    realNode.appendChild(V_CreateNode(nc, realNode, ref));
+                    if (nc['b'] == Spliter) {
+                        SetInnerHTML(realNode, nc['a']);
+                    } else {
+                        realNode.appendChild(V_CreateNode(nc, realNode, ref));
+                    }
                     ref['b'] = 1;
                 }
             }
@@ -1592,7 +1551,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
         }
     } else {
         ref['b'] = 1;
-        realNode.innerHTML = newVDOM['c'];
+        SetInnerHTML(realNode, newVDOM['c']);
     }
 };
 let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
@@ -1622,7 +1581,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 realNode.nodeValue = newVDOM['a'];
             } else if (lastNodeTag == Spliter) {
                 ref['b'] = 1;
-                oldParent.innerHTML = newVDOM['a'];
+                SetInnerHTML(oldParent, newVDOM['a']);
             } else if (!lastAMap[Tag_Static_Key] ||
                 lastAMap[Tag_Static_Key] != newAMap[Tag_Static_Key]) {
                 let newMxView = newAMap[MX_View],
@@ -1651,7 +1610,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 if (updateAttribute) {
                     updateAttribute = V_SetAttributes(realNode, lastVDOM, newVDOM, commonAttrs);
                     if (updateAttribute) {
-                        updateAttribute = ref['b'] = 1;
+                        ref['b'] = 1;
                     }
                 }
                 //旧节点有view,新节点有view,且是同类型的view
@@ -1720,7 +1679,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
             }
         } else {
             if (lastVDOM['b'] == Spliter) {
-                oldParent.innerHTML = newVDOM['a'];
+                SetInnerHTML(oldParent, newVDOM['a']);
             } else {
                 vframe.unmountZone(realNode);
                 oldParent.replaceChild(V_CreateNode(newVDOM, oldParent, ref), realNode);
@@ -1729,6 +1688,19 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
         }
     }
 };
+    let State_Data = {};
+let State = Assign({
+    get(key) {
+        return key ? State_Data[key] : State_Data;
+    },
+    /**
+     * 设置数据
+     * @param {Object} data 数据对象
+     */
+    set(data) {
+        Assign(State_Data, data);
+    }
+}, MxEvent);
     //like 'login<click>' or '$<click>' or '$win<scroll>' or '$win<scroll>&passive,capture'
 let View_EvtMethodReg = /^(\$?)([^<]*)<([^>]+)>(?:&(.+))?$/;
 let processMixinsSameEvent = (exist, additional, temp) => {
@@ -3042,7 +3014,6 @@ let Magix = {
      * @param {Object} cfg.routes path与view映射关系表
      * @param {String} cfg.unmatchView 在routes里找不到匹配时使用的view，比如显示404
      * @param {String} cfg.rootId 根view的id
-     * @param {Array} cfg.exts 需要加载的扩展
      * @param {Function} cfg.error 发布版以try catch执行一些用户重写的核心流程，当出错时，允许开发者通过该配置项进行捕获。注意：您不应该在该方法内再次抛出任何错误！
      * @example
      * Magix.config({
@@ -3091,11 +3062,9 @@ let Magix = {
      */
     boot(cfg) {
         Assign(Mx_Cfg, cfg); //先放到配置信息中，供ini文件中使用
-        Async_Require(Mx_Cfg.exts, () => {
-            
-            Vframe_Root().mountView(Mx_Cfg.defaultView);
-            
-        });
+        
+        Vframe_Root().mountView(Mx_Cfg.defaultView);
+        
     },
     /**
      * 把列表转化成hash对象
@@ -3319,9 +3288,10 @@ let Magix = {
     dispatch: DispatchEvent,
     type: Type,
     View,
+    State,
     Vframe,
     Service,
-    State,
+    Event: MxEvent,
     
     guard: Safeguard,
     node: GetById
