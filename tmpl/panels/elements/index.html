@@ -1,7 +1,7 @@
-<div class="items unselectable">
+<div class="items unselectable" mx-dragend="@{drag.end}()">
     {{for(let i=elements.length;i--;)}}
     {{set e=elements[i]}}
-    <div class="item{{if selectedMap[e.id]}} item-selected{{/if}}" mx-mouseover="@{show.rect}({element:{{@e}}})" mx-mouseout="@{hide.rect}()" mx-click="@{select.element}({element:{{@e}}})">
+    <div class="item{{if selectedMap[e.id]}} item-selected{{/if}}{{if drag&& i==index}} item--{{=onTop?'top':'bottom'}}{{/if}}" mx-mouseover="@{show.rect}({element:{{@e}}})" mx-mouseout="@{hide.rect}()" mx-click="@{select.element}({element:{{@e}}})" mx-dragstart="@{drag.start}({index:{{=i}}})" mx-dragover="@{drag.over}({index:{{=i}}})" draggable="true">
         <i class="iconfont move" x-html="{{=e.ctrl.icon}}"></i>
         <div class="ellipsis">
             {{=i18n(e.ctrl.title)}}
