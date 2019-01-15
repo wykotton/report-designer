@@ -59,8 +59,57 @@ export default Magix.View.extend({
             RectPole["@{hide}"]();
         }
     },
-    '@{select.element}<click>'(e: Magix.DOMEvent) {
+    '@{select.element}<click>'(e: Magix5.MagixMouseEvent) {
         let { element } = e.params;
         StageElements["@{multi.select}"](e, element);
+    },
+    '@{drag.start}<dragstart>'(e: Magix5.MagixMouseEvent & DragEvent) {
+        let me = this;
+        me['@{drag.index}'] = e.params.index;
+        me['@{drag.node}'] = e.eventTarget;
+        e.dataTransfer.effectAllowed = 'all';
+        //firefox required setData
+        e.dataTransfer.setData('text/plain', 'fix ff');
+    },
+    '@{drag.over}<dragover>'(e: Magix5.MagixMouseEvent & DragEvent) {
+        let me = this;
+        e.preventDefault();
+        if (me['@{drag.node}'] != e.eventTarget) {
+            e.dataTransfer.dropEffect = 'move';
+            let rect = e.eventTarget.getBoundingClientRect();
+            let onTop = (rect.top + rect.height / 2) > e.pageY;
+            let index = e.params.index;
+            me.digest({
+                onTop,
+                drag: true,
+                index
+            });
+        } else {
+            e.dataTransfer.dropEffect = 'none';
+            me.digest({
+                drag: false
+            });
+        }
+    },
+    '@{drag.end}<dragend>'(e: Magix5.MagixMouseEvent) {
+        let me = this;
+        let data = me.get();
+        if (data.drag) {
+            let startIndex = me['@{drag.index}'];
+            let drag = data.elements[startIndex];
+            data.elements.splice(data.index + (data.onTop ? 1 : 0), 0, drag);
+            if (data.index < startIndex) {
+                data.elements.splice(startIndex + 1, 1);
+            } else {
+                data.elements.splice(startIndex, 1);
+            }
+            me.set({
+                elements: data.elements
+            });
+            State.fire('@{event#stage.elements.change}');
+        }
+        me.digest({
+            drag: false
+        });
     }
 });
