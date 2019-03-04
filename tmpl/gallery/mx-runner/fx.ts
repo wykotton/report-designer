@@ -61,7 +61,7 @@ Magix.mix(FX.prototype, {
             delete me['@{for.runner.fn}'];
         }
     },
-    destroy() {
+    '@{destroy}'() {
         let me = this;
         me['@{stop}']();
         me['@{task.list}'] = [];
@@ -71,7 +71,9 @@ Magix.mix(FX.prototype, {
 export default {
     '@{get.fx}'(interval, alg) {
         let fx = new FX(interval, alg);
-        this.capture(Magix.guid('@{fx}'), fx);
+        this.on('destroy', () => {
+            fx['@{destroy}']();
+        });
         return fx;
     }
 };

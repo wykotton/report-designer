@@ -51,7 +51,7 @@ export default Magix.View.extend({
                 pageY: ex.pageY - height / 2
             });
             moved = true;
-        }, (ex: Magix.DOMEvent) => {
+        }, (ex: Magix5.MagixMouseEvent) => {
             //Follower["@{hide}"]();
             if (hide) {
                 moreNode.style.display = '';

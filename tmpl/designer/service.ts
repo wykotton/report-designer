@@ -26,14 +26,25 @@ Service.add([{
 export default {
     ctor() {
         let me = this;
-        me.on('rendercall', () => { //render方法被调用时，清除locker信息
+        me['@{request.cache}'] = {};
+        let destroyRequests = () => {
             delete me['@{locker}'];
-        });
+            for (let p in me['@{request.cache}']) {
+                let r = me['@{request.cache}'][p];
+                r.destroy();
+            }
+        };
+        me.on('rendercall', destroyRequests);
+        me.on('destroy', destroyRequests);
     },
     request(key) {
         key = key || Magix.guid('r');
-        let r = new Service();
-        this.capture(key, r, true);
+        let r = this['@{request.cache}'][key];
+        if (r) {
+            r.destroy();
+        }
+        r = new Service();
+        this['@{request.cache}'][key] = r;
         return r;
     },
     fetch(models, callback) {
