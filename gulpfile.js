@@ -21,8 +21,7 @@ combineTool.config({
         mxRoot: 'gallery/'
     },
     scopedCss: [
-        './tmpl/gallery/mx-style/index.less',
-        './tmpl/assets/index.less'
+        './tmpl/gallery/mx-style/index.less'
     ],
     compileJSStart(content) {
         var str = ts.transpileModule(content, {
@@ -95,14 +94,10 @@ gulp.task('dist', ['cleanSrc'], () => {
         return combineTool.combine();
     }).then(() => {
         return gulp.src([
-            './src/report.js',
-            './src/gallery/**',
+            './src/display.js',
             './src/i18n/**',
-            './src/util/**',
-            './src/panels/**',
-            './src/elements/**',
-            './src/designer/**'])
-            .pipe(concat('iot.js'))
+            './src/elements/**'])
+            .pipe(concat('display.js'))
             .pipe(gulp.dest('./dist'));
     });
 });

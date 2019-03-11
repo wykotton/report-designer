@@ -1,7 +1,0 @@
-{{set c=elements.length}}
-{{set e=elements[0]}}
-<i class="toolbar-spliter"></i>
-<i class="iconfont toolbar-item{{if c!=1||e.props.locked||top.id==e.id}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#menu.move.up}')}}" mx-click="@{move.element}({to:5})">&#xe632;</i>
-<i class="iconfont toolbar-item{{if c!=1||e.props.locked||top.id==e.id}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#menu.to.top}')}}" mx-click="@{move.element}({to:3})">&#xe607;</i>
-<i class="iconfont toolbar-item r180{{if c!=1||e.props.locked||bottom.id==e.id}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#menu.move.down}')}}" mx-click="@{move.element}({to:6})">&#xe632;</i>
-<i class="iconfont toolbar-item r180{{if c!=1||e.props.locked||bottom.id==e.id}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#menu.to.bottom}')}}" mx-click="@{move.element}({to:4})">&#xe607;</i>

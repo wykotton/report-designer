@@ -9,15 +9,22 @@ let Designer = {
         seajs.config({
             paths: {
                 display: src + 'display',
-                gallery: src + 'gallery',
-                elements: src + 'elements'
+                elements: src + 'elements',
+                i18n: src + 'i18n'
             },
             alias: {
                 magix: 'magix5'
             }
         });
-        seajs.use('magix5', (Magix: Magix5.Magix) => {
+        seajs.use(['magix5', 'i18n/index'], (Magix: Magix5.Magix, I18n) => {
             Magix.applyStyle('@scoped.style');
+            Magix.View.merge({
+                ctor() {
+                    this.set({
+                        i18n: I18n.default
+                    });
+                }
+            });
             Magix.boot({
                 defaultPath: '/index',
                 defaultView: 'display/index',

@@ -1,3 +1,0 @@
-{{each panels as p}}
-<i class="iconfont toolbar-item{{if p.opened}} toolbar-item-active{{/if}}" x-html="{{=p.icon}}" mx-click="@{toggle.panel}({id:'{{=p.id}}'})" title="{{=i18n(p.opened?'@{lang#panel.close.panel}':'@{lang#panel.open.panel}',p.title)}}"></i>
-{{/each}}

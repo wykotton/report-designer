@@ -18,13 +18,6 @@ export default (key, ...args) => {
             i |= 0;
             if (args.length > i) {
                 k = args[i];
-                if (DEBUG) {
-                    if (Has(l, k)) {
-                        return l[k];
-                    }
-                    console.warn(`Cannot translate "${key}".Use the value of keypath as default`);
-                    return k;
-                }
                 return Has(l, k) ? l[k] : k;
             }
             return m;
