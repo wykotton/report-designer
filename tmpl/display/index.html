@@ -1,0 +1,12 @@
+<div class="wrap">
+    {{if stage}}
+    {{let {elements,page}=stage;}}
+    <div style="width:{{=page.width}}px;height:{{=page.height}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth}}px {{=page.backgroundHeight}}px;background-position:{{=page.hor}}% {{=page.ver}}%{{/if}}{{/if}}">
+
+    </div>
+    {{else}}
+    <div class="tip">
+        请在物联网设计器页面设计好页面后，点保存并复制设计好的 JSON 然后在该页面进行粘贴
+    </div>
+    {{/if}}
+</div>
