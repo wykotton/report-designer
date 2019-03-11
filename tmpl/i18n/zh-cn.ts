@@ -112,5 +112,7 @@ export default {
     '@{lang#props.offset.hor}': '水平(%)：',
     '@{lang#props.offset.ver}': '垂直(%)：',
     '@{lang#elements.image.reset}': '图片自身宽高',
-    '@{lang#elements.text.content}': '请输入内容'
+    '@{lang#elements.text.content}': '请输入内容',
+    //----
+    '@{lang#save.content.title}': '保存内容'
 };

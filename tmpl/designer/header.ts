@@ -6,6 +6,7 @@ import Elements from '../elements/index';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import Select from '../gallery/mx-pointer/select';
 import Cursor from '../gallery/mx-pointer/cursor';
+import Dialog from '../gallery/mx-dialog/index';
 Magix.applyStyle('@header.less');
 let Fullscreens = ['requestFullscreen',
     'webkitRequestFullScreen',
@@ -14,7 +15,7 @@ let Fullscreens = ['requestFullscreen',
     'msRequestFullscreen'];
 export default Magix.View.extend({
     tmpl: '@header.html',
-    mixins: [Dragdrop],
+    mixins: [Dragdrop, Dialog],
     render() {
         this.digest({
             elements: Elements["@{element.list}"]()
@@ -83,6 +84,14 @@ export default Magix.View.extend({
                 break;
             }
         }
+    },
+    '@{save}<click>'() {
+        this.mxDialog('@./content', {
+            width: 800
+        });
+    },
+    '@{display}<click>'() {
+        window.open(DEBUG ? './display-debug.html' : './display.html');
     },
     '$doc<webkitfullscreenchange,mozfullscreenchange,fullscreenchange>'(e) {
         let doc = document as Document & {
