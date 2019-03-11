@@ -96,6 +96,7 @@ gulp.task('dist', ['cleanSrc'], () => {
         return gulp.src([
             './src/display.js',
             './src/i18n/**',
+            './src/display/**',
             './src/elements/**'])
             .pipe(concat('display.js'))
             .pipe(gulp.dest('./dist'));
