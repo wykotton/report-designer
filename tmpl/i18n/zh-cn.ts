@@ -53,8 +53,6 @@ export default {
     '@{lang#lib.images}': '图片库',
     '@{lang#remove.color}': '清除颜色',
     '@{lang#props.font.size}': '字号：',
-    '@{lang#props.page.width}': '页面宽度：',
-    '@{lang#props.page.height}': '页面高度：',
     '@{lang#props.page.scale}': '全屏显示：',
     '@{lang#props.background.image}': '背景图片：',
     '@{lang#props.color}': '颜色：',
