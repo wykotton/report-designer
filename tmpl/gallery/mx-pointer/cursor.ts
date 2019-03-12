@@ -17,7 +17,10 @@ export default {
         n.style.display = 'block';
     },
     '@{hide}'() {
-        node(CursorId).style.display = 'none';
+        let n = node(CursorId);
+        if (n) {
+            n.style.display = 'none';
+        }
     },
     '@{root.show.by.type}'(cursor: string) {
         Body.style.cursor = cursor;

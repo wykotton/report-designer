@@ -61,6 +61,30 @@ gulp.task('watch', ['combine'], () => {
     });
 });
 
+let langReg = /@\{lang#[\S\s]+?\}/g;
+gulp.task('lang-check', () => {
+    let c = combineTool.readFile('./tmpl/i18n/zh-cn.ts');
+    let lMap = {}, missed = {};
+    c.replace(langReg, m => {
+        lMap[m] = 0;
+    });
+    combineTool.walk('./tmpl', f => {
+        if (!f.includes('/lib/') &&
+            !f.includes('/i18n/')) {
+            let c = combineTool.readFile(f);
+            c.replace(langReg, m => {
+                if (lMap.hasOwnProperty(m)) {
+                    lMap[m]++;
+                } else {
+                    missed[m] = 'missed';
+                }
+            });
+        }
+    });
+    console.table(lMap);
+    console.table(missed);
+});
+
 var terser = require('gulp-terser-scoped');
 gulp.task('cleanBuild', () => {
     return del(buildFolder);

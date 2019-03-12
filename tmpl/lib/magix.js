@@ -1,10 +1,10 @@
 //#snippet;
 //#exclude = all;
-/*!5.0.0 Licensed MIT*/
+/*!5.0.1 Licensed MIT*/
 /*
 author:kooboy_li@163.com
 loader:cmd
-enables:
+enables:service
 
 optionals:router
 */
@@ -44,6 +44,7 @@ let IsObject = o => Type(o) == 'Object';
 let IsArray = Array.isArray;
 let GUID = prefix => (prefix || 'mx_') + Counter++;
 let GetById = id => Doc_Document.getElementById(id);
+let SetInnerHTML = (n, html) => n.innerHTML = html;
 let MxGlobalView = GUID();
 let Mx_Cfg = {
     rootId: GUID(),
@@ -53,20 +54,7 @@ let Mx_Cfg = {
     }
 };
 let IsPrimitive = args => !args || typeof args != 'object';
-let UpdateData = (newData, oldData, keys, unchanged) => {
-    let changed = 0,
-        now, old, p;
-    for (p in newData) {
-        now = newData[p];
-        old = oldData[p];
-        if ((!IsPrimitive(now) || old !== now) && !Has(unchanged, p)) {
-            keys[p] = 1;
-            changed = 1;
-        }
-        oldData[p] = now;
-    }
-    return changed;
-};
+
 let NodeIn = (a, b, r) => {
     if (a && b) {
         r = a == b;
@@ -100,10 +88,10 @@ let ApplyStyle = (key, css) => {
             if (key.indexOf('$throw_') === 0) {
                 throw new Error(css);
             }
-            Temp.innerHTML = `<style id="${key}">${css}`;
+            SetInnerHTML(Temp, `<style id="${key}">${css}`);
             Header.appendChild(Temp.firstChild);
         } else {
-            Temp.innerHTML = `<style>${css}`;
+            SetInnerHTML(Temp, `<style>${css}`);
             Header.appendChild(Temp.firstChild);
         }
     }
@@ -283,19 +271,7 @@ let RemoveEventListener = (element, type, cb, viewId, eventOptions) => {
     }
 };
     
-let Path_Trim_Params_Reg = /[#?].*$/;
-let Path_Params_Reg = /([^=&?\/#]+)=?([^&#?]*)/g;
-let Path_Is_Param_Reg = /(?!^)=|&/;
 let PathToObject = new Cache();
-let ParamsObjectTemp;
-let ParamsFn = (match, name, value) => {
-    try {
-        value = decodeURIComponent(value);
-    } catch (_magix) {
-
-    }
-    ParamsObjectTemp[name] = value;
-};
 /**
  * 把路径字符串转换成对象
  * @param  {String} path 路径字符串
@@ -308,29 +284,28 @@ let ParseUri = path => {
     //把形如 /xxx/?a=b&c=d 转换成对象 {path:'/xxx/',params:{a:'b',c:'d'}}
     //1. /xxx/a.b.c.html?a=b&c=d  path /xxx/a.b.c.html
     //2. /xxx/?a=b&c=d  path /xxx/
-    //3. /xxx/#?a=b => path /xxx/
-    //4. /xxx/index.html# => path /xxx/index.html
     //5. /xxx/index.html  => path /xxx/index.html
-    //6. /xxx/#           => path /xxx/
-    //7. a=b&c=d          => path ''
-    //8. /s?src=b#        => path /s params:{src:'b'}
-    //9. a=YT3O0sPH1No=   => path '' params:{a:'YT3O0sPH1No='}
-    //10.a=YT3O0sPH1No===&b=c => path '' params:{a:'YT3O0sPH1No===',b:'c'}
     //11. ab?a&b          => path ab  params:{a:'',b:''}
-    //12. a=b&c           => path '' params:{a:'b',c:''}
-    //13. =abc            => path '=abc'
-    //14. ab=             => path '' params:{ab:''}
-    //15. a&b             => path '' params:{a:'',b:''}
     let r = PathToObject.get(path),
-        pathname;
+        pathname, key, value, po, q;
     if (!r) {
-        ParamsObjectTemp = {};
-        pathname = path.replace(Path_Trim_Params_Reg, Empty);
-        if (path == pathname && Path_Is_Param_Reg.test(pathname)) pathname = Empty; //考虑 YT3O0sPH1No= base64后的pathname
-        path.replace(pathname, Empty).replace(Path_Params_Reg, ParamsFn);
+        po = {};
+        q = path.indexOf('?');
+        if (q == -1) {
+            pathname = path;
+        } else {
+            pathname = path.substring(0, q);
+            path = path.substring(q + 1);
+            if (path) {
+                for (q of path.split('&')) {
+                    [key, value] = q.split('=');
+                    po[key] = decodeURIComponent(value || Empty);
+                }
+            }
+        }
         PathToObject.set(path, r = {
             a: pathname,
-            b: ParamsObjectTemp
+            b: po
         });
     }
     return {
@@ -581,38 +556,6 @@ let MxEvent = {
         return me;
     }
 };
-    let State_AppData = {};
-/**
- * 可观察的内存数据对象
- * @name State
- * @namespace
- * @borrows Event.on as on
- * @borrows Event.fire as fire
- * @borrows Event.off as off
- * @beta
- * @module router
- */
-let State = Assign({
-    /**
-     * @lends State
-     */
-    /**
-     * 从Magix.State中获取数据
-     * @param {String} [key] 数据key
-     * @return {Object}
-     */
-    get(key) {
-        let r = key ? State_AppData[key] : State_AppData;
-        return r;
-    },
-    /**
-     * 设置数据
-     * @param {Object} data 数据对象
-     */
-    set(data) {
-        Assign(State_AppData, data);
-    }
-}, MxEvent);
     
     
     let Vframe_RootVframe;
@@ -633,6 +576,9 @@ let Vframe_Root = (rootId, e) => {
         rootId = Mx_Cfg.rootId;
         e = GetById(rootId);
         if (!e) {
+            if (DEBUG) {
+                console.error('can not find element:"' + rootId + '",use document.body as default');
+            }
             e = Doc_Body;
         }
         Vframe_RootVframe = new Vframe(e);
@@ -801,7 +747,7 @@ Assign(Vframe[Prototype], {
      */
     unmountView() {
         let me = this;
-        let { 'a': v, id, root } = me;
+        let { 'a': v, root } = me;
         me['c'] = [];
         if (v) {
             me.unmountZone();
@@ -810,13 +756,12 @@ Assign(Vframe[Prototype], {
                 v['d'] = 0;
                 v.fire('destroy');
                 v.off('destroy');
-                View_DestroyAllResources(v, 1);
                 View_DelegateEvents(v, 1);
                 v.owner = v.root = Null;
             }
             v['d']--;
             if (root && me['e'] /*&&!keepPreHTML*/) { //如果$v本身是没有模板的，也需要把节点恢复到之前的状态上：只有保留模板且$v有模板的情况下，这条if才不执行，否则均需要恢复节点的html，即$v安装前什么样，销毁后把节点恢复到安装前的情况
-                root.innerHTML = me['f'];
+                SetInnerHTML(root, me['f']);
             }
         }
         me['d']++; //增加signature，阻止相应的回调，见mountView
@@ -1192,7 +1137,7 @@ let Body_DOMEventProcessor = domEvent => {
                         }
                     }
                 } else {//如果处于删除中的事件触发，则停止事件的传播
-                    domEvent.stopPropagation();
+                    break;
                 }
                 if (DEBUG) {
                     if (!view && view !== 0) { //销毁
@@ -1275,8 +1220,8 @@ let Updater_Ref = ($$, v, k) => {
 let Updater_Digest = (view, digesting) => {
     let keys = view['j'],
         changed = view['k'],
-        vf = view.owner,
         viewId = view.id,
+        vf = Vframe_Vframes[viewId],
         ref = { 'a': [] },
         tmpl, vdom, data = view['e'],
         refData = view['a'],
@@ -1392,8 +1337,7 @@ let Q_Create = (tag, props, children, unary) => {
             if (prop == Value &&
                 tag == Q_TEXTAREA) {
                 innerHTML = value;
-            }
-            if (!Has(V_SKIP_PROPS, prop)) {
+            } else if (!Has(V_SKIP_PROPS, prop)) {
                 outerHTML += ` ${prop}="${Updater_Encode(value)}"`;
             }
         }
@@ -1511,7 +1455,7 @@ let V_CreateNode = (vnode, owner, ref) => {
         if (V_SetAttributes(c, 0, vnode, 1)) {
             ref['b'] = 1;
         }
-        c.innerHTML = vnode['c'];
+        SetInnerHTML(c, vnode['c']);
     }
     return c;
 };
@@ -1523,7 +1467,6 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 oldChildren = lastVDOM['h'],
                 newChildren = newVDOM['h'], oc, nc,
                 oldCount = oldChildren.length,
-                oldRealCount = oldCount,
                 newCount = newChildren.length,
                 reused = newVDOM['i'],
                 nodes = realNode.childNodes, compareKey,
@@ -1547,11 +1490,12 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                 compareKey = keyedNodes[nc['d']];
                 if (compareKey && (compareKey = compareKey.pop())) {
                     if (compareKey != nodes[i]) {
-                        for (oi = oldVIndex, realNodeStep = 1; oi < oldRealCount; oi++ , realNodeStep++) {
-                            if (nodes[i + realNodeStep] == compareKey) {
-                                oc = oldChildren[oi];
+                        for (oi = oldVIndex, realNodeStep = 1;
+                            oi < oldCount;
+                            oi++ , realNodeStep++) {
+                            oc = oldChildren[oi];
+                            if (oc && nodes[i + realNodeStep] == compareKey) {
                                 oldChildren.splice(oi, 1);
-                                oldRealCount--;
                                 oldVIndex--;
                                 break;
                             }
@@ -1573,7 +1517,11 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
                         V_SetNode(nodes[i], realNode, oc, nc, ref, vframe, keys);
                     }
                 } else {//添加新的节点
-                    realNode.appendChild(V_CreateNode(nc, realNode, ref));
+                    if (nc['b'] == Spliter) {
+                        SetInnerHTML(realNode, nc['a']);
+                    } else {
+                        realNode.appendChild(V_CreateNode(nc, realNode, ref));
+                    }
                     ref['b'] = 1;
                 }
             }
@@ -1592,7 +1540,7 @@ let V_SetChildNodes = (realNode, lastVDOM, newVDOM, ref, vframe, keys) => {
         }
     } else {
         ref['b'] = 1;
-        realNode.innerHTML = newVDOM['c'];
+        SetInnerHTML(realNode, newVDOM['c']);
     }
 };
 let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
@@ -1622,7 +1570,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 realNode.nodeValue = newVDOM['a'];
             } else if (lastNodeTag == Spliter) {
                 ref['b'] = 1;
-                oldParent.innerHTML = newVDOM['a'];
+                SetInnerHTML(oldParent, newVDOM['a']);
             } else if (!lastAMap[Tag_Static_Key] ||
                 lastAMap[Tag_Static_Key] != newAMap[Tag_Static_Key]) {
                 let newMxView = newAMap[MX_View],
@@ -1651,7 +1599,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
                 if (updateAttribute) {
                     updateAttribute = V_SetAttributes(realNode, lastVDOM, newVDOM, commonAttrs);
                     if (updateAttribute) {
-                        updateAttribute = ref['b'] = 1;
+                        ref['b'] = 1;
                     }
                 }
                 //旧节点有view,新节点有view,且是同类型的view
@@ -1720,7 +1668,7 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
             }
         } else {
             if (lastVDOM['b'] == Spliter) {
-                oldParent.innerHTML = newVDOM['a'];
+                SetInnerHTML(oldParent, newVDOM['a']);
             } else {
                 vframe.unmountZone(realNode);
                 oldParent.replaceChild(V_CreateNode(newVDOM, oldParent, ref), realNode);
@@ -1729,6 +1677,19 @@ let V_SetNode = (realNode, oldParent, lastVDOM, newVDOM, ref, vframe, keys) => {
         }
     }
 };
+    let State_Data = {};
+let State = Assign({
+    get(key) {
+        return key ? State_Data[key] : State_Data;
+    },
+    /**
+     * 设置数据
+     * @param {Object} data 数据对象
+     */
+    set(data) {
+        Assign(State_Data, data);
+    }
+}, MxEvent);
     //like 'login<click>' or '$<click>' or '$win<scroll>' or '$win<scroll>&passive,capture'
 let View_EvtMethodReg = /^(\$?)([^<]*)<([^>]+)>(?:&(.+))?$/;
 let processMixinsSameEvent = (exist, additional, temp) => {
@@ -1744,30 +1705,6 @@ let processMixinsSameEvent = (exist, additional, temp) => {
     temp['a'] = temp['a'].concat(additional['a'] || additional);
     return temp;
 };
-let View_DestroyAllResources = (me, lastly) => {
-    let cache = me['c'], //reources
-        p, c;
-    for (p in cache) {
-        c = cache[p];
-        if (lastly || c['a']) { //destroy
-            View_DestroyResource(cache, p, 1);
-        }
-    }
-};
-let View_DestroyResource = (cache, key, callDestroy, old) => {
-    let o = cache[key],
-        fn, res;
-    if (o && o != old) {
-        //let processed=false;
-        res = o['b']; //entity
-        fn = res.destroy;
-        if (fn && callDestroy) {
-            ToTry(fn, Empty_Array, res);
-        }
-        delete cache[key];
-    }
-    return res;
-};
 let View_WrapMethod = (prop, fName, short, fn, me) => {
     fn = prop[fName];
     prop[fName] = prop[short] = function (...args) {
@@ -1775,7 +1712,6 @@ let View_WrapMethod = (prop, fName, short, fn, me) => {
         if (me['d'] > 0) { //signature
             me['d']++;
             me.fire('rendercall');
-            View_DestroyAllResources(me);
             ToTry(fn, args, me);
         }
     };
@@ -2139,60 +2075,6 @@ Assign(View[Prototype], MxEvent, {
             }
         };
     },
-    /**
-     * 让view帮你管理资源，强烈建议对组件等进行托管
-     * @param {String} key 资源标识key
-     * @param {Object} res 要托管的资源
-     * @param {Boolean} [destroyWhenCalleRender] 调用render方法时是否销毁托管的资源
-     * @return {Object} 返回托管的资源
-     * @beta
-     * @module resource
-     * @example
-     * View.extend({
-     *     render: function(){
-     *         let me = this;
-     *         let dropdown = new Dropdown();
-     *
-     *         me.capture('dropdown',dropdown,true);
-     *     },
-     *     getTest: function(){
-     *         let dd = me.capture('dropdown');
-     *         console.log(dd);
-     *     }
-     * });
-     */
-    capture(key, res, destroyWhenCallRender, cache) {
-        cache = this['c'];
-        if (res) {
-            View_DestroyResource(cache, key, 1, res);
-            cache[key] = {
-                'b': res,
-                'a': destroyWhenCallRender
-            };
-            //service托管检查
-            if (DEBUG && res && (res.id + Empty).indexOf('\x1es') === 0) {
-                res.__captured = 1;
-                if (!destroyWhenCallRender) {
-                    console.warn('beware! May be you should set destroyWhenCallRender = true');
-                }
-            }
-        } else {
-            cache = cache[key];
-            res = cache && cache['b'];
-        }
-        return res;
-    },
-    /**
-     * 释放管理的资源
-     * @param  {String} key 托管时的key
-     * @param  {Boolean} [destroy] 是否销毁资源
-     * @return {Object} 返回托管的资源，无论是否销毁
-     * @beta
-     * @module resource
-     */
-    release(key, destroy) {
-        return View_DestroyResource(this['c'], key, destroy);
-    },
     
     /**
      * 设置view的html内容
@@ -2262,9 +2144,22 @@ Assign(View[Prototype], MxEvent, {
      *     console.log(this.get('a'));
      * }
      */
-    set(obj, unchanged) {
-        let me = this;
-        me['k'] = UpdateData(obj, me['e'], me['j'], unchanged) || me['k'];
+    set(newData, unchanged) {
+        let me = this,
+            oldData = me['e'],
+            keys = me['j'];
+        let changed = me['k'],
+            now, old, p;
+        for (p in newData) {
+            now = newData[p];
+            old = oldData[p];
+            if ((!IsPrimitive(now) || old !== now) && !Has(unchanged, p)) {
+                keys[p] = 1;
+                changed = 1;
+            }
+            oldData[p] = now;
+        }
+        me['k'] = changed;
         return me;
     },
     /**
@@ -2374,6 +2269,7 @@ Assign(View[Prototype], MxEvent, {
         return ParseExpr(origin, this['a']);
     }
 });
+    
     /*
     一个请求send后，应该取消吗？
     参见xmlhttprequest的实现
@@ -3012,6 +2908,7 @@ Service.extend = (sync, cacheMax, cacheBuffer) => {
     NService['h'] = {};
     return Extend(NService, Service, Null, Service_Manager);
 };
+    
     Assign(Noop[Prototype], MxEvent);
 Noop.extend = function extend(props, statics) {
     let me = this;
@@ -3024,7 +2921,7 @@ Noop.extend = function extend(props, statics) {
     X.extend = extend;
     return Extend(X, me, props, statics);
 };
-    let Magix_Booted = 0;
+    
 /**
  * Magix对象，提供常用方法
  * @name Magix
@@ -3042,7 +2939,6 @@ let Magix = {
      * @param {Object} cfg.routes path与view映射关系表
      * @param {String} cfg.unmatchView 在routes里找不到匹配时使用的view，比如显示404
      * @param {String} cfg.rootId 根view的id
-     * @param {Array} cfg.exts 需要加载的扩展
      * @param {Function} cfg.error 发布版以try catch执行一些用户重写的核心流程，当出错时，允许开发者通过该配置项进行捕获。注意：您不应该在该方法内再次抛出任何错误！
      * @example
      * Magix.config({
@@ -3091,11 +2987,9 @@ let Magix = {
      */
     boot(cfg) {
         Assign(Mx_Cfg, cfg); //先放到配置信息中，供ini文件中使用
-        Async_Require(Mx_Cfg.exts, () => {
-            
-            Vframe_Root().mountView(Mx_Cfg.defaultView);
-            
-        });
+        
+        Vframe_Root().mountView(Mx_Cfg.defaultView);
+        
     },
     /**
      * 把列表转化成hash对象
@@ -3319,9 +3213,12 @@ let Magix = {
     dispatch: DispatchEvent,
     type: Type,
     View,
-    Vframe,
-    Service,
     State,
+    Vframe,
+    
+    Service,
+    
+    Event: MxEvent,
     
     guard: Safeguard,
     node: GetById
