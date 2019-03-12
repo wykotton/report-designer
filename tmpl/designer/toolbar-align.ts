@@ -16,7 +16,7 @@ export default Magix.View.extend({
             elements: State.get('@{stage.select.elements}')
         });
     },
-    '@{align.elements}<click>'(e: Magix.DOMEvent) {
+    '@{align.elements}<click>'(e: Magix5.MagixMouseEvent) {
         if (e.eventTarget.classList.contains('@toolbar.less:toolbar-item-disabled')) {
             return;
         }

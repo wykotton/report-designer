@@ -111,6 +111,10 @@ export default {
     '@{lang#props.offset.ver}': '垂直(%)：',
     '@{lang#elements.image.reset}': '图片自身宽高',
     '@{lang#elements.text.content}': '请输入内容',
+    '@{lang#same.width}':'以选中元素最大宽度(按下shift则是最小宽度)同步宽度',
+    '@{lang#same.height}':'以选中元素最大高度(按下shift则是最小高度)同步高度',
+    '@{lang#same.ver.space}':'垂直均分排列',
+    '@{lang#same.hor.space}':'水平均分排列',
     //----
     '@{lang#save.content.title}': '保存内容'
 };

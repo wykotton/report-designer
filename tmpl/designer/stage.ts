@@ -161,7 +161,7 @@ export default Magix.View.extend({
         if (fs) return;
         StageElements["@{select.or.move.elements}"](e, this);
     },
-    '@{stage.start.drag}<mousedown>'(e: Magix.DOMEvent) {
+    '@{stage.start.drag}<mousedown>'(e: Magix5.MagixMouseEvent) {
         let fs = this.get('fullscreen');
         if (fs) return;
         let target = e.target as HTMLDivElement;
@@ -223,7 +223,7 @@ export default Magix.View.extend({
             });
         }
     },
-    '@{stage.keydown}<keydown>'(e: Magix.DOMEvent) {
+    '@{stage.keydown}<keydown>'(e: Magix5.MagixKeyboardEvent) {
         let fs = this.get('fullscreen');
         if (fs) return;
         if (e.metaKey || e.ctrlKey) {
@@ -361,7 +361,7 @@ export default Magix.View.extend({
             });
         }
     },
-    '@{stage.active}<focusin>'(e: Magix.DOMEvent) {
+    '@{stage.active}<focusin>'() {
         this.root.classList.remove('@index.less:stage-deactive');
     },
     '@{stage.deactive}<focusout>'() {
