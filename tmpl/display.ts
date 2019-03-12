@@ -18,10 +18,24 @@ let Designer = {
         });
         seajs.use(['magix5', 'i18n/index'], (Magix: Magix5.Magix, I18n) => {
             Magix.applyStyle('@scoped.style');
+            let lang = 'zh-cn';
+            try {
+                let store = window.localStorage;
+                if (store) {
+                    lang = store.getItem('l.report.lang') || lang;
+                }
+            } catch{
+
+            }
+            Magix.config({
+                lang
+            });
+            let i18n = I18n.default;
+            document.title = i18n('@{lang#site.name}');
             Magix.View.merge({
                 ctor() {
                     this.set({
-                        i18n: I18n.default
+                        i18n
                     });
                 }
             });
