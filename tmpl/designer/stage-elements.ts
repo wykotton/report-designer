@@ -110,7 +110,7 @@ export default {
                 elements.push(element);
             }
             let elementMoved = false;
-            State.fire('@{event#stage.lock.scroll}', {
+            State.fire('@{event#stage.toggle.scroll}', {
                 show: 1
             });
             view['@{drag.drop}'](event, evt => {
@@ -140,7 +140,7 @@ export default {
                     DHistory["@{save}"]();
                 }
                 Cursor["@{hide}"]();
-                State.fire('@{event#stage.lock.scroll}');
+                State.fire('@{event#stage.toggle.scroll}');
             });
         }
     },

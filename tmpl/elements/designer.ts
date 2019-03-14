@@ -83,7 +83,7 @@ export default Magix.View.extend({
         let me = this;
         let element = me.get('element');
         let props = element.props;
-        State.fire('@{event#stage.lock.scroll}', {
+        State.fire('@{event#stage.toggle.scroll}', {
             show: 1
         });
         let c = {
@@ -119,7 +119,7 @@ export default Magix.View.extend({
             if (moved) {
                 DHistory["@{save}"]();
             }
-            State.fire('@{event#stage.lock.scroll}');
+            State.fire('@{event#stage.toggle.scroll}');
         });
     },
     '@{start.resize}<mousedown>'(e: Magix5.MagixMouseEvent) {
@@ -128,7 +128,7 @@ export default Magix.View.extend({
         let me = this;
         let element = me.get('element');
         let { props, ctrl } = element;
-        State.fire('@{event#stage.lock.scroll}', {
+        State.fire('@{event#stage.toggle.scroll}', {
             show: 1
         });
         let rotate = props.rotate || 0;
@@ -251,9 +251,9 @@ export default Magix.View.extend({
         }, () => {
             if (moved) {
                 DHistory["@{save}"]();
+                Cursor["@{hide}"]();
             }
-            Cursor["@{hide}"]();
-            State.fire('@{event#stage.lock.scroll}');
+            State.fire('@{event#stage.toggle.scroll}');
         });
     }
 });

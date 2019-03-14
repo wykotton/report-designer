@@ -133,7 +133,7 @@ export default Magix.View.extend({
         State.on('@{event#toolbox.add.element}', addElements);
         State.on('@{event#toolbox.drag.element.drop}', addElements);
         State.on('@{event#stage.elements.change}', updateElements);
-        State.on('@{event#stage.lock.scroll}', togglePole);
+        State.on('@{event#stage.toggle.scroll}', togglePole);
         State.on('@{event#toolbox.drag.element.move}', (e: Magix5.TriggerEventDescriptor & {
             node: HTMLElement
             pageX: number
