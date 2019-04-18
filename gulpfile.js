@@ -32,6 +32,7 @@ combineTool.config({
             }
         });
         str = str.outputText;
+        str = str.replace(/"use strict";\sObject\.defineProperty\(exports,\s"__esModule",\s[^;]+;/, '');
         return str;
     }
 });
@@ -123,4 +124,29 @@ gulp.task('cdist', () => {
             }
         }))
         .pipe(gulp.dest('./dist'));
+});
+
+
+let langReg = /@\{lang#[\S\s]+?\}/g;
+gulp.task('lang-check', () => {
+    let c = combineTool.readFile('./tmpl/i18n/zh-cn.ts');
+    let lMap = {}, missed = {};
+    c.replace(langReg, m => {
+        lMap[m] = 0;
+    });
+    combineTool.walk('./tmpl', f => {
+        if (!f.includes('/lib/') &&
+            !f.includes('/i18n/')) {
+            let c = combineTool.readFile(f);
+            c.replace(langReg, m => {
+                if (lMap.hasOwnProperty(m)) {
+                    lMap[m]++;
+                } else {
+                    missed[m] = 'missed';
+                }
+            });
+        }
+    });
+    console.table(lMap);
+    console.table(missed);
 });

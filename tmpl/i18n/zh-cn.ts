@@ -3,8 +3,6 @@ export default {
     '@{lang#dialog.tip}': '提示',
     '@{lang#btn.enter}': '确定',
     '@{lang#btn.cancel}': '取消',
-    '@{lang#zoom.in}': '放大',
-    '@{lang#zoom.out}': '缩小',
     '@{lang#axis.delete.line}': '删除辅助线',
     '@{lang#axis.move.line}': '按下拖动可移动辅助线',
     '@{lang#undo}': '撤销(Ctrl+Z)',

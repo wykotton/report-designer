@@ -1,7 +1,8 @@
 import Magix from 'magix';
 import ZH from './zh-cn';
 const I18n = {
-    'zh-cn': ZH
+    'zh-cn': ZH,
+    zh: ZH
 };
 const DefaultLang = 'zh-cn';
 const Has = Magix.has;

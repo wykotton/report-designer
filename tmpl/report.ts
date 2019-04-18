@@ -23,11 +23,11 @@ let Designer = {
             'i18n/index'
         ], (Magix: Magix5.Magix, I18n) => {
             Magix.applyStyle('@scoped.style');
-            let lang = 'zh-cn';
+            let lang = navigator.language.toLowerCase();
             try {
                 let store = window.localStorage;
                 if (store) {
-                    lang = store.getItem('l.report.lang') || lang;
+                    lang = store.getItem('l.lang') || lang;
                 }
             } catch{
 
