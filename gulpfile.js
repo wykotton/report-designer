@@ -32,7 +32,6 @@ combineTool.config({
             }
         });
         str = str.outputText;
-        str = str.replace(/"use strict";\sObject\.defineProperty\(exports,\s"__esModule",\s[^;]+;/, '');
         return str;
     }
 });
