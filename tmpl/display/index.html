@@ -1,7 +1,7 @@
 <div class="wrap">
     {{if stage}}
     {{let {elements,page}=stage;}}
-    <div style="width:{{=page.width}}px;height:{{=page.height}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth}}px {{=page.backgroundHeight}}px;background-position:{{=page.hor}}% {{=page.ver}}%{{/if}}{{/if}}">
+    <div style="position:relative;width:{{=page.width}}px;height:{{=page.height}}px;background:{{=page.background}};{{if page.backgroundImage}}background-image:url({{=page.backgroundImage}});background-repeat:{{=page.backgroundRepeat=='full'?'no-repeat':page.backgroundRepeat}};background-size:{{if page.backgroundRepeat=='full'}}100% 100%{{else}}{{=page.backgroundWidth}}px {{=page.backgroundHeight}}px;background-position:{{=page.hor}}% {{=page.ver}}%{{/if}}{{/if}}">
         {{each elements as e}}
             <mx-vframe src="../elements/{{=e.type}}/index" *props="{{@e.props}}"/>
         {{/each}}

@@ -1,7 +1,7 @@
 //#loader=none;
 if (typeof DEBUG == 'undefined') DEBUG = true;
 '@./lib/sea.js';
-'@./lib/magix.js';
+'@./lib/magix.ts';
 let Designer = {
     init(ops) {
         let node = document.getElementById('boot') as HTMLScriptElement;
