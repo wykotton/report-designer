@@ -19,8 +19,22 @@ export default {
             let elements = State.get('@{stage.elements}');
             let props = ctrl.getProps(e.pageX, e.pageY);
             let scale = State.get('@{stage.scale}');
-            props.width *= scale;
-            props.height *= scale;
+            let scaledProps = {} as { x: number, y: number };
+            for (let s of ctrl.scales) {
+                scaledProps[s] = props[s] * scale;
+            }
+            let diffX = scaledProps.x - props.x;
+            let diffY = scaledProps.y - props.y;
+            for (let m of ctrl.moved) {
+                if (m.use == 'x') {
+                    scaledProps[m.key] -= diffX;
+                } else {
+                    scaledProps[m.key] -= diffY;
+                }
+            }
+            for (let p in scaledProps) {
+                props[p] = scaledProps[p];
+            }
             let em = {
                 id: Magix.guid('e_'),
                 ctrl,
@@ -88,24 +102,26 @@ export default {
             Cursor["@{show.by.type}"]('move');
             let startInfos = [],
                 exist = false;
-            for (let e of elements) {
-                if (element.id == e.id) {
+            for (let { id, ctrl, props } of elements) {
+                if (element.id == id) {
                     exist = true;
                 }
-                startInfos.push({
-                    x: e.props.x,
-                    y: e.props.y
-                });
+                let i = {};
+                for (let m of ctrl.moved) {
+                    i[m.key] = props[m.key];
+                }
+                startInfos.push(i);
             }
             if (!exist) {
                 if (StageSelectElements['@{set}'](element)) {
                     DHistory["@{save}"]();
                 }
                 startInfos.length = 0;
-                startInfos.push({
-                    x: element.props.x,
-                    y: element.props.y
-                });
+                let i = {};
+                for (let m of element.ctrl.moved) {
+                    i[m.key] = element.props[m.key];
+                }
+                startInfos.push(i);
                 elements.length = 0;
                 elements.push(element);
             }
@@ -121,8 +137,10 @@ export default {
                     let s = startInfos[index++];
                     if (!e.props.locked) {
                         elementMoved = true;
-                        e.props.x = s.x + offsetX;
-                        e.props.y = s.y + offsetY;
+                        let i = {};
+                        for (let m of e.ctrl.moved) {
+                            e.props[m.key] = s[m.key] + (m.use == 'x' ? offsetX : offsetY);
+                        }
                         let vf = Vframe.byNode(node(e.id));
                         if (vf) {
                             if (vf.invoke('assign', [{

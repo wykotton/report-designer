@@ -55,49 +55,51 @@ export default {
             let index = 0, diffX = 0, diffY = 0;
             let hasSameXY = props => {
                 for (let c of elements) {
-                    if (c.props.x == props.x && c.props.y == props.y) {
+                    if (c.props.x == props.x &&
+                        c.props.y == props.y) {
                         return 1;
                     }
                 }
                 return 0;
             };
-            let setXY = props => {
+            let setXY = ({ props, ctrl }) => {
                 if (index === 0) {
                     if (xy) {
-                        diffX = props.x - xy.x;
-                        diffY = props.y - xy.y;
-                        props.x = xy.x;
-                        props.y = xy.y;
+                        diffX = xy.x - props.x;
+                        diffY = xy.y - props.y;
                     } else {
                         let oldX = props.x;
                         let oldY = props.y;
-                        while (hasSameXY(props)) {
-                            props.x += 20;
-                            props.y += 20;
+                        let ref = {
+                            x: oldX,
+                            y: oldY
+                        };
+                        while (hasSameXY(ref)) {
+                            ref.x += 20;
+                            ref.y += 20;
                         }
-                        if ((props.x + props.width) < 0) {
-                            props.x = -props.width / 2;
+                        if ((ref.x + props.width) < 0) {
+                            ref.x = -props.width / 2;
                         }
-                        if ((props.y + props.height) < 0) {
-                            props.y = -props.height / 2
+                        if ((ref.y + props.height) < 0) {
+                            ref.y = -props.height / 2
                         }
-                        while (hasSameXY(props)) {
-                            props.x -= 4;
-                            props.y -= 4;
+                        while (hasSameXY(ref)) {
+                            ref.x -= 4;
+                            ref.y -= 4;
                         }
-                        diffX = oldX - props.x;
-                        diffY = oldY - props.y;
+                        diffX = ref.x - props.x;
+                        diffY = ref.y - props.y;
                     }
-                } else {
-                    props.x -= diffX;
-                    props.y -= diffY;
                 }
+                for (let x of ctrl.moved) {
+                    props[x.key] = props[x.key] + (x.use == 'x' ? diffX : diffY);
+                }
+                props.locked = false;
             };
             for (let m of list) {
                 let nm = Clone(m);
-                let props = nm.props;
-                setXY(props);
-                props.locked = false;
+                setXY(nm);
                 index++;
                 nm.id = Magix.guid('e_');
                 elements.push(nm);

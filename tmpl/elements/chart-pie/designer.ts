@@ -16,6 +16,19 @@ export default Designer.extend({
         role: 'chart-pie',
         title: '@{lang#elements.chart-pie}',
         icon: '&#xe6d4;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
         getProps(x, y) {
             return {
                 background: '',

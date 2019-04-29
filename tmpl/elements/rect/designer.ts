@@ -16,6 +16,32 @@ export default Designer.extend({
         role: 'rect',
         title: '@{lang#elements.rect}',
         icon: '&#xe6c7;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            rotate: 1,
+            fillcolor: 1,
+            borderwidth: 1,
+            bordertype: 1,
+            bordercolor: 1,
+            radius: 1
+        },
         getProps(x, y) {
             return {
                 fillcolor: '',

@@ -3,25 +3,39 @@
 */
 import Magix, { State } from 'magix';
 Magix.applyStyle('@content.less');
-let Ignores = {
-    locked: 1,
-    id: 1
-}
-let Filter = (k, v) => {
-    if (Magix.has(Ignores, k)) return undefined;
-    return v;
-};
 export default Magix.View.extend({
     tmpl: '@content.html',
     render() {
         let elements = State.get('@{stage.elements}');
         let page = State.get('@{stage.page}');
+        let filters = [];
+        for (let e of elements) {
+            let m = {
+                type: e.type,
+                props: {}
+            };
+            let json = e.ctrl.json,
+                f;
+            if (json) {
+                for (let p in e.props) {
+                    f = json[p];
+                    if (f === 1) {
+                        m.props[p] = e.props[p];
+                    } else if(f) {
+                        m.props[p] = f(e.props[p]);
+                    }
+                }
+            } else {
+                m.props = e.props;
+            }
+            filters.push(m);
+        }
         let stage = {
             page,
-            elements
+            elements: filters
         };
         this.digest({
-            body: JSON.stringify(stage, Filter, 4)
+            body: JSON.stringify(stage, null, 4)
         });
     }
 });

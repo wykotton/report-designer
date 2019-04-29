@@ -12,8 +12,17 @@ export default Magix.View.extend({
         State.on('@{event#stage.select.elements.change}', update);
     },
     render() {
+        let elements = State.get('@{stage.select.elements}');
+        let hasBesizer = false;
+        for (let e of elements) {
+            if (e.type == 'bezier') {
+                hasBesizer = true;
+                break;
+            }
+        }
         this.digest({
-            elements: State.get('@{stage.select.elements}')
+            elements,
+            bezier: hasBesizer
         });
     },
     '@{same.elements}<click>'(e: Magix5.MagixMouseEvent) {
@@ -126,7 +135,9 @@ export default Magix.View.extend({
 
         for (let i = startIndex; i < endIndex; i++) {
             let m = tempArray[i].m,
-                lChanged = 0;
+                lChanged = 0,
+                use = '',
+                diff = 0;
             if (to == 'ver') {
                 let centerY = prev.props.y + prev.props.height / 2;
                 centerY += avgY;
@@ -134,7 +145,8 @@ export default Magix.View.extend({
                 if (m.props.y != centerY) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.y = centerY;
+                    diff = centerY - m.props.y;
+                    use = 'y';
                 }
             } else {
                 let centerX = prev.props.x + prev.props.width / 2;
@@ -143,12 +155,18 @@ export default Magix.View.extend({
                 if (m.props.x != centerX) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.x = centerX;
+                    diff = centerX - m.props.x;
+                    use = 'x';
                 }
             }
             if (lChanged) {
                 let vf = Vframe.byNode(node(m.id));
                 if (vf) {
+                    for (let x of m.ctrl.moved) {
+                        if (x.use == use) {
+                            m.props[x.key] += diff;
+                        }
+                    }
                     if (vf.invoke('assign', [{ element: m }])) {
                         vf.invoke('render');
                     }

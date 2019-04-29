@@ -110,16 +110,15 @@ export default Magix.View.extend({
                 vHeight,
                 vWidth,
                 yEnd
-            }, null, () => {
-                this['@{x.axis}'] = node(this.id + '_x');
-                this['@{y.axis}'] = node(this.id + '_y');
-                this['@{x.line}'] = node(this.id + '_x_line');
-                this['@{y.line}'] = node(this.id + '_y_line');
-                this['@{x.line.tip}'] = node(this.id + '_x_tip');
-                this['@{y.line.tip}'] = node(this.id + '_y_tip');
-                this['@{x.axis.help}'] = node(this.id + '_x_help');
-                this['@{y.axis.help}'] = node(this.id + '_y_help');
             });
+            this['@{x.axis}'] = node(this.id + '_x');
+            this['@{y.axis}'] = node(this.id + '_y');
+            this['@{x.line}'] = node(this.id + '_x_line');
+            this['@{y.line}'] = node(this.id + '_y_line');
+            this['@{x.line.tip}'] = node(this.id + '_x_tip');
+            this['@{y.line.tip}'] = node(this.id + '_y_tip');
+            this['@{x.axis.help}'] = node(this.id + '_x_help');
+            this['@{y.axis.help}'] = node(this.id + '_y_help');
         }
     },
     '@{sync.scroll}'() {

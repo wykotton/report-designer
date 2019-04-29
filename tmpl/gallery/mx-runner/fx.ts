@@ -13,7 +13,7 @@ let FX = function (interval, alg) {
     me['@{task.list}'] = [];
     me['@{interval}'] = interval;
 };
-Magix.mix(FX.prototype, {
+Object.assign(FX.prototype, {
     '@{run}'(time, callback) {
         let me = this;
         if (!me['@{destroyed}']) {

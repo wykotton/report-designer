@@ -12,7 +12,7 @@ export default Magix.View.extend({
         State.on('@{event#history.shift}', update);
         State.on('@{event#stage.elements.change}', update);
         State.on('@{event#stage.select.elements.change}', update);
-        State.on('@{event#stage.select.element.props.update}', update);
+        //State.on('@{event#stage.select.element.props.update}', update);
     },
     render() {
         let stageElements = State.get('@{stage.elements}');

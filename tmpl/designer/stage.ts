@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { node, State, Vframe } from 'magix';
+import Magix, { node, State, Vframe, has } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import DHistory from './history';
 import Keys from './keys';
@@ -101,11 +101,12 @@ export default Magix.View.extend({
                     });
                 }
                 if (e.step) {
-                    for (let { props } of elements) {
-                        props.x *= e.step;
-                        props.y *= e.step;
-                        props.width *= e.step;
-                        props.height *= e.step;
+                    for (let { props, ctrl } of elements) {
+                        if (ctrl.scales) {
+                            for (let s of ctrl.scales) {
+                                props[s] *= e.step;
+                            }
+                        }
                     }
                 }
                 this.set({
@@ -197,11 +198,11 @@ export default Magix.View.extend({
                     x: left,
                     y: top
                 }) as {
-                        x: number
-                        y: number
-                        width: number
-                        height: number
-                    };
+                    x: number
+                    y: number
+                    width: number
+                    height: number
+                };
                 rect.width = width;
                 rect.height = height;
                 if (elementLocations.length) {
@@ -265,25 +266,36 @@ export default Magix.View.extend({
                 step *= State.get('@{stage.scale}');
                 let selectElements = State.get('@{stage.select.elements}');
                 if (selectElements.length) {
-                    let propsChanged = false;
+                    let propsChanged = false,
+                        offset = 0,
+                        use = '';
                     for (let m of selectElements) {
                         if (!m.props.locked) {
                             if (e.keyCode == Keys.UP) {
                                 propsChanged = true;
-                                m.props.y -= step;
+                                offset = -step;
+                                use = 'y';
                             } else if (e.keyCode == Keys.DOWN) {
                                 propsChanged = true;
-                                m.props.y += step;
+                                offset = step;
+                                use = 'y';
                             } else if (e.keyCode == Keys.LEFT) {
                                 propsChanged = true;
-                                m.props.x -= step;
+                                offset = -step;
+                                use = 'x';
                             } else if (e.keyCode == Keys.RIGHT) {
                                 propsChanged = true;
-                                m.props.x += step;
+                                offset = step;
+                                use = 'x';
                             }
                             if (propsChanged) {
                                 let vf = Vframe.byNode(node(m.id));
                                 if (vf) {
+                                    for (let x of m.ctrl.moved) {
+                                        if (x.use == use) {
+                                            m.props[x.key] += offset;
+                                        }
+                                    }
                                     if (vf.invoke('assign', [{ element: m }])) {
                                         vf.invoke('render');
                                     }

@@ -63,53 +63,60 @@ export default Magix.View.extend({
         for (let m of elements) {
             let n = node('mask_' + m.id);
             let bound = n.getBoundingClientRect();
-            let lChanged = 0;
+            let lChanged = 0,
+                use = '',
+                diff;
             if (to == 'right') {
-                let diff = maxRight - bound.right;
+                diff = maxRight - bound.right;
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.x += diff;
+                    use = 'x';
                 }
             } else if (to == 'left') {
-                let diff = minLeft - bound.left;
+                diff = minLeft - bound.left;
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.x += diff;
+                    use = 'x';
                 }
             } else if (to == 'top') {
-                let diff = minTop - bound.top;
+                diff = minTop - bound.top;
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.y += diff;
+                    use = 'y';
                 }
             } else if (to == 'bottom') {
-                let diff = maxBottom - bound.bottom;
+                diff = maxBottom - bound.bottom;
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.y += diff;
+                    use = 'y';
                 }
             } else if (to == 'middle') {
-                let diff = minVCenter - (bound.top + (bound.bottom - bound.top) / 2);
+                diff = minVCenter - (bound.top + (bound.bottom - bound.top) / 2);
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.y += diff;
+                    use = 'y';
                 }
             } else if (to == 'center') {
-                let diff = minHCenter - (bound.left + (bound.right - bound.left) / 2);
+                diff = minHCenter - (bound.left + (bound.right - bound.left) / 2);
                 if (diff != 0) {
                     changed = 1;
                     lChanged = 1;
-                    m.props.x += diff;
+                    use = 'x';
                 }
             }
             if (lChanged) {
                 let vf = Vframe.byNode(node(m.id));
                 if (vf) {
+                    for (let x of m.ctrl.moved) {
+                        if (x.use == use) {
+                            m.props[x.key] += diff;
+                        }
+                    }
                     if (vf.invoke('assign', [{ element: m }])) {
                         vf.invoke('render');
                     }

@@ -157,8 +157,8 @@ export default Magix.View.extend({
                 let key = '$dlg_' + view;
                 if (me[key]) return;
                 me[key] = 1;
-                Magix.mix(dOptions, V.dialogOptions);
-                Magix.mix(dOptions, options);
+                Object.assign(dOptions, V.dialogOptions);
+                Object.assign(dOptions, options);
                 if (!dOptions.width) dOptions.width = 500;
                 if (!dOptions.left) dOptions.left = (window.innerWidth - dOptions.width) / 2;
                 if (!dOptions.top) dOptions.top = 100;

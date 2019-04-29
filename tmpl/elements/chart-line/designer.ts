@@ -16,6 +16,29 @@ export default Designer.extend({
         role: 'chart-line',
         title: '@{lang#elements.chart-line}',
         icon: '&#xe64b;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            title: 1,
+            rotate: 1,
+            background: 1
+        },
         getProps(x, y) {
             return {
                 background: '',

@@ -16,6 +16,30 @@ export default Designer.extend({
         role: 'line',
         title: '@{lang#elements.line}',
         icon: '&#xe601;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            title: 1,
+            rotate: 1,
+            linetype: 1,
+            color:1
+        },
         getProps(x, y) {
             return {
                 height: 1,

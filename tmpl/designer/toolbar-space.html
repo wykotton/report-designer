@@ -1,8 +1,8 @@
 {{set c=elements.length}}
 <i class="toolbar-spliter"></i>
-<i class="iconfont toolbar-item{{if c<2}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#same.width}')}}" mx-click="@{same.elements}({to:'width'})">&#xe604;</i>
+<i class="iconfont toolbar-item{{if c<2||bezier}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#same.width}')}}" mx-click="@{same.elements}({to:'width'})">&#xe604;</i>
 
-<i class="iconfont toolbar-item{{if c<2}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#same.height}')}}" mx-click="@{same.elements}({to:'height'})">&#xe605;</i>
+<i class="iconfont toolbar-item{{if c<2||bezier}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#same.height}')}}" mx-click="@{same.elements}({to:'height'})">&#xe605;</i>
 
 <i class="iconfont toolbar-item{{if c<3}} toolbar-item-disabled{{/if}}" title="{{=i18n('@{lang#same.hor.space}')}}" mx-click="@{avg.elements}({to:'hor'})">&#xe608;</i>
 

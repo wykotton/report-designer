@@ -1,5 +1,6 @@
 import { toMap as ToMap } from 'magix';
 import Line from './line/designer';
+import Bezier from './bezier/designer';
 import Rect from './rect/designer';
 import Circle from './circle/designer';
 import XText from './text/designer';
@@ -10,7 +11,9 @@ import ChartLine from './chart-line/designer';
 import ChartMeter from './chart-meter/designer';
 import ChartBar from './chart-bar/designer';
 import ChartPie from './chart-pie/designer';
-let Elements = [Line,
+let Elements = [
+    Line,
+    Bezier,
     Rect,
     Circle,
     XText,
@@ -19,9 +22,10 @@ let Elements = [Line,
     ChartLine,
     ChartMeter,
     ChartBar,
-    ChartPie];
+    ChartPie
+];
 let ElementsMap = ToMap(Elements, 'type');
-let Groups = [Line, Rect, Circle, XText, XImage, Repeat, { spliter: true }, {
+let Groups = [Line, Bezier, Rect, Circle, XText, XImage, Repeat, { spliter: true }, {
     icon: '&#xe629;',
     title: '图表',
     subs: [ChartLine, ChartMeter, ChartBar, ChartPie]

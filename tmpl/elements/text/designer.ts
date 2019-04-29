@@ -15,6 +15,34 @@ export default Designer.extend({
         role: 'text',
         title: '@{lang#elements.text}',
         icon: '&#xe6bc;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height', 'fontsize', 'ls'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            text: 1,
+            rotate: 1,
+            ls: 1,
+            background: 1,
+            forecolor: 1,
+            fontsize: 1,
+            style: 1,
+            align: 1
+        },
         getProps(x, y) {
             return {
                 background: '',
@@ -78,7 +106,9 @@ export default Designer.extend({
             tip: '@{lang#props.font.size}',
             key: 'fontsize',
             type: Props["@{number}"],
-            min: 0
+            min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.alpha}',
             key: 'alpha',
@@ -91,7 +121,9 @@ export default Designer.extend({
             tip: '@{lang#props.letter.spacing}',
             key: 'ls',
             type: Props["@{number}"],
-            min: 0
+            min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"]
         }, {
             tip: '@{lang#props.background}',
             key: 'background',

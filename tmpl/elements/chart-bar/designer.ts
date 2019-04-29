@@ -2,7 +2,6 @@
     author:xinglie.lkf@alibaba-inc.com
 */
 import Props from '../../designer/props';
-import I18n from '../../i18n/index';
 import Converter from '../../util/converter';
 import Designer from '../designer';
 export default Designer.extend({
@@ -16,6 +15,29 @@ export default Designer.extend({
         role: 'chart-bar',
         title: '@{lang#elements.chart-bar}',
         icon: '&#xe603;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            title: 1,
+            rotate: 1,
+            background: 1
+        },
         getProps(x, y) {
             return {
                 background: '',

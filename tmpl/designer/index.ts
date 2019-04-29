@@ -38,7 +38,7 @@ let ApplyState = json => {
             }
         }
     }
-    Magix.mix(page, json.page);
+    Object.assign(page, json.page);
     State.set({
         '@{stage.scale}': json.scale || 1,
         '@{stage.select.elements.map}': sMap
@@ -66,8 +66,7 @@ export default Magix.View.extend({
         DHistory["@{save.default}"]();
     },
     render() {
-        this.digest(null, null, () => {
-            Panels["@{open.panels}"]();
-        });
+        this.digest();
+        Panels["@{open.panels}"]();
     }
 });

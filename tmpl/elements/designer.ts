@@ -7,6 +7,7 @@ import Cursor from '../gallery/mx-pointer/cursor';
 import DHistory from '../designer/history';
 import Transform from '../util/transform';
 import Converter from '../util/converter';
+import BezierOutlineRect from '../util/bezier';
 Magix.applyStyle('@designer.less');
 const BaseIndex = {
     0: 1,
@@ -28,6 +29,7 @@ State.on('@{event#stage.select.elements.change}', () => {
         }
     }
 });
+
 export default Magix.View.extend({
     tmpl: '@designer.html',
     mixins: [Dragdrop],
@@ -252,6 +254,78 @@ export default Magix.View.extend({
             if (moved) {
                 DHistory["@{save}"]();
                 Cursor["@{hide}"]();
+            }
+            State.fire('@{event#stage.toggle.scroll}');
+        });
+    },
+    '@{drag.svg.ctrl}<mousedown>'(e) {
+        e.stopPropagation();
+        let me = this;
+        let element = me.get('element');
+        let props = element.props;
+        State.fire('@{event#stage.toggle.scroll}', {
+            show: 1
+        });
+        let moved = false;
+        let key = e.params.key;
+        let startX = props[`${key}X`];
+        let startY = props[`${key}Y`];
+        me['@{drag.drop}'](e, (evt) => {
+            if (!moved) {
+                Cursor["@{show}"](e.eventTarget);
+            }
+            moved = true;
+            let diffX = evt.pageX - e.pageX;
+            let diffY = evt.pageY - e.pageY;
+            props[`${key}X`] = startX + diffX;
+            props[`${key}Y`] = startY + diffY;
+            BezierOutlineRect(props);
+
+            this.digest({
+                element,
+                onlyMove: true
+            });
+            State.fire('@{event#stage.select.element.props.change}');
+        }, () => {
+            Cursor["@{hide}"]();
+            if (moved) {
+                DHistory["@{save}"]();
+            }
+            State.fire('@{event#stage.toggle.scroll}');
+        });
+    },
+    '@{start.resize.svg}<mousedown>'(e: Magix5.MagixMouseEvent) {
+        e.stopPropagation();
+        let me = this;
+        let element = me.get('element');
+        let props = element.props,
+            key = e.params.key,
+            beginX = props[`${key}X`],
+            beginY = props[`${key}Y`];
+
+        State.fire('@{event#stage.toggle.scroll}', {
+            show: 1
+        });
+        let moved = false;
+        me['@{drag.drop}'](e, evt => {
+            if (!moved) {
+                Cursor["@{show}"](e.eventTarget);
+            }
+            moved = true;
+            let ox = evt.pageX - e.pageX;
+            let oy = evt.pageY - e.pageY;
+            props[`${key}X`] = beginX + ox;
+            props[`${key}Y`] = beginY + oy;
+            BezierOutlineRect(props);
+            this.digest({
+                element,
+                onlyMove: true
+            });
+            State.fire('@{event#stage.select.element.props.change}');
+        }, () => {
+            Cursor["@{hide}"]();
+            if (moved) {
+                DHistory["@{save}"]();
             }
             State.fire('@{event#stage.toggle.scroll}');
         });

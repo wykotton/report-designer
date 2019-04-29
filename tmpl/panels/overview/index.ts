@@ -44,42 +44,49 @@ export default Magix.View.extend({
         }
     },
     render() {
-        let page = State.get('@{stage.page}');
-        let scale = State.get('@{stage.scale}');
-        let stage = node('stage');
-        let stageRealWidth = stage.scrollWidth;
-        let stageRealHeight = stage.scrollHeight;
-        let width = OverviewSize[0];
-        let ratio = width / stageRealWidth;
-        let height = ratio * stageRealHeight;
-        if (height > OverviewSize[1]) {
-            height = OverviewSize[1];
-            ratio = height / stageRealHeight;
-            width = ratio * stageRealWidth;
-        }
-        let pageWidth = ratio * page.width * scale;
-        let pageHeight = ratio * page.height * scale;
-        let canvasMargin = '';
-        for (let e of StagePadding) {
-            canvasMargin += ratio * e + 'px ';
-        }
-        let centerMargin = `${(OverviewSize[1] - height) / 2}px ${(OverviewSize[0] - width) / 2}px`;
-        let viewportWidth = Math.min(stage.offsetWidth, stageRealWidth) * ratio;//for border
-        let viewportHeight = Math.min(stage.offsetHeight, stageRealHeight) * ratio;
-        this.set({
-            width,
-            height,
-            page,
-            pageWidth,
-            pageHeight,
-            ratio,
-            elements: State.get('@{stage.elements}'),
-            viewportHeight,
-            viewportWidth,
-            canvasMargin,
-            centerMargin
+        let draw = this.wrapAsync(() => {
+            if (!node('stage_canvas')) {
+                Idle(draw);
+                return;
+            }
+            let page = State.get('@{stage.page}');
+            let scale = State.get('@{stage.scale}');
+            let stage = node('stage');
+            let stageRealWidth = stage.scrollWidth;
+            let stageRealHeight = stage.scrollHeight;
+            let width = OverviewSize[0];
+            let ratio = width / stageRealWidth;
+            let height = ratio * stageRealHeight;
+            if (height > OverviewSize[1]) {
+                height = OverviewSize[1];
+                ratio = height / stageRealHeight;
+                width = ratio * stageRealWidth;
+            }
+            let pageWidth = ratio * page.width * scale;
+            let pageHeight = ratio * page.height * scale;
+            let canvasMargin = '';
+            for (let e of StagePadding) {
+                canvasMargin += ratio * e + 'px ';
+            }
+            let centerMargin = `${(OverviewSize[1] - height) / 2}px ${(OverviewSize[0] - width) / 2}px`;
+            let viewportWidth = Math.min(stage.offsetWidth, stageRealWidth) * ratio;//for border
+            let viewportHeight = Math.min(stage.offsetHeight, stageRealHeight) * ratio;
+            this.set({
+                width,
+                height,
+                page,
+                pageWidth,
+                pageHeight,
+                ratio,
+                elements: State.get('@{stage.elements}'),
+                viewportHeight,
+                viewportWidth,
+                canvasMargin,
+                centerMargin
+            });
+            this['@{update.viewport.pos}']();
         });
-        this['@{update.viewport.pos}']();
+        draw();
     },
     '@{move.viewport}<mousedown>'(e) {
         let startX = this.get('left'),

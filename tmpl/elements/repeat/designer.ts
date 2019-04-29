@@ -16,6 +16,34 @@ export default Designer.extend({
         role: 'repeat',
         title: '@{lang#elements.repeat}',
         icon: '&#xe78f;',
+        modifier: {
+            width: 1,
+            height: 1,
+            rotate: 1
+        },
+        scales: ['x', 'y', 'width', 'height', 'imageWidth', 'imageHeight'],
+        moved: [{
+            key: 'x',
+            use: 'x'
+        }, {
+            key: 'y',
+            use: 'y'
+        }],
+        json: {
+            x: Converter["@{to.show.value}"],
+            y: Converter["@{to.show.value}"],
+            width: Converter["@{to.show.value}"],
+            height: Converter["@{to.show.value}"],
+            alpha: 1,
+            rotate: 1,
+            background: 1,
+            image: 1,
+            repeat: 1,
+            imageWidth: 1,
+            imageHeight: 1,
+            hor: 1,
+            ver: 1
+        },
         getProps(x, y) {
             return {
                 height: 100,
@@ -87,8 +115,8 @@ export default Designer.extend({
             type: Props["@{image}"],
             refresh: true,
             write(v, props, e) {
-                props.imageWidth = e.width;
-                props.imageHeight = e.height;
+                props.imageWidth = Converter["@{to.real.value}"](e.width);
+                props.imageHeight = Converter["@{to.real.value}"](e.height);
                 return v;
             }
         }, {
@@ -96,6 +124,8 @@ export default Designer.extend({
             key: 'imageWidth',
             type: Props["@{number}"],
             min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"],
             ifShow(props) {
                 return props.image;
             }
@@ -104,6 +134,8 @@ export default Designer.extend({
             key: 'imageHeight',
             type: Props["@{number}"],
             min: 0,
+            read: Converter["@{to.show.value}"],
+            write: Converter["@{to.real.value}"],
             ifShow(props) {
                 return props.image;
             }

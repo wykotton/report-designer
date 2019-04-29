@@ -5,6 +5,7 @@ import Magix, { State, Vframe, node } from 'magix';
 import Props from '../../designer/props';
 import DHistory from '../../designer/history';
 import Transform from '../../util/transform';
+import BezierOutlineRect from '../../util/bezier';
 Magix.applyStyle('@index.less');
 export default Magix.View.extend({
     tmpl: '@index.html',
@@ -22,7 +23,7 @@ export default Magix.View.extend({
         });
     },
     '@{update.prop}<input,change>'(e) {
-        let { key, use, element, refresh, native, write } = e.params;
+        let { key, use, element, refresh, native, write, bezier } = e.params;
         if (use || native) {
             let props = element.props;
             let resetXY = key == 'width' || key == 'height',
@@ -41,11 +42,14 @@ export default Magix.View.extend({
                 props.y += old.y - n.y;
                 refresh = true;
             }
+            if (bezier) {
+                BezierOutlineRect(props);
+            }
         }
         if (refresh) {
             this.render();
-            State.fire('@{event#stage.select.element.props.update}');
         }
+        State.fire('@{event#stage.select.element.props.update}');
         let n = node(element.id);
         let vf = Vframe.byNode(n);
         if (vf) {
