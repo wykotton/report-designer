@@ -22,7 +22,7 @@
 <div mx-mousemove="@{show.x.line}()" mx-mouseout="@{hide.x.line}()" mx-click="@{add.x.help.line}()">
     <div class="axis-x" id="{{=id}}_x">
         <div style="width:{{=width}}px;height:100%">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {{=width}} 19" style="cursor:default;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {{=width}} 19" style="cursor:default;position:absolute;width:{{=width}}px;height:19px;">
                 {{for(let i=0;i<xStart;i+=step)}}
                 {{if i}}
                     {{temp=i/scale}}
@@ -53,7 +53,7 @@
 <div mx-mousemove="@{show.y.line}()" mx-mouseout="@{hide.y.line}()" mx-click="@{add.y.help.line}()">
     <div class="axis-y" style="height:{{=vHeight}}px;" id="{{=id}}_y">
         <div style="height:{{=height}}px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 {{=height}}" style="cursor:default">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 {{=height}}" style="cursor:default;position:absolute;width:19px;height:{{=height}}px">
                 {{for(let i=0;i<yStart;i+=step)}}
                 {{if i}}
                 {{temp=i/scale}}

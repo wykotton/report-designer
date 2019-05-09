@@ -3,19 +3,16 @@
 */
 import Magix, { State, node } from 'magix';
 import Dragdrop from '../../gallery/mx-dragdrop/index';
+import Cursor from '../../gallery/mx-pointer/cursor';
 Magix.applyStyle('@index.less');
 let StagePadding = [50, 240, 50, 120];
 let OverviewSize = [180, 120];
-let Idle = window.requestIdleCallback || ((fn) => {
-    setTimeout(fn, 500);
-});
-let CancelIdle = window.cancelIdleCallback || clearTimeout;
 export default Magix.View.extend({
     mixins: [Dragdrop],
     tmpl: '@index.html',
     init() {
         let stage = node('stage');
-        let updateOverview = this['@{update.ui}'].bind(this);
+        let updateOverview = this['@{throttle}'](this.render);
         State.on('@{event#history.shift}', updateOverview);
         State.on('@{event#stage.scale.change}', updateOverview);
         State.on('@{event#stage.page.change}', updateOverview);
@@ -23,11 +20,7 @@ export default Magix.View.extend({
         State.on('@{event#stage.select.element.props.change}', updateOverview);
         State.on('@{event#stage.select.element.props.update}', updateOverview);
         stage.addEventListener('scroll', this['@{update.viewport.pos}'].bind(this));
-    },
-    '@{update.ui}'() {
-        let me = this;
-        CancelIdle(me['@{task.timer}']);
-        me['@{task.timer}'] = Idle(this.render.bind(this));
+        this['@{update.overview}'] = updateOverview;
     },
     '@{update.viewport.pos}'() {
         let stage = node('stage');
@@ -46,7 +39,7 @@ export default Magix.View.extend({
     render() {
         let draw = this.wrapAsync(() => {
             if (!node('stage_canvas')) {
-                Idle(draw);
+                setTimeout(draw);
                 return;
             }
             let page = State.get('@{stage.page}');
@@ -97,6 +90,7 @@ export default Magix.View.extend({
             height = this.get('height'),
             stage = node('stage'),
             ratio = this.get('ratio');
+        Cursor["@{root.show.by.type}"]('move');
         this['@{drag.drop}'](e, ex => {
             let x = startX + ex.pageX - e.pageX;
             let y = startY + ex.pageY - e.pageY;
@@ -116,9 +110,11 @@ export default Magix.View.extend({
             // });
             stage.scrollLeft = x / ratio;
             stage.scrollTop = y / ratio;
+        }, () => {
+            Cursor["@{root.hide}"]();
         });
     },
     '$win<resize>'() {
-        this['@{update.ui}']();
+        this['@{update.overview}']();
     }
 });

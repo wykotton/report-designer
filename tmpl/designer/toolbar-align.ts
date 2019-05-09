@@ -4,6 +4,8 @@
 'ref@toolbar.less';
 import Magix, { State, node, Vframe } from 'magix';
 import DHistory from './history';
+let MaxNum = Number.MAX_SAFE_INTEGER;
+let MinNum = Number.MIN_SAFE_INTEGER;
 export default Magix.View.extend({
     tmpl: '@toolbar-align.html',
     init() {
@@ -22,14 +24,14 @@ export default Magix.View.extend({
         }
         let { to } = e.params;
         let elements = State.get('@{stage.select.elements}');
-        let maxRight = -Number.MAX_SAFE_INTEGER;
-        let minLeft = Number.MAX_SAFE_INTEGER;
-        let minTop = Number.MAX_SAFE_INTEGER;
-        let maxBottom = -Number.MAX_SAFE_INTEGER;
-        let minVCenter = Number.MAX_SAFE_INTEGER;
-        let minHCenter = Number.MAX_SAFE_INTEGER;
+        let maxRight = MinNum;
+        let minLeft = MaxNum;
+        let minTop = MaxNum;
+        let maxBottom = MinNum;
+        let minVCenter = MaxNum;
+        let minHCenter = MaxNum;
         for (let m of elements) {
-            let n = node("mask_" + m.id);
+            let n = node('mask_' + m.id);
             let bound = n.getBoundingClientRect();
             if (to == 'right') {
                 if (bound.right > maxRight) {

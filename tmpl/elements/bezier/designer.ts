@@ -58,7 +58,6 @@ export default Designer.extend({
             ctrl2X: Converter["@{to.show.value}"],
             ctrl2Y: Converter["@{to.show.value}"],
             alpha: 1,
-            linetype: 1,
             linewidth: 1,
             color: 1
         },
@@ -77,7 +76,6 @@ export default Designer.extend({
                 ctrl2Y: y + 50,
                 width: 300,
                 height: 100,
-                linetype: 'solid',
                 linewidth: 1,
                 color: '#000000',
                 locked: false
@@ -155,20 +153,6 @@ export default Designer.extend({
             fixed: 1,
             min: 0,
             max: 1
-        }, {
-            tip: '@{lang#props.line.type}',
-            key: 'linetype',
-            type: Props["@{dropdown}"],
-            items: [{
-                text: I18n('@{lang#props.border.type.solid}'),
-                value: 'solid'
-            }, {
-                text: I18n('@{lang#props.border.type.dotted}'),
-                value: 'dotted'
-            }, {
-                text: I18n('@{lang#props.border.type.dashed}'),
-                value: 'dashed'
-            }]
         }, {
             tip: '@{lang#props.color}',
             key: 'color',

@@ -14,7 +14,7 @@ combineTool.config({
     debug: true,
     commonFolder: tmplFolder,
     compiledFolder: srcFolder,
-    projectName: 'p',
+    projectName: 'rd-',
     loaderType: 'cmd_es',
     md5CssSelectorLen: 3,
     galleries: {

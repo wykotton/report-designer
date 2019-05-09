@@ -1,7 +1,7 @@
 /*
     author:xinglie.lkf@alibaba-inc.com
 */
-import Magix, { State, Vframe, has as Has, MagixVDOM } from 'magix';
+import Magix, { State, Vframe, has as Has } from 'magix';
 import Dragdrop from '../gallery/mx-dragdrop/index';
 import Cursor from '../gallery/mx-pointer/cursor';
 import DHistory from '../designer/history';
